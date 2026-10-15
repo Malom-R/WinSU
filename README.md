@@ -58,7 +58,7 @@ The code is split across three projects: `WinSU.Core` (models and contracts, no 
 
 **Online images**: [SteamGridDB](https://www.steamgriddb.com), using each user's own API key; images belong to their respective authors.
 
-**Inspiration**: the Android launcher iiSU. WinSU's catalog, texts, tiles, frames, palette, logo and icon were designed for WinSU.
+**Inspiration**: the Android launcher iiSU , Wii U Main Menu.
 
 Console names and shapes are trademarks of their respective manufacturers (Nintendo, Sega, Sony, Microsoft); Steam is a trademark of Valve. WinSU is not affiliated with any of them.
 
