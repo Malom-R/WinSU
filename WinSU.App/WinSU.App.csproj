@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>WinSU.App</RootNamespace>
+    <!-- Nom de l'exe : WinSU.exe (étape 26, D-76) ; projets et espaces de noms « WinSU.* » depuis l'étape 34 -->
+    <AssemblyName>WinSU</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Icône officielle (étape 34, D-173) : « W » gras en pixels, tools/dev/winsu_brand.cs puis winsu_icon.py, 16 à 256 px -->
+    <ApplicationIcon>WinSU.ico</ApplicationIcon>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <!-- COM classique nécessaire : raccourcis .lnk (IShellLinkW) et boîte « Ouvrir » (IFileOpenDialog). -->
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WinSU.App.Tests" />
+  </ItemGroup>
+
+  <!--
+    Assets/, copié à côté de l'exe et versionné (étape 34) : le catalogue des consoles (Catalog/consoles.json, de WinSU),
+    leurs icônes (Icons/, thèmes « Automatic » et « Monochrome » de RetroArch, CC BY 4.0, CREDITS.txt ; tuiles et cadres
+    dessinés par WinSU) et les sons d'interface (Sounds/, Kenney, CC0, CREDITS.txt).
+  -->
+  <ItemGroup>
+    <Content Include="Assets\Catalog\**;Assets\Icons\**;Assets\Sounds\**"
+             CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!--
+    Marque (étape 34, bloc 6) : icône de la fenêtre (WinSU.ico, voir ApplicationIcon) et mot-symbole « WinSU » au trait
+    rond (Brand/winsu.svg), tous deux dessinés par tools/dev/winsu_brand.cs ; le mot-symbole est peint par
+    Controls/BrandLogo. Versionnés, embarqués dans l'exe.
+  -->
+  <ItemGroup>
+    <AvaloniaResource Include="WinSU.ico" />
+    <EmbeddedResource Include="Brand\winsu.svg" LogicalName="WinSU.Brand.winsu.svg" />
+  </ItemGroup>
+
+  <!--
+    Police du texte (D-41) : DM Sans, celle du site officiel (version 4.004 de Google Fonts, graisses 400, 500 et 700
+    tirées de la police variable, taille optique 14). Versionnée avec sa licence (SIL OFL 1.1), copiée à côté de l'exe.
+  -->
+  <ItemGroup>
+    <AvaloniaResource Include="Fonts\DMSans\*.ttf" />
+    <Content Include="Fonts\DMSans\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Glyphes de boutons de manette (30.10) : notre police, générée par tools/dev/glyph_font.py (lettres de DM Sans, OFL) -->
+    <AvaloniaResource Include="Fonts\WinSUGlyphs\*.ttf" />
+    <Content Include="Fonts\WinSUGlyphs\OFL.txt" Link="Fonts\WinSUGlyphs\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+    <!--
+      Polices au choix (étape 32, D-129) : polices libres de Google Fonts, chacune avec sa licence (SIL OFL 1.1, copiée à
+      côté de l'exe) ; graisses 400, 500, 600 et 700, tirées des polices variables par tools/dev/font_instances.py.
+    -->
+    <AvaloniaResource Include="Fonts\Inter\*.ttf;Fonts\AtkinsonHyperlegibleNext\*.ttf;Fonts\Lexend\*.ttf;Fonts\Exo2\*.ttf;Fonts\ChakraPetch\*.ttf;Fonts\Oxanium\*.ttf" />
+    <Content Include="Fonts\Inter\OFL.txt;Fonts\AtkinsonHyperlegibleNext\OFL.txt;Fonts\Lexend\OFL.txt;Fonts\Exo2\OFL.txt;Fonts\ChakraPetch\OFL.txt;Fonts\Oxanium\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="WarnWhenAssetsNotImported" BeforeTargets="Build" Condition="!Exists('Assets\Catalog\consoles.json')">
+    <Warning Text="Assets absents (src/WinSU.App/Assets) : le catalogue des consoles ne sera pas trouvé." />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.Debug" />
+    <PackageReference Include="Serilog.Sinks.File" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WinSU.Core\WinSU.Core.csproj" />
+    <ProjectReference Include="..\WinSU.Infrastructure\WinSU.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

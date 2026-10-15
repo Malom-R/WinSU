@@ -1,0 +1,250 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:loc="using:WinSU.App.Localization"
+             xmlns:nav="using:WinSU.App.Input"
+             xmlns:th="using:WinSU.App.Themes"
+             xmlns:ap="using:WinSU.Core.Appearance"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Common.ThemeEditorView"
+             x:DataType="vm:ThemeEditorViewModel">
+
+  <!--
+    Éditeur de thème (M14), au style des Réglages (étape 32, D-131) : titre en capsule ; à gauche, un tableau déroulant
+    (Nom, Base, Couleurs ; Retour referme la section ouverte) puis Enregistrer, Annuler, Supprimer ; à droite, l'aperçu
+    ou le sélecteur de couleur. Toute l'application montre le thème pendant l'édition. Le sélecteur (D-36) : carré de la
+    teinte avec un dégradé blanc (saturation, horizontal) et un dégradé noir (luminosité, vertical) par-dessus, barre des
+    teintes, code.
+  -->
+  <Grid RowDefinitions="Auto,*">
+    <Border Classes="pageTitle">
+      <TextBlock Text="{Binding Title}" />
+    </Border>
+
+    <Grid Grid.Row="1" Classes="sideSplit" ColumnDefinitions="1.08*,*" RowDefinitions="*,Auto" Margin="0,22,0,12">
+      <Border Classes="sidePanel">
+        <!--
+          Tout défile ensemble, boutons compris : la navigation en lignes suit la position des éléments, et un bouton
+          fixé sous la zone qui défile passait « avant » une pastille sortie du bas de la zone (retour de l'utilisateur, M14).
+        -->
+        <ScrollViewer x:Name="Scroller" Classes="foldScroller">
+          <StackPanel x:Name="Rows" Classes="foldList" nav:RowNavigation.IsEnabled="True"
+                      ctl:FoldSection.OpenKey="{Binding Fold.Open}" ctl:FoldSection.ToggleCommand="{Binding Fold.ToggleCommand}">
+            <!-- Nom du thème, et Renommer -->
+            <ctl:FoldSection x:Name="SectionName" Key="{x:Static vm:ThemeEditorSection.Name}" Header="{loc:Tr win_theme_section_name}">
+              <StackPanel Classes="foldRows">
+                <TextBlock Text="{Binding Draft.Name}" FontSize="22" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                <Button Classes="menu" Width="260" HorizontalAlignment="Left" FontSize="17" Padding="18,10"
+                        Content="{loc:Tr win_theme_rename}" Command="{Binding RenameCommand}" />
+              </StackPanel>
+            </ctl:FoldSection>
+
+            <!-- Base claire ou sombre -->
+            <ctl:FoldSection x:Name="SectionBase" Key="{x:Static vm:ThemeEditorSection.Base}" Header="{loc:Tr win_theme_base}">
+              <StackPanel Classes="foldRows">
+                <ListBox Classes="cards" ItemsSource="{Binding BaseOptions}" SelectedItem="{Binding SelectedBase}">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ThemeBaseChoice">
+                      <StackPanel Spacing="4">
+                        <TextBlock Text="{Binding Label}" FontSize="19" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </StackPanel>
+            </ctl:FoldSection>
+
+            <!-- Couleurs : monocouleur ou multicouleur, puis les pastilles (une en monocouleur, trois rangées en multicouleur) -->
+            <ctl:FoldSection x:Name="SectionColors" Key="{x:Static vm:ThemeEditorSection.Colors}" Header="{loc:Tr win_theme_mode}">
+              <StackPanel Classes="foldRows">
+                <ListBox Classes="cards" ItemsSource="{Binding ModeOptions}" SelectedItem="{Binding SelectedMode}">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ThemeModeChoice">
+                      <StackPanel Spacing="4">
+                        <TextBlock Text="{Binding Label}" FontSize="19" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+
+                <ItemsControl ItemsSource="{Binding Groups}">
+                  <!-- Les listes et les conteneurs des rangées et des pastilles rognent leur contenu : les équerres du focus
+                       d'une pastille en sortent (étape 29, bloc 4) -->
+                  <ItemsControl.Styles>
+                    <Style Selector="ContentPresenter">
+                      <Setter Property="ClipToBounds" Value="False" />
+                    </Style>
+                    <Style Selector="ItemsControl">
+                      <Setter Property="ClipToBounds" Value="False" />
+                    </Style>
+                    <Style Selector="ItemsPresenter">
+                      <Setter Property="ClipToBounds" Value="False" />
+                    </Style>
+                  </ItemsControl.Styles>
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Spacing="10" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ColorSlotGroup">
+                      <StackPanel Spacing="4">
+                        <TextBlock Text="{Binding Label}" FontSize="18" FontWeight="SemiBold" Margin="0,6,0,0" />
+                        <ItemsControl ItemsSource="{Binding Slots}">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ColorSlotViewModel">
+                              <Button Classes="chip swatch" Classes.editing="{Binding IsEditing}"
+                                      Command="{Binding $parent[UserControl].((vm:ThemeEditorViewModel)DataContext).EditColorCommand}"
+                                      CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                  <Ellipse Width="26" Height="26" Fill="{Binding Color, Converter={x:Static th:ThemeColorConverters.ToBrush}}"
+                                           Stroke="{DynamicResource WinSU.GlassBorderBrush}" StrokeThickness="1.5" />
+                                  <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+                                </StackPanel>
+                              </Button>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </ctl:FoldSection>
+
+            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+              <Button Classes="menu accent" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                      Content="{loc:Tr win_theme_save}" Command="{Binding SaveCommand}" />
+              <Button Classes="menu" MinWidth="200" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                      Content="{loc:Tr win_cancel}" Command="{Binding CancelCommand}" />
+              <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16" IsVisible="{Binding CanDelete}"
+                      Content="{loc:Tr win_theme_delete}" Command="{Binding DeleteCommand}" />
+            </WrapPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+
+      <!-- À droite (jusqu'au bord) : le sélecteur de couleur pendant un réglage, l'aperçu le reste du temps -->
+      <Border Classes="sideStage">
+        <ScrollViewer>
+        <Panel>
+          <!-- Sélecteur de couleur (quand une pastille est réglée) -->
+          <StackPanel Spacing="14" IsVisible="{Binding IsPicking}">
+            <TextBlock Text="{Binding EditingSlot.Label, FallbackValue=''}" Classes="section" />
+            <!-- Souris : clic ou glissé dans le carré, molette = teinte (code de la vue) -->
+            <Panel x:Name="Square" Width="{x:Static vm:ColorPickerViewModel.SquareWidth}" Height="{x:Static vm:ColorPickerViewModel.SquareHeight}"
+                   HorizontalAlignment="Left" Cursor="Hand"
+                   PointerPressed="OnSquarePressed" PointerMoved="OnSquareMoved" PointerReleased="OnPointerReleased"
+                   PointerWheelChanged="OnPickerWheel">
+              <Border CornerRadius="8" ClipToBounds="True" Background="{Binding Picker.HueColor, Converter={x:Static th:ThemeColorConverters.ToBrush}}">
+                <Panel>
+                  <Border>
+                    <Border.Background>
+                      <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                        <GradientStop Offset="0" Color="#FFFFFFFF" />
+                        <GradientStop Offset="1" Color="#00FFFFFF" />
+                      </LinearGradientBrush>
+                    </Border.Background>
+                  </Border>
+                  <Border>
+                    <Border.Background>
+                      <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+                        <GradientStop Offset="0" Color="#00000000" />
+                        <GradientStop Offset="1" Color="#FF000000" />
+                      </LinearGradientBrush>
+                    </Border.Background>
+                  </Border>
+                </Panel>
+              </Border>
+              <Canvas>
+                <Ellipse Width="14" Height="14" Stroke="White" StrokeThickness="2" IsHitTestVisible="False"
+                         Fill="{Binding Picker.Color, Converter={x:Static th:ThemeColorConverters.ToBrush}}"
+                         Canvas.Left="{Binding Picker.CursorX}" Canvas.Top="{Binding Picker.CursorY}" />
+              </Canvas>
+            </Panel>
+            <!-- Barre des teintes : zone de clic plus haute que la barre elle-même -->
+            <Panel x:Name="HueBar" Width="{x:Static vm:ColorPickerViewModel.SquareWidth}" Height="28" HorizontalAlignment="Left"
+                   Background="Transparent" Cursor="Hand"
+                   PointerPressed="OnHuePressed" PointerMoved="OnHueMoved" PointerReleased="OnPointerReleased"
+                   PointerWheelChanged="OnPickerWheel">
+              <Border CornerRadius="7" Height="18" VerticalAlignment="Center">
+                <Border.Background>
+                  <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                    <GradientStop Offset="0" Color="#FF0000" />
+                    <GradientStop Offset="0.1667" Color="#FFFF00" />
+                    <GradientStop Offset="0.3333" Color="#00FF00" />
+                    <GradientStop Offset="0.5" Color="#00FFFF" />
+                    <GradientStop Offset="0.6667" Color="#0000FF" />
+                    <GradientStop Offset="0.8333" Color="#FF00FF" />
+                    <GradientStop Offset="1" Color="#FF0000" />
+                  </LinearGradientBrush>
+                </Border.Background>
+              </Border>
+              <Canvas>
+                <Border Width="6" Height="24" Canvas.Top="2" Canvas.Left="{Binding Picker.HueX}" CornerRadius="3"
+                        BorderBrush="White" BorderThickness="2" IsHitTestVisible="False" />
+              </Canvas>
+            </Panel>
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Width="36" Height="36" CornerRadius="18" BorderBrush="{DynamicResource WinSU.GlassBorderBrush}" BorderThickness="1.5"
+                      Background="{Binding Picker.Color, Converter={x:Static th:ThemeColorConverters.ToBrush}}" />
+              <TextBlock Text="{Binding Picker.Hex}" FontFamily="Consolas" FontSize="22" VerticalAlignment="Center" />
+            </StackPanel>
+            <!-- Pour la souris ; à la manette et au clavier : Valider, Retour, Menu (non focusables : ils ne gênent pas la navigation) -->
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <Button Classes="menu accent" Focusable="False" FontSize="16" Padding="16,8" HorizontalAlignment="Left"
+                      Content="{loc:Tr win_hint_confirm}" Command="{Binding ConfirmColorCommand}" />
+              <Button Classes="menu" Focusable="False" FontSize="16" Padding="16,8" HorizontalAlignment="Left"
+                      Content="{loc:Tr win_cancel}" Command="{Binding CancelColorCommand}" />
+              <Button Classes="menu" Focusable="False" FontSize="16" Padding="16,8" HorizontalAlignment="Left"
+                      Content="{loc:Tr win_hint_color_code}" Command="{Binding TypeColorCodeCommand}" />
+            </StackPanel>
+            <TextBlock Text="{loc:Tr win_theme_picker_help}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <!-- Aperçu (le reste du temps) : toute l'application suit déjà le thème ; ici, les éléments qu'on ne voit pas partout -->
+          <StackPanel Spacing="14" IsVisible="{Binding !IsPicking}">
+            <TextBlock Text="{loc:Tr win_theme_preview}" Classes="section" />
+            <Border Classes="tab selected" HorizontalAlignment="Left">
+              <TextBlock Text="{loc:Tr win_theme_preview_tab}" />
+            </Border>
+            <TextBlock Text="{loc:Tr win_theme_preview_text}" FontSize="18" />
+            <TextBlock Text="{loc:Tr win_theme_preview_muted}" Classes="muted" FontSize="15" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" Spacing="16">
+              <!-- Tuile choisie (29.14) : équerres aux couleurs du thème et verre rempli -->
+              <Panel Width="96" Height="96">
+                <ctl:TileCursor Opacity="1" />
+                <ctl:TileGlass Fill="{DynamicResource WinSU.TileSelectedFillBrush}" />
+              </Panel>
+              <StackPanel Spacing="12" VerticalAlignment="Center">
+                <ToggleButton Classes="switch" IsChecked="True" Focusable="False" IsHitTestVisible="False" />
+                <TextBlock Text="{loc:Tr win_theme_preview_accent}" Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="17" FontWeight="SemiBold" />
+              </StackPanel>
+            </StackPanel>
+            <TextBlock Text="{loc:Tr win_theme_group_lava}" Classes="muted" FontSize="14" />
+            <ItemsControl ItemsSource="{Binding PreviewLava}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="10" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="ap:ThemeColor">
+                  <Ellipse Width="30" Height="30" Fill="{Binding Converter={x:Static th:ThemeColorConverters.ToBrush}}" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Panel>
+        </ScrollViewer>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

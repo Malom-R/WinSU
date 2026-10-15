@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>WinSU.Infrastructure</RootNamespace>
+    <!-- Requis par les P/Invoke générés ([LibraryImport]). -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WinSU.Infrastructure.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="NVorbis" />
+    <PackageReference Include="ppy.SDL3-CS" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WinSU.Core\WinSU.Core.csproj" />
+  </ItemGroup>
+
+</Project>

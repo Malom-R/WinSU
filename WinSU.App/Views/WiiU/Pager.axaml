@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.WiiU.Pager">
+  <!-- Flèches rondes ‹ › à mi-hauteur de la grille, points de pagination dessous (référence Wii U, D-56). Posé sur toute
+       la page, au-dessus de la grille : seuls ses boutons reçoivent la souris. Montrés seulement quand il y a plusieurs pages. -->
+  <Panel>
+    <Panel Margin="{x:Static ctl:PageGridMetrics.ArrowsMargin}">
+      <Button x:Name="PreviousButton" Classes="pageArrow" HorizontalAlignment="Left" Focusable="False" Click="OnPreviousClick">
+        <Path Data="{StaticResource WinSU.IconChevronLeft}" />
+      </Button>
+      <Button x:Name="NextButton" Classes="pageArrow" HorizontalAlignment="Right" Focusable="False" Click="OnNextClick">
+        <Path Data="{StaticResource WinSU.IconChevronRight}" />
+      </Button>
+    </Panel>
+    <StackPanel x:Name="Dots" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                Margin="{x:Static ctl:PageGridMetrics.DotsMargin}" IsHitTestVisible="False" />
+  </Panel>
+</UserControl>

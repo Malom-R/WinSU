@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <!-- Textes de WinSU (win_*), en anglais ; tous écrits pour WinSU (étape 34 : plus aucun texte d'iiSU). -->
+  <data name="win_action_back" xml:space="preserve"><value>Back</value></data>
+  <data name="win_action_confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="win_action_context_menu" xml:space="preserve"><value>Context menu</value></data>
+  <data name="win_action_down" xml:space="preserve"><value>Down</value></data>
+  <data name="win_action_left" xml:space="preserve"><value>Left</value></data>
+  <data name="win_action_page_next" xml:space="preserve"><value>Next tab</value></data>
+  <data name="win_action_page_previous" xml:space="preserve"><value>Previous tab</value></data>
+  <data name="win_action_right" xml:space="preserve"><value>Right</value></data>
+  <data name="win_action_start" xml:space="preserve"><value>Start (options)</value></data>
+  <data name="win_action_up" xml:space="preserve"><value>Up</value></data>
+  <data name="win_add_console" xml:space="preserve"><value>Add a console</value></data>
+  <data name="win_binding_axis" xml:space="preserve"><value>Axis {0} {1}</value></data>
+  <data name="win_binding_button" xml:space="preserve"><value>Button {0}</value></data>
+  <data name="win_binding_guide" xml:space="preserve"><value>Guide</value></data>
+  <data name="win_binding_hat" xml:space="preserve"><value>D-pad {0}</value></data>
+  <data name="win_binding_stick_click" xml:space="preserve"><value>click</value></data>
+  <data name="win_binding_touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="win_buttons_add" xml:space="preserve"><value>+ Add</value></data>
+  <data name="win_buttons_already_bound" xml:space="preserve"><value>Already set for “{0}”.</value></data>
+  <data name="win_buttons_cancelled" xml:space="preserve"><value>Cancelled.</value></data>
+  <data name="win_buttons_capture_button" xml:space="preserve"><value>Press a controller button for “{0}” (Escape to cancel).</value></data>
+  <data name="win_buttons_capture_key" xml:space="preserve"><value>Press a key for “{0}” (Escape to cancel).</value></data>
+  <data name="win_buttons_controller" xml:space="preserve"><value>Controller: {0}. Several buttons per action; a recognised controller's buttons are saved by their position.</value></data>
+  <data name="win_buttons_full" xml:space="preserve"><value>“{0}” already has {1} bindings: replace one, or remove one with Menu.</value></data>
+  <data name="win_buttons_keyboard_note" xml:space="preserve"><value>Keyboard keys, several per action. F11 stays reserved for full screen; Escape cancels a capture.</value></data>
+  <data name="win_buttons_last_button" xml:space="preserve"><value>“{0}” must keep at least one button.</value></data>
+  <data name="win_buttons_last_key" xml:space="preserve"><value>“{0}” must keep at least one key.</value></data>
+  <data name="win_buttons_no_controller" xml:space="preserve"><value>No controller connected: plug one in to add buttons.</value></data>
+  <data name="win_buttons_press" xml:space="preserve"><value>Press…</value></data>
+  <data name="win_buttons_reset" xml:space="preserve"><value>Restore</value></data>
+  <data name="win_buttons_reset_button" xml:space="preserve"><value>Restore defaults</value></data>
+  <data name="win_buttons_reset_controller_message" xml:space="preserve"><value>The controller goes back to the standard layout (D-pad and left stick to move, bottom button to confirm…).</value></data>
+  <data name="win_buttons_reset_done" xml:space="preserve"><value>Defaults restored.</value></data>
+  <data name="win_buttons_reset_keyboard_message" xml:space="preserve"><value>The keyboard keys go back to the defaults (arrows, Enter, Escape…).</value></data>
+  <data name="win_buttons_reset_title" xml:space="preserve"><value>Restore defaults?</value></data>
+  <data name="win_buttons_tab_controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="win_buttons_tab_keyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="win_buttons_timeout" xml:space="preserve"><value>Nothing was pressed: cancelled.</value></data>
+  <data name="win_buttons_title" xml:space="preserve"><value>Buttons</value></data>
+  <data name="win_buttons_used_by" xml:space="preserve"><value>Already used by “{0}”: remove it from that row first.</value></data>
+  <data name="win_cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="win_catalog_empty" xml:space="preserve"><value>Console catalog not found: reinstall WinSU.</value></data>
+  <data name="win_console_move_left" xml:space="preserve"><value>Move left</value></data>
+  <data name="win_console_move_right" xml:space="preserve"><value>Move right</value></data>
+  <data name="win_console_remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="win_console_remove_message" xml:space="preserve"><value>The console disappears from your library. No file is deleted from the disk.</value></data>
+  <data name="win_console_remove_message_games" xml:space="preserve"><value>The console and its {0} game(s) disappear from your library. No file is deleted from the disk.</value></data>
+  <data name="win_console_remove_title" xml:space="preserve"><value>Remove {0}?</value></data>
+  <data name="win_data_folder" xml:space="preserve"><value>Data folder: {0}</value></data>
+  <data name="win_entry_choose_hero" xml:space="preserve"><value>Choose a hero banner</value></data>
+  <data name="win_entry_choose_image" xml:space="preserve"><value>Choose an image</value></data>
+  <data name="win_entry_choose_logo" xml:space="preserve"><value>Choose a logo</value></data>
+  <data name="win_entry_remove_hero" xml:space="preserve"><value>Remove the hero banner</value></data>
+  <data name="win_entry_remove_image" xml:space="preserve"><value>Remove the image</value></data>
+  <data name="win_entry_remove_logo" xml:space="preserve"><value>Remove the logo</value></data>
+  <data name="win_entry_sgdb_hero" xml:space="preserve"><value>SteamGridDB hero banner</value></data>
+  <data name="win_entry_sgdb_image" xml:space="preserve"><value>SteamGridDB image</value></data>
+  <data name="win_entry_sgdb_logo" xml:space="preserve"><value>SteamGridDB logo</value></data>
+  <data name="win_font_credit" xml:space="preserve"><value>by {0} · SIL OFL 1.1 license</value></data>
+  <data name="win_font_label" xml:space="preserve"><value>Font</value></data>
+  <data name="win_game_remove_message" xml:space="preserve"><value>The game disappears from your library. The shortcut or program stays on the disk.</value></data>
+  <data name="win_game_rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="win_game_resume" xml:space="preserve"><value>Resume WinSU</value></data>
+  <data name="win_game_running_message" xml:space="preserve"><value>WinSU resumes when the game closes. If the game left a program open, Resume WinSU stops following it (the game stays open).</value></data>
+  <data name="win_game_running_title" xml:space="preserve"><value>Game running</value></data>
+  <data name="win_games_add" xml:space="preserve"><value>Add games</value></data>
+  <data name="win_games_add_hint" xml:space="preserve"><value>.lnk shortcut or .exe</value></data>
+  <data name="win_games_already_message" xml:space="preserve"><value>These files are already in this console's library.</value></data>
+  <data name="win_games_already_title" xml:space="preserve"><value>Already there</value></data>
+  <data name="win_games_count" xml:space="preserve"><value>{0} games</value></data>
+  <data name="win_games_count_one" xml:space="preserve"><value>{0} game</value></data>
+  <data name="win_games_count_zero" xml:space="preserve"><value>No games</value></data>
+  <data name="win_games_empty" xml:space="preserve"><value>One game = one shortcut: create it with your emulator (e.g. Dolphin, “Create desktop shortcut”) or by hand with the right arguments, then add it here. A program (.exe) also works.</value></data>
+  <data name="win_games_pick_filter" xml:space="preserve"><value>Shortcuts, programs and scripts</value></data>
+  <data name="win_games_pick_filter_all" xml:space="preserve"><value>All files</value></data>
+  <data name="win_games_pick_title" xml:space="preserve"><value>Add games (shortcuts or programs)</value></data>
+  <data name="win_hero_pick_title" xml:space="preserve"><value>Choose a hero banner for {0} (wide image, 1920 × 620 recommended)</value></data>
+  <data name="win_hint_add" xml:space="preserve"><value>Add</value></data>
+  <data name="win_hint_back" xml:space="preserve"><value>Back</value></data>
+  <data name="win_hint_buttons_tabs" xml:space="preserve"><value>Controller / Keyboard</value></data>
+  <data name="win_hint_choose" xml:space="preserve"><value>Choose</value></data>
+  <data name="win_hint_close" xml:space="preserve"><value>Close</value></data>
+  <data name="win_hint_color_code" xml:space="preserve"><value>Code</value></data>
+  <data name="win_hint_color_square" xml:space="preserve"><value>Saturation, brightness</value></data>
+  <data name="win_hint_confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="win_hint_hue" xml:space="preserve"><value>Hue</value></data>
+  <data name="win_hint_launch" xml:space="preserve"><value>Launch</value></data>
+  <data name="win_hint_makers" xml:space="preserve"><value>Makers</value></data>
+  <data name="win_hint_move" xml:space="preserve"><value>Move</value></data>
+  <data name="win_hint_open" xml:space="preserve"><value>Open</value></data>
+  <data name="win_hint_options" xml:space="preserve"><value>Options</value></data>
+  <data name="win_hint_power" xml:space="preserve"><value>Power</value></data>
+  <data name="win_hint_remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="win_hint_replace" xml:space="preserve"><value>Replace</value></data>
+  <data name="win_hint_tabs" xml:space="preserve"><value>Tabs</value></data>
+  <data name="win_home_no_consoles" xml:space="preserve"><value>You haven't added a console yet.</value></data>
+  <data name="win_home_quit" xml:space="preserve"><value>Quit WinSU</value></data>
+  <data name="win_home_recent_empty" xml:space="preserve"><value>Nothing launched yet. Add a game to a console, then launch it.</value></data>
+  <data name="win_home_your_consoles" xml:space="preserve"><value>Your consoles</value></data>
+  <data name="win_icons_credit" xml:space="preserve"><value>Console icons: RetroArch « Automatic » (baxysquare) and « Monochrome » themes (libretro), CC BY 4.0, placed on WinSU's own tiles and frames. Console names and shapes are trademarks of their owners.</value></data>
+  <data name="win_image_copy_failed" xml:space="preserve"><value>The image could not be copied into WinSU's media folder: {0}</value></data>
+  <data name="win_image_invalid_message" xml:space="preserve"><value>{0} could not be read as an image. Choose a PNG, JPEG, WebP, GIF, BMP or ICO file.</value></data>
+  <data name="win_image_invalid_title" xml:space="preserve"><value>Image not usable</value></data>
+  <data name="win_image_pick_filter" xml:space="preserve"><value>Images</value></data>
+  <data name="win_image_pick_title" xml:space="preserve"><value>Choose an image for {0}</value></data>
+  <data name="win_kb_caps" xml:space="preserve"><value>Caps Lock</value></data>
+  <data name="win_kb_numlock" xml:space="preserve"><value>Num Lock</value></data>
+  <data name="win_kb_print" xml:space="preserve"><value>PrtSc</value></data>
+  <data name="win_kb_scroll" xml:space="preserve"><value>ScrLk</value></data>
+  <data name="win_kb_shift" xml:space="preserve"><value>Shift</value></data>
+  <data name="win_key_arrows" xml:space="preserve"><value>Arrows</value></data>
+  <data name="win_key_backspace" xml:space="preserve"><value>Backspace</value></data>
+  <data name="win_key_delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="win_key_end" xml:space="preserve"><value>End</value></data>
+  <data name="win_key_enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="win_key_escape" xml:space="preserve"><value>Esc</value></data>
+  <data name="win_key_home" xml:space="preserve"><value>Home</value></data>
+  <data name="win_key_insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="win_key_menu" xml:space="preserve"><value>Menu</value></data>
+  <data name="win_key_numpad" xml:space="preserve"><value>Numpad {0}</value></data>
+  <data name="win_key_page_down" xml:space="preserve"><value>PgDn</value></data>
+  <data name="win_key_page_up" xml:space="preserve"><value>PgUp</value></data>
+  <data name="win_key_pages" xml:space="preserve"><value>PgUp PgDn</value></data>
+  <data name="win_key_space" xml:space="preserve"><value>Space</value></data>
+  <data name="win_key_tab" xml:space="preserve"><value>Tab</value></data>
+  <data name="win_launch_busy_message" xml:space="preserve"><value>Close it before launching another one.</value></data>
+  <data name="win_launch_busy_title" xml:space="preserve"><value>A game is already running</value></data>
+  <data name="win_launch_failed_title" xml:space="preserve"><value>Cannot launch {0}</value></data>
+  <data name="win_launch_keep" xml:space="preserve"><value>Keep</value></data>
+  <data name="win_launch_missing_message" xml:space="preserve"><value>This file no longer exists:
+{0}
+
+Do you want to remove it from the library?</value></data>
+  <data name="win_launch_missing_title" xml:space="preserve"><value>{0} not found</value></data>
+  <data name="win_launch_target_missing_message" xml:space="preserve"><value>The shortcut exists, but the program it points to is missing:
+{0}
+
+Do you want to remove it from the library?</value></data>
+  <data name="win_launch_unreadable" xml:space="preserve"><value>The shortcut cannot be read:
+{0}</value></data>
+  <data name="win_logo_pick_title" xml:space="preserve"><value>Choose a logo for {0} (transparent background, PNG recommended)</value></data>
+  <data name="win_menu_style_standard" xml:space="preserve"><value>Standard</value></data>
+  <data name="win_menu_style_standard_description" xml:space="preserve"><value>Tabs on the left, recent games on a diagonal.</value></data>
+  <data name="win_menu_style_switch_description" xml:space="preserve"><value>A row of recent games and round buttons, like the Switch.</value></data>
+  <data name="win_menu_style_wiiu_description" xml:space="preserve"><value>Pages of tiles and icons at the bottom, like the Wii U.</value></data>
+  <data name="win_ok" xml:space="preserve"><value>OK</value></data>
+  <data name="win_pad_none" xml:space="preserve"><value>No controller connected: only the actions below light up.</value></data>
+  <data name="win_pad_none_short" xml:space="preserve"><value>No controller connected.</value></data>
+  <data name="win_pad_unrecognised" xml:space="preserve"><value>Controller not recognised: only the actions below light up.</value></data>
+  <data name="win_pad_unrecognised_short" xml:space="preserve"><value>Controller not recognised.</value></data>
+  <data name="win_percent" xml:space="preserve"><value>{0} %</value></data>
+  <data name="win_picker_added" xml:space="preserve"><value>Added</value></data>
+  <data name="win_picker_summary" xml:space="preserve"><value>{0} consoles — {1} in your library</value></data>
+  <data name="win_playtime_hours" xml:space="preserve"><value>{0} h {1:00}</value></data>
+  <data name="win_playtime_less_minute" xml:space="preserve"><value>Less than a minute</value></data>
+  <data name="win_playtime_minutes" xml:space="preserve"><value>{0} min</value></data>
+  <data name="win_playtime_never" xml:space="preserve"><value>Never played</value></data>
+  <data name="win_power_failed_title" xml:space="preserve"><value>Windows refused</value></data>
+  <data name="win_power_restart" xml:space="preserve"><value>Restart</value></data>
+  <data name="win_power_restart_message" xml:space="preserve"><value>Windows restarts right away. Save your work in other programs first.</value></data>
+  <data name="win_power_restart_title" xml:space="preserve"><value>Restart the PC?</value></data>
+  <data name="win_power_shutdown" xml:space="preserve"><value>Shut down</value></data>
+  <data name="win_power_shutdown_message" xml:space="preserve"><value>Windows shuts down right away. Save your work in other programs first.</value></data>
+  <data name="win_power_shutdown_title" xml:space="preserve"><value>Shut down the PC?</value></data>
+  <data name="win_power_sleep" xml:space="preserve"><value>Sleep</value></data>
+  <data name="win_power_title" xml:space="preserve"><value>Power</value></data>
+  <data name="win_settings_about" xml:space="preserve"><value>WinSU {0}</value></data>
+  <data name="win_settings_animated_background" xml:space="preserve"><value>Animated background</value></data>
+  <data name="win_settings_audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="win_settings_button_style" xml:space="preserve"><value>Button style</value></data>
+  <data name="win_settings_buttons" xml:space="preserve"><value>Buttons and keys</value></data>
+  <data name="win_settings_colored_glyphs" xml:space="preserve"><value>Colored button glyphs</value></data>
+  <data name="win_settings_controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="win_settings_controller_custom" xml:space="preserve"><value>Custom mapping — {0}</value></data>
+  <data name="win_settings_controller_default" xml:space="preserve"><value>Standard layout</value></data>
+  <data name="win_settings_display" xml:space="preserve"><value>Display</value></data>
+  <data name="win_settings_keyboard_custom" xml:space="preserve"><value>Keyboard: custom keys</value></data>
+  <data name="win_settings_keyboard_default" xml:space="preserve"><value>Keyboard: default keys</value></data>
+  <data name="win_settings_language" xml:space="preserve"><value>Language</value></data>
+  <data name="win_settings_language_restart" xml:space="preserve"><value>Takes effect the next time WinSU starts.</value></data>
+  <data name="win_settings_menu_style" xml:space="preserve"><value>Menu style</value></data>
+  <data name="win_settings_power_description" xml:space="preserve"><value>Also available anywhere with the Start button (Home key). Restart and Shut down ask for confirmation.</value></data>
+  <data name="win_settings_rest_behind_game" xml:space="preserve"><value>Sleep behind the game instead of minimizing WinSU</value></data>
+  <data name="win_settings_rest_behind_game_description" xml:space="preserve"><value>While a game is running, WinSU stays open behind it, paused, at low priority, with its unused memory given back; it is back as soon as the game closes.</value></data>
+  <data name="win_settings_sgdb" xml:space="preserve"><value>SteamGridDB</value></data>
+  <data name="win_settings_show_borders" xml:space="preserve"><value>Console frame on game tiles</value></data>
+  <data name="win_settings_start_fullscreen" xml:space="preserve"><value>Start in full screen</value></data>
+  <data name="win_settings_start_fullscreen_description" xml:space="preserve"><value>Applies at next launch. F11 switches at any time.</value></data>
+  <data name="win_settings_system" xml:space="preserve"><value>System</value></data>
+  <data name="win_settings_tile_sheen" xml:space="preserve"><value>Light sweep on the selected tile</value></data>
+  <data name="win_settings_tile_sheen_speed" xml:space="preserve"><value>Sweep speed</value></data>
+  <data name="win_settings_ui_sounds" xml:space="preserve"><value>Interface sounds</value></data>
+  <data name="win_settings_ui_volume" xml:space="preserve"><value>Sounds volume</value></data>
+  <data name="win_sgdb_by" xml:space="preserve"><value>by {0} · {1} × {2}</value></data>
+  <data name="win_sgdb_change_key" xml:space="preserve"><value>Change the key</value></data>
+  <data name="win_sgdb_checking" xml:space="preserve"><value>Checking the key…</value></data>
+  <data name="win_sgdb_choose_game" xml:space="preserve"><value>Several games match “{0}”: choose yours.</value></data>
+  <data name="win_sgdb_description" xml:space="preserve"><value>Search for images and hero banners on SteamGridDB from the Options menu of a game. You need your own free API key: SteamGridDB account → Preferences → API.</value></data>
+  <data name="win_sgdb_download_failed" xml:space="preserve"><value>Image not downloaded</value></data>
+  <data name="win_sgdb_downloading" xml:space="preserve"><value>Downloading the image…</value></data>
+  <data name="win_sgdb_edit_search" xml:space="preserve"><value>Change the search</value></data>
+  <data name="win_sgdb_enter_key" xml:space="preserve"><value>Enter the key</value></data>
+  <data name="win_sgdb_error_busy" xml:space="preserve"><value>Too many requests to SteamGridDB in a row. Try again in a moment.</value></data>
+  <data name="win_sgdb_error_failed" xml:space="preserve"><value>SteamGridDB gave an unexpected answer. Try again later.</value></data>
+  <data name="win_sgdb_error_key" xml:space="preserve"><value>SteamGridDB refuses the key. Check it in Settings → SteamGridDB.</value></data>
+  <data name="win_sgdb_error_not_found" xml:space="preserve"><value>This game is no longer on SteamGridDB.</value></data>
+  <data name="win_sgdb_error_offline" xml:space="preserve"><value>SteamGridDB cannot be reached. Check the connection, then try again.</value></data>
+  <data name="win_sgdb_images" xml:space="preserve"><value>{0} images for {1}. Confirm to download one and use it.</value></data>
+  <data name="win_sgdb_key_ok_message" xml:space="preserve"><value>Image search is now in the Options menu of your games.</value></data>
+  <data name="win_sgdb_key_ok_title" xml:space="preserve"><value>Key saved</value></data>
+  <data name="win_sgdb_key_prompt" xml:space="preserve"><value>SteamGridDB API key</value></data>
+  <data name="win_sgdb_key_refused_message" xml:space="preserve"><value>SteamGridDB does not recognise this key. Copy it again from your account (Preferences → API).</value></data>
+  <data name="win_sgdb_key_refused_title" xml:space="preserve"><value>Key refused</value></data>
+  <data name="win_sgdb_key_saved" xml:space="preserve"><value>Key saved (…{0}).</value></data>
+  <data name="win_sgdb_key_unchecked_message" xml:space="preserve"><value>SteamGridDB cannot be reached right now. The key will be checked at the first search.</value></data>
+  <data name="win_sgdb_key_unchecked_title" xml:space="preserve"><value>Key saved without checking</value></data>
+  <data name="win_sgdb_loading_images" xml:space="preserve"><value>Images of {0}…</value></data>
+  <data name="win_sgdb_no_game" xml:space="preserve"><value>No game “{0}” on SteamGridDB. Try another search.</value></data>
+  <data name="win_sgdb_no_heroes" xml:space="preserve"><value>SteamGridDB has no hero banner for {0}.</value></data>
+  <data name="win_sgdb_no_images" xml:space="preserve"><value>SteamGridDB has no image of this shape for {0}.</value></data>
+  <data name="win_sgdb_no_key" xml:space="preserve"><value>No key: image search is not offered.</value></data>
+  <data name="win_sgdb_no_logos" xml:space="preserve"><value>SteamGridDB has no logo for {0}.</value></data>
+  <data name="win_sgdb_open_page" xml:space="preserve"><value>Open the keys page</value></data>
+  <data name="win_sgdb_other_game" xml:space="preserve"><value>Another game</value></data>
+  <data name="win_sgdb_remove_key" xml:space="preserve"><value>Remove the key</value></data>
+  <data name="win_sgdb_remove_message" xml:space="preserve"><value>Image search will no longer be offered.</value></data>
+  <data name="win_sgdb_remove_title" xml:space="preserve"><value>Remove the SteamGridDB key?</value></data>
+  <data name="win_sgdb_retry" xml:space="preserve"><value>Try again</value></data>
+  <data name="win_sgdb_searching" xml:space="preserve"><value>Searching SteamGridDB for “{0}”…</value></data>
+  <data name="win_sgdb_size" xml:space="preserve"><value>{0} × {1}</value></data>
+  <data name="win_sgdb_title_hero" xml:space="preserve"><value>Hero Banner Search</value></data>
+  <data name="win_sgdb_title_image" xml:space="preserve"><value>Image Search</value></data>
+  <data name="win_sgdb_title_logo" xml:space="preserve"><value>Logo Search</value></data>
+  <data name="win_sgdb_verified" xml:space="preserve"><value>verified</value></data>
+  <data name="win_sounds_credit" xml:space="preserve"><value>Interface sounds: « Interface Sounds » by Kenney (kenney.nl), CC0 (public domain).</value></data>
+  <data name="win_tab_games" xml:space="preserve"><value>Games</value></data>
+  <data name="win_tab_home" xml:space="preserve"><value>Home</value></data>
+  <data name="win_tab_settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="win_theme_accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="win_theme_background" xml:space="preserve"><value>Background</value></data>
+  <data name="win_theme_base" xml:space="preserve"><value>Base</value></data>
+  <data name="win_theme_card_mono" xml:space="preserve"><value>{0} · single color</value></data>
+  <data name="win_theme_card_multi" xml:space="preserve"><value>{0} · multicolor</value></data>
+  <data name="win_theme_code_invalid" xml:space="preserve"><value>“{0}” is not a color code (for example #9D8CF5).</value></data>
+  <data name="win_theme_code_title" xml:space="preserve"><value>Color code</value></data>
+  <data name="win_theme_color" xml:space="preserve"><value>Color</value></data>
+  <data name="win_theme_create" xml:space="preserve"><value>Create a theme</value></data>
+  <data name="win_theme_custom_current" xml:space="preserve"><value>Saved theme</value></data>
+  <data name="win_theme_custom_current_description" xml:space="preserve"><value>Your current theme</value></data>
+  <data name="win_theme_dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="win_theme_dark_description" xml:space="preserve"><value>Dark colors</value></data>
+  <data name="win_theme_default_name" xml:space="preserve"><value>Theme {0}</value></data>
+  <data name="win_theme_delete" xml:space="preserve"><value>Delete theme</value></data>
+  <data name="win_theme_delete_message" xml:space="preserve"><value>“{0}” will be deleted.</value></data>
+  <data name="win_theme_delete_title" xml:space="preserve"><value>Delete this theme?</value></data>
+  <data name="win_theme_discard" xml:space="preserve"><value>Discard</value></data>
+  <data name="win_theme_discard_message" xml:space="preserve"><value>Changes to “{0}” will not be saved.</value></data>
+  <data name="win_theme_discard_title" xml:space="preserve"><value>Discard changes?</value></data>
+  <data name="win_theme_edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="win_theme_edit_title" xml:space="preserve"><value>Edit {0}</value></data>
+  <data name="win_theme_glass" xml:space="preserve"><value>Glass</value></data>
+  <data name="win_theme_group_gradient" xml:space="preserve"><value>Gradient</value></data>
+  <data name="win_theme_group_lava" xml:space="preserve"><value>Lava lamp</value></data>
+  <data name="win_theme_group_surfaces" xml:space="preserve"><value>Background, glass and accent</value></data>
+  <data name="win_theme_keep_editing" xml:space="preserve"><value>Keep editing</value></data>
+  <data name="win_theme_light" xml:space="preserve"><value>Light</value></data>
+  <data name="win_theme_light_description" xml:space="preserve"><value>Light colors</value></data>
+  <data name="win_theme_mode" xml:space="preserve"><value>Colors</value></data>
+  <data name="win_theme_mono" xml:space="preserve"><value>Single color</value></data>
+  <data name="win_theme_mono_description" xml:space="preserve"><value>Everything comes from one color</value></data>
+  <data name="win_theme_multi" xml:space="preserve"><value>Multicolor</value></data>
+  <data name="win_theme_multi_description" xml:space="preserve"><value>Choose each color</value></data>
+  <data name="win_theme_name_prompt" xml:space="preserve"><value>Theme name</value></data>
+  <data name="win_theme_new_title" xml:space="preserve"><value>New theme</value></data>
+  <data name="win_theme_picker_help" xml:space="preserve"><value>Directions: saturation and brightness. Previous / next tab: hue. Menu: type the code. Confirm keeps the color, Back restores it. With the mouse: click or drag in the square and on the bar, wheel for the hue.</value></data>
+  <data name="win_theme_preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="win_theme_preview_accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="win_theme_preview_muted" xml:space="preserve"><value>Secondary text: always readable, whatever the colors.</value></data>
+  <data name="win_theme_preview_tab" xml:space="preserve"><value>Selected tab</value></data>
+  <data name="win_theme_preview_text" xml:space="preserve"><value>Main text</value></data>
+  <data name="win_theme_prompt" xml:space="preserve"><value>Choose how WinSU looks</value></data>
+  <data name="win_theme_rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="win_theme_save" xml:space="preserve"><value>Save</value></data>
+  <data name="win_theme_save_failed_message" xml:space="preserve"><value>The theme could not be saved. Check the WinSU data folder and try again.</value></data>
+  <data name="win_theme_save_failed_title" xml:space="preserve"><value>Theme not saved</value></data>
+  <data name="win_theme_section_name" xml:space="preserve"><value>Name</value></data>
+  <data name="win_theme_system" xml:space="preserve"><value>System</value></data>
+  <data name="win_theme_system_description" xml:space="preserve"><value>Follows Windows</value></data>
+  <data name="win_theme_title" xml:space="preserve"><value>Theme</value></data>
+  <data name="win_wizard_continue" xml:space="preserve"><value>Continue</value></data>
+  <data name="win_wizard_controller" xml:space="preserve"><value>Controller: {0}</value></data>
+  <data name="win_wizard_controllers_list" xml:space="preserve"><value>Detected: {0}</value></data>
+  <data name="win_wizard_controllers_none" xml:space="preserve"><value>No controller detected yet.</value></data>
+  <data name="win_wizard_done_body" xml:space="preserve"><value>You can change these choices later in Settings.</value></data>
+  <data name="win_wizard_done_title" xml:space="preserve"><value>All set!</value></data>
+  <data name="win_wizard_input_unavailable" xml:space="preserve"><value>Controller support could not start (see the logs). The keyboard still works.</value></data>
+  <data name="win_wizard_mapping_duplicate" xml:space="preserve"><value>Already used for “{0}”. Press another one.</value></data>
+  <data name="win_wizard_mapping_progress" xml:space="preserve"><value>{0} / {1}</value></data>
+  <data name="win_wizard_mapping_prompt" xml:space="preserve"><value>Press the button for:</value></data>
+  <data name="win_wizard_mapping_skip_hint" xml:space="preserve"><value>Keyboard — Esc: use the standard controller layout instead</value></data>
+  <data name="win_wizard_standard_applied" xml:space="preserve"><value>Standard layout applied.</value></data>
+  <data name="win_wizard_standard_layout" xml:space="preserve"><value>Standard layout</value></data>
+  <data name="win_wizard_start" xml:space="preserve"><value>Start</value></data>
+  <data name="win_wizard_test_body" xml:space="preserve"><value>Press each button: it lights up on the controller and in the actions below. Right: go to the buttons.</value></data>
+  <data name="win_wizard_test_restart" xml:space="preserve"><value>Map again</value></data>
+  <data name="win_wizard_test_title" xml:space="preserve"><value>Try it out</value></data>
+  <data name="win_wizard_test_validate" xml:space="preserve"><value>Looks good</value></data>
+  <data name="win_wizard_title" xml:space="preserve"><value>Welcome to WinSU</value></data>
+  <data name="win_wizard_welcome_keyboard" xml:space="preserve"><value>No controller? Press Enter to continue with the keyboard.</value></data>
+  <data name="win_wizard_welcome_prompt" xml:space="preserve"><value>Press any button on your controller to begin.</value></data>
+</root>

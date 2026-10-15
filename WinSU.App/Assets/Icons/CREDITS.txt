@@ -1,0 +1,47 @@
+Icônes des consoles de WinSU — Console icons of WinSU
+=====================================================
+
+Source : assets de RetroArch (libretro), https://github.com/libretro/retroarch-assets :
+         - tuiles des consoles : thème « Automatic » (baxysquare, https://github.com/baxysquare/baxy-retroarch-themes),
+           fichiers xmb/automatic/png/*.png (256 × 256, traits blancs) → Icons/<id>.png ;
+         - pastilles des cadres : thème « Monochrome » (manettes et portables), fichiers xmb/monochrome/png/*.png
+           (256 × 256, silhouettes blanches) → Icons/Pads/<id>.png.
+Licence : Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/
+Auteurs : baxysquare (Automatic) et les contributeurs de libretro/retroarch-assets.
+
+Modifications : fichiers renommés d'après l'identifiant de la console dans WinSU ; WinSU les pose, réduites, sur des tuiles
+et des cadres qu'il dessine lui-même (couleurs propres à chaque console). Les icônes elles-mêmes ne sont pas retouchées.
+Changes: files renamed after the console id used by WinSU; WinSU draws them, scaled down, on its own tiles and frames.
+
+Les noms et les formes des consoles sont des marques de leurs fabricants (Nintendo, Sega, Sony, Microsoft) ; WinSU n'est
+lié à aucun d'eux. Console names and shapes are trademarks of their owners; WinSU is not affiliated with them.
+
+Correspondance — Mapping (WinSU → RetroArch, thème Automatic)
+nes.png        Nintendo - Nintendo Entertainment System.png
+snes.png       Nintendo - Super Nintendo Entertainment System.png
+n64.png        Nintendo - Nintendo 64.png
+gc.png         Nintendo - GameCube.png
+wii.png        Nintendo - Wii.png
+wiiu.png       Nintendo - Wii U.png
+switch.png     Nintendo - Switch.png
+gb.png         Nintendo - Game Boy.png
+gbc.png        Nintendo - Game Boy Color.png
+gba.png        Nintendo - Game Boy Advance.png
+nds.png        Nintendo - Nintendo DS.png
+n3ds.png       Nintendo - Nintendo 3DS.png
+megadrive.png  Sega - Mega Drive - Genesis.png
+sega32x.png    Sega - 32X.png
+saturn.png     Sega - Saturn.png
+dreamcast.png  Sega - Dreamcast.png
+gamegear.png   Sega - Game Gear.png
+psx.png        Sony - PlayStation.png
+ps2.png        Sony - PlayStation 2.png
+ps3.png        Sony - Playstation 3.png
+psp.png        Sony - PlayStation Portable.png
+psvita.png     Sony - PlayStation Vita.png
+xbox.png       Microsoft - Xbox.png
+xbox360.png    Microsoft - Xbox 360.png
+windows.png    DOS.png
+
+Correspondance — Mapping (WinSU → RetroArch, thème Monochrome, Icons/Pads/)
+Mêmes noms de fichiers que ci-dessus, sauf : ps3.png = Sony - PlayStation 3.png ; windows.png = IBM - PC and Compatibles.png.

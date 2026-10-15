@@ -1,0 +1,43 @@
+<wu:WiiUGridPage xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:wu="using:WinSU.App.Views.WiiU"
+                 xmlns:sh="using:WinSU.App.ViewModels.Shell"
+                 xmlns:ctl="using:WinSU.App.Controls"
+                 xmlns:loc="using:WinSU.App.Localization"
+                 x:Class="WinSU.App.Views.WiiU.HomeTabView"
+                 x:DataType="sh:HomeTabViewModel">
+  <!-- Accueil du style Wii U (M16) : les jeux et applications récents seulement (D-61), en pages de 5 × 3 ; le logo,
+       l'heure et les icônes du bas sont dans l'écran principal (Views/WiiU/HomeShellView). -->
+  <Panel>
+    <!-- banner_top (E8, D-58) : tout l'écran, derrière la grille, à 40 % (30 % avant l'étape 26) ; l'image le remplit,
+         agrandie depuis son centre (les côtés sont coupés, étape 28) ; bannière de l'entrée récente choisie, effacée quand
+         le focus quitte la grille (D-26) -->
+    <Border x:Name="banner_top" ClipToBounds="True" Opacity="0.4" IsHitTestVisible="False">
+      <ctl:HeroBanner Source="{Binding Hero}" />
+    </Border>
+
+    <ctl:PageSlots x:Name="Slots" Margin="{x:Static ctl:PageGridMetrics.GridMargin}" />
+    <ListBox x:Name="RecentList" Classes="tiles wiiuGrid" ItemsSource="{Binding Recent}" SelectedItem="{Binding SelectedRecent}"
+             Margin="{x:Static ctl:PageGridMetrics.GridMargin}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:PagedGridPanel />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="sh:GameTileViewModel">
+          <Viewbox Stretch="Uniform" ClipToBounds="False" wu:FocusName.Text="{Binding Name}">
+            <ctl:GameTile />
+          </Viewbox>
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <!-- Rien de lancé encore : les cadres restent vides, le message est posé dessus -->
+    <Border Classes="glass" IsVisible="{Binding HasNoRecent}" Padding="24,14" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Text="{loc:Tr win_home_recent_empty}" Classes="muted" FontSize="17" TextWrapping="Wrap" MaxWidth="520" />
+    </Border>
+
+    <wu:Pager x:Name="Pager" />
+  </Panel>
+</wu:WiiUGridPage>

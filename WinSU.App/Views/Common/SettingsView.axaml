@@ -1,0 +1,251 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:loc="using:WinSU.App.Localization"
+             xmlns:nav="using:WinSU.App.Input"
+             xmlns:th="using:WinSU.App.Themes"
+             xmlns:ap="using:WinSU.Core.Appearance"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Common.SettingsView"
+             x:DataType="vm:SettingsViewModel"
+             ClipToBounds="False">
+
+  <!--
+    Réglages en « tableau déroulant » (étape 32, maquette Sprite-0005, D-128), la même vue pour les trois styles : une
+    capsule par section ; Confirmer ouvre une section (l'autre se ferme), Retour la referme. La place suit le style
+    (Standard : à droite des onglets ; Switch et Wii U : Switch.axaml, WiiU.axaml). Parcours en lignes : Haut et Bas ne
+    sautent aucun réglage ; curseurs : Gauche et Droite changent la valeur. Ce qui passe sous la barre d'aide est atténué
+    (Controls/Covers : titres et lignes). Toute nouvelle option suit ce modèle (demande de l'utilisateur).
+  -->
+  <!-- La zone qui défile rogne ce qui la dépasse : elle s'étend à gauche de la portée des équerres du focus, et le contenu
+       s'en écarte d'autant (StackPanel.foldList) : rien ne bouge. La vue (un UserControl) ne rogne pas (29.15). Elle va
+       jusqu'en haut de l'écran (étape 34, comme « Ajouter une console ») : la liste commence sous la ligne de l'en-tête du
+       style (Border.settingsTop, Controls/HeaderRoom) et ce qui passe au-dessus est à 10 % (Controls/Covers). -->
+  <Panel>
+  <ScrollViewer x:Name="Scroller" Classes="foldScroller settingsScroller">
+    <StackPanel x:Name="Sections" Classes="foldList" nav:RowNavigation.IsEnabled="True" ctl:HeaderRoom.Header="{Binding #TopCover}"
+                ctl:FoldSection.OpenKey="{Binding Fold.Open}" ctl:FoldSection.ToggleCommand="{Binding Fold.ToggleCommand}">
+
+      <!-- Style du menu (M15, D-49) : Standard, Switch, Wii U ; comme toutes les cartes, Confirmer choisit (D-78) et le choix
+           s'applique tout de suite (la page est reconstruite avec les vues du style, le focus revient ici) -->
+      <ctl:FoldSection x:Name="SectionMenuStyle" Key="{x:Static vm:SettingsSection.MenuStyle}" Header="{loc:Tr win_settings_menu_style}">
+        <StackPanel Classes="foldRows">
+          <ListBox x:Name="MenuStyleList" Classes="cards"
+                   ItemsSource="{Binding MenuStyleOptions}"
+                   SelectedItem="{Binding SelectedMenuStyle}">
+            <ListBox.Styles>
+              <!-- cartes plus larges : chaque style a une phrase de description -->
+              <Style Selector="ListBoxItem">
+                <Setter Property="Width" Value="320" />
+              </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:MenuStyleOption">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="{Binding Label}" FontSize="20" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Thème : thèmes, éditeur, cadre, fond animé, balayage ; et la police (étape 32, D-129) -->
+      <ctl:FoldSection x:Name="SectionTheme" Key="{x:Static vm:SettingsSection.Theme}" Header="{loc:Tr win_theme_title}">
+        <StackPanel Classes="foldRows">
+          <!-- Système, Clair, Sombre, puis les thèmes enregistrés (M14) -->
+          <ListBox x:Name="ThemeList" Classes="cards"
+                   ItemsSource="{Binding ThemeOptions}"
+                   SelectedItem="{Binding SelectedTheme}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:ThemeOption">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="{Binding Label}" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                  <!-- Pastilles puis description, qui passe à la ligne plutôt que de déborder (DF-12) -->
+                  <DockPanel>
+                    <ItemsControl DockPanel.Dock="Left" Margin="0,0,8,0" ItemsSource="{Binding Swatches}" IsVisible="{Binding IsCustom}" VerticalAlignment="Center">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <StackPanel Orientation="Horizontal" Spacing="3" />
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="ap:ThemeColor">
+                          <Ellipse Width="12" Height="12" Fill="{Binding Converter={x:Static th:ThemeColorConverters.ToBrush}}" />
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+                  </DockPanel>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <!-- Éditeur de thèmes (M14) : Menu sur un thème enregistré = Modifier / Supprimer -->
+          <Button x:Name="CreateThemeButton" Classes="menu" Width="360" HorizontalAlignment="Left" FontSize="18" Padding="20,12"
+                  Content="{loc:Tr win_theme_create}" Command="{Binding CreateThemeCommand}" />
+          <ToggleButton Classes="switch" IsChecked="{Binding ShowBorders}" FontSize="18" Content="{loc:Tr win_settings_show_borders}" />
+          <ToggleButton Classes="switch" IsChecked="{Binding AnimatedBackground}" FontSize="18" Content="{loc:Tr win_settings_animated_background}" />
+          <!-- Balayage de lumière sur la tuile qui prend le focus (étape 29, D-90) : coupé ou non, et sa vitesse -->
+          <ToggleButton Classes="switch" IsChecked="{Binding TileSheen}" FontSize="18" Content="{loc:Tr win_settings_tile_sheen}" />
+          <!-- Ligne encadrée au focus (29.15, D-100 : équerres autour du curseur et de son texte) -->
+          <ContentControl Classes="focusRow">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+              <TextBlock Text="{loc:Tr win_settings_tile_sheen_speed}" FontSize="18" Width="260" VerticalAlignment="Center" />
+              <Slider Width="360" Minimum="50" Maximum="200" SmallChange="25" LargeChange="25" TickFrequency="25"
+                      IsSnapToTickEnabled="True" Focusable="True" Value="{Binding TileSheenSpeed}" IsEnabled="{Binding TileSheen}" />
+              <TextBlock Text="{Binding TileSheenSpeedText}" FontSize="18" VerticalAlignment="Center" />
+            </StackPanel>
+          </ContentControl>
+
+          <!-- Police de l'interface (étape 32, D-129) : DM Sans et des polices libres (SIL OFL 1.1) ; chaque carte s'écrit dans
+               sa police et nomme ses auteurs et sa licence ; choisie par Confirmer, appliquée à chaud -->
+          <TextBlock Text="{loc:Tr win_font_label}" FontSize="20" FontWeight="SemiBold" Margin="0,12,0,0" />
+          <ListBox x:Name="FontList" Classes="cards" ItemsSource="{Binding FontOptions}" SelectedItem="{Binding SelectedFont}">
+            <ListBox.Styles>
+              <!-- cartes plus larges : les auteurs de la police et sa licence -->
+              <Style Selector="ListBoxItem">
+                <Setter Property="Width" Value="320" />
+              </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:FontOption">
+                <StackPanel Spacing="6">
+                  <TextBlock Text="{Binding Label}" FontSize="22" FontFamily="{Binding Value, Converter={x:Static th:AppFonts.Preview}}" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding Description}" Classes="muted" FontSize="13" TextWrapping="Wrap" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Style des glyphes de boutons (M12) : barre d'aide, écran « Boutons », assistant ; une section à part (Sprite-0005) -->
+      <ctl:FoldSection x:Name="SectionButtonStyle" Key="{x:Static vm:SettingsSection.ButtonStyle}" Header="{loc:Tr win_settings_button_style}">
+        <StackPanel Classes="foldRows">
+          <ListBox x:Name="ButtonStyleList" Classes="cards"
+                   ItemsSource="{Binding ButtonStyleOptions}"
+                   SelectedItem="{Binding SelectedButtonStyle}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:ButtonStyleOption">
+                <StackPanel Spacing="6">
+                  <TextBlock Text="{Binding Label}" FontSize="20" FontWeight="SemiBold" />
+                  <ItemsControl ItemsSource="{Binding Preview}">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="6" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="nav:BindingText">
+                        <TextBlock Classes="chipGlyph" Text="{Binding Glyph}" Tag="{Binding Tint}" FontSize="24" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <ToggleButton Classes="switch" IsChecked="{Binding ColoredGlyphs}" FontSize="18" Content="{loc:Tr win_settings_colored_glyphs}" />
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Manette -->
+      <ctl:FoldSection x:Name="SectionController" Key="{x:Static vm:SettingsSection.Controller}" Header="{loc:Tr win_settings_controller}">
+        <StackPanel Classes="foldRows">
+          <TextBlock Text="{Binding ControllerProfileText}" Classes="muted" FontSize="16" />
+          <TextBlock Text="{Binding KeyboardProfileText}" Classes="muted" FontSize="16" />
+          <Button x:Name="EditButtonsButton" Classes="menu" Width="360" HorizontalAlignment="Left" FontSize="18" Padding="20,12"
+                  Content="{loc:Tr win_settings_buttons}" Command="{Binding EditButtonsCommand}" />
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Audio : sons de l'interface -->
+      <ctl:FoldSection x:Name="SectionAudio" Key="{x:Static vm:SettingsSection.Audio}" Header="{loc:Tr win_settings_audio}">
+        <StackPanel Classes="foldRows">
+          <ToggleButton Classes="switch" IsChecked="{Binding UiSounds}" FontSize="18" Content="{loc:Tr win_settings_ui_sounds}" />
+          <!-- Ligne encadrée au focus (29.15, D-100 : équerres autour du curseur et de son texte) -->
+          <ContentControl Classes="focusRow">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+              <TextBlock Text="{loc:Tr win_settings_ui_volume}" FontSize="18" Width="260" VerticalAlignment="Center" />
+              <Slider Width="360" Minimum="0" Maximum="100" SmallChange="10" LargeChange="10" TickFrequency="10"
+                      IsSnapToTickEnabled="True" Focusable="True" Value="{Binding UiVolume}" IsEnabled="{Binding UiSounds}" />
+              <TextBlock Text="{Binding UiVolumeText}" FontSize="18" VerticalAlignment="Center" />
+            </StackPanel>
+          </ContentControl>
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Affichage et langue -->
+      <ctl:FoldSection x:Name="SectionDisplay" Key="{x:Static vm:SettingsSection.Display}" Header="{loc:Tr win_settings_display}">
+        <StackPanel Classes="foldRows">
+          <ToggleButton Classes="switch" IsChecked="{Binding StartFullscreen}" FontSize="18"
+                        Content="{loc:Tr win_settings_start_fullscreen}" />
+          <TextBlock Text="{loc:Tr win_settings_start_fullscreen_description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+          <TextBlock Text="{loc:Tr win_settings_language}" FontSize="20" FontWeight="SemiBold" Margin="0,12,0,0" />
+          <ListBox x:Name="LanguageList" Classes="cards"
+                   ItemsSource="{Binding LanguageOptions}"
+                   SelectedItem="{Binding SelectedLanguage}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:LanguageOption">
+                <TextBlock Text="{Binding Label}" FontSize="18" FontWeight="SemiBold" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock Text="{loc:Tr win_settings_language_restart}" IsVisible="{Binding LanguageNeedsRestart}"
+                     Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="15" />
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- SteamGridDB (étape 31, D-115) : la clé d'API de l'utilisateur -->
+      <ctl:FoldSection x:Name="SectionSteamGridDb" Key="{x:Static vm:SettingsSection.SteamGridDb}" Header="{loc:Tr win_settings_sgdb}">
+        <StackPanel Classes="foldRows">
+          <TextBlock Text="{loc:Tr win_sgdb_description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding SteamGridDb.StatusText}" FontSize="16" TextWrapping="Wrap" />
+          <WrapPanel Orientation="Horizontal">
+            <Button x:Name="SteamGridDbEnterKey" Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{Binding SteamGridDb.EnterKeyLabel}" Command="{Binding SteamGridDb.EnterKeyCommand}" />
+            <Button x:Name="SteamGridDbRemoveKey" Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    IsVisible="{Binding SteamGridDb.HasKey}"
+                    Content="{loc:Tr win_sgdb_remove_key}" Command="{Binding SteamGridDb.RemoveKeyCommand}" />
+            <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{loc:Tr win_sgdb_open_page}" Command="{Binding SteamGridDb.OpenKeysPageCommand}" />
+          </WrapPanel>
+          <TextBlock Text="{x:Static vm:SteamGridDbSettingsViewModel.KeysPageText}" Classes="muted" FontSize="14" />
+        </StackPanel>
+      </ctl:FoldSection>
+
+      <!-- Système -->
+      <ctl:FoldSection x:Name="SectionSystem" Key="{x:Static vm:SettingsSection.System}" Header="{loc:Tr win_settings_system}">
+        <StackPanel Classes="foldRows">
+          <!-- Pendant un jeu : réduit (par défaut) ou en veille derrière lui (D-181) -->
+          <ToggleButton Classes="switch" IsChecked="{Binding RestBehindGame}" FontSize="18"
+                        Content="{loc:Tr win_settings_rest_behind_game}" />
+          <TextBlock Text="{loc:Tr win_settings_rest_behind_game_description}" Classes="muted" FontSize="14" TextWrapping="Wrap" />
+          <TextBlock Text="{loc:Tr win_settings_power_description}" Classes="muted" FontSize="14" TextWrapping="Wrap" Margin="0,12,0,0" />
+          <WrapPanel Orientation="Horizontal">
+            <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{loc:Tr win_power_sleep}" Command="{Binding SleepCommand}" />
+            <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{loc:Tr win_power_restart}" Command="{Binding RestartCommand}" />
+            <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{loc:Tr win_power_shutdown}" Command="{Binding ShutdownCommand}" />
+            <Button Classes="menu" MinWidth="220" FontSize="18" Padding="20,12" Margin="0,0,16,16"
+                    Content="{loc:Tr win_home_quit}" Command="{Binding QuitCommand}" />
+          </WrapPanel>
+          <TextBlock Text="{Binding DataFolderText}" Classes="muted" FontSize="13" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding AboutText}" Classes="muted" FontSize="13" TextWrapping="Wrap" />
+          <!-- Crédits (étape 34) : icônes des consoles (CC BY 4.0, Assets/Icons/CREDITS.txt), sons (CC0, Assets/Sounds/CREDITS.txt) -->
+          <TextBlock Text="{loc:Tr win_icons_credit}" Classes="muted" FontSize="13" TextWrapping="Wrap" />
+          <TextBlock Text="{loc:Tr win_sounds_credit}" Classes="muted" FontSize="13" TextWrapping="Wrap" />
+        </StackPanel>
+      </ctl:FoldSection>
+    </StackPanel>
+  </ScrollViewer>
+
+  <!-- La ligne de l'en-tête : une zone invisible en haut, de la hauteur de l'en-tête du style (Themes) -->
+  <Border x:Name="TopCover" Classes="settingsTop" ctl:Covers.IsCover="True" />
+  </Panel>
+</UserControl>

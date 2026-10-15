@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:loc="using:WinSU.App.Localization"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Switch.HomeShellView"
+             x:DataType="sh:HomeShellViewModel">
+  <!-- Écran principal du style Switch (M15, référence Style_Maquette/Switch.png) : pas d'onglets, des pages. L'accueil
+       (heure en haut à gauche, boutons ronds à droite, rangée de sa vue) ouvre Jeux et Réglages en pages pleines ;
+       Retour y ramène (HomeShellViewModel.TabsAsPages). La barre du bas est celle de la fenêtre. -->
+  <Grid>
+    <!-- Ne rogne pas (un ContentControl rogne par défaut) : les équerres du focus sortent des vues (29.15) -->
+    <ContentControl x:Name="TabHost" Content="{Binding SelectedTab.Content}" ctl:PageFade.IsEnabled="True" ClipToBounds="False" />
+
+    <!-- Heure (les profils de la référence n'existent pas dans WinSU : D-54) -->
+    <ctl:ClockText IsVisible="{Binding IsHomeSelected}" FontFamily="{DynamicResource WinSU.TitleFont}"
+                   FontSize="30" Margin="40,32,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+    <!-- Boutons ronds en colonne à droite (D-53) : Réglages et Alimentation (Thèmes et Manette retirés à la demande de
+         l'utilisateur, étape 25) ; le nom à gauche du bouton choisi -->
+    <StackPanel IsVisible="{Binding IsHomeSelected}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,32,40,0" Spacing="16">
+      <StackPanel Classes="roundItem" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Border Classes="roundLabel"><TextBlock Text="{loc:Tr win_tab_settings}" /></Border>
+        <Button x:Name="SettingsButton" Classes="round iconTile" Command="{Binding OpenPageCommand}" CommandParameter="{Binding SettingsTab}">
+          <Path Classes="icon" Data="{StaticResource WinSU.IconGear}" />
+        </Button>
+      </StackPanel>
+      <StackPanel Classes="roundItem" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Border Classes="roundLabel"><TextBlock Text="{loc:Tr win_hint_power}" /></Border>
+        <Button x:Name="PowerButton" Classes="round iconTile" Command="{Binding OpenPowerMenuCommand}">
+          <Path Classes="icon" Data="{StaticResource WinSU.IconPower}" />
+        </Button>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

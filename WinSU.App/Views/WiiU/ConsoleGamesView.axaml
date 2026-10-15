@@ -1,0 +1,61 @@
+<wu:WiiUGridPage xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:wu="using:WinSU.App.Views.WiiU"
+                 xmlns:sh="using:WinSU.App.ViewModels.Shell"
+                 xmlns:ctl="using:WinSU.App.Controls"
+                 xmlns:loc="using:WinSU.App.Localization"
+                 x:Class="WinSU.App.Views.WiiU.ConsoleGamesView"
+                 x:DataType="sh:ConsoleGamesViewModel">
+  <!-- Jeux d'une console, style Wii U (M16) : même disposition que « Jeux » (logo, nom de la console, heure, nom de
+       l'élément choisi en haut à droite, grille en pages), sans barre d'aide ; en bas, à la place des icônes, une icône
+       « retour » qui ramène aux consoles : Retour ne fait rien ici (D-68) -->
+  <Panel>
+    <Grid Classes="wiiuTopBar" ColumnDefinitions="*,Auto,*">
+      <DockPanel>
+        <ctl:BrandLogo DockPanel.Dock="Left" VerticalAlignment="Center" Height="34" Fill="{DynamicResource WinSU.TextBrush}" />
+        <StackPanel Classes="wiiuTitles">
+          <TextBlock Classes="wiiuTitle" Text="{Binding Title}" />
+          <TextBlock Classes="wiiuSubtitle" Text="{Binding Subtitle}" />
+        </StackPanel>
+      </DockPanel>
+      <ctl:ClockText Grid.Column="1" Classes="wiiuClock" />
+      <Border x:Name="NamePill" Grid.Column="2" Classes="namePill" IsVisible="False">
+        <TextBlock x:Name="NameText" />
+      </Border>
+    </Grid>
+
+    <ctl:PageSlots x:Name="Slots" Margin="{x:Static ctl:PageGridMetrics.GridMargin}" />
+    <ListBox x:Name="TileList" Classes="tiles wiiuGrid" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
+             Margin="{x:Static ctl:PageGridMetrics.GridMargin}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:PagedGridPanel />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="sh:GameTileViewModel">
+          <Viewbox Stretch="Uniform" ClipToBounds="False" wu:FocusName.Text="{Binding Name}">
+            <ctl:GameTile />
+          </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:DataType="sh:AddGamesTileViewModel">
+          <Viewbox Stretch="Uniform" ClipToBounds="False" wu:FocusName.Text="{loc:Tr win_games_add}">
+            <ctl:AddTile />
+          </Viewbox>
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <wu:Pager x:Name="Pager" />
+
+    <Border Classes="dock">
+      <Button x:Name="BackIcon" Classes="wiiuIcon iconTile" Command="{Binding LeaveCommand}" wu:FocusName.Text="{loc:Tr win_hint_back}">
+        <Panel>
+          <Border Classes="iconPlate" />
+          <Path Classes="reliefDepth" Data="{StaticResource WinSU.IconBack}" />
+          <Path Classes="reliefFace" Data="{StaticResource WinSU.IconBack}" />
+        </Panel>
+      </Button>
+    </Border>
+  </Panel>
+</wu:WiiUGridPage>

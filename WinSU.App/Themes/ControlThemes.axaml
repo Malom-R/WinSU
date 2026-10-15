@@ -1,0 +1,242 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctl="using:WinSU.App.Controls">
+
+  <!--
+    Commandes dessinées par WinSU (interrupteur, curseur), indépendantes des gabarits Fluent. Le focus se voit comme sur les tuiles (29.15, D-100) : équerres aux couleurs de la lampe à lave et
+    fond rempli de la couleur du thème, texte en blanc.
+  -->
+
+  <!--
+    Gabarit « tuile » des commandes (29.15, D-100 : « le nouveau style de tuiles à tous les éléments ») : le verre des
+    tuiles (ctl:TileGlass, au rayon de la commande), le contenu par-dessus, et les équerres (ctl:TileCursor) au dehors,
+    invisibles au repos. Posé par les styles sur les boutons (menu, pastilles, boutons ronds, icônes du Wii U), les cartes,
+    les sections, les menus et les lignes (ContentControl.focusRow) ; au focus, les styles montrent les équerres,
+    remplissent le verre (WinSU.TileSelectedFillBrush) et passent le texte en blanc. PART_ContentPresenter garde son nom
+    (styles existants : marges, texte) ; il n'a ni fond ni bordure. PART_CurrentDot : la boule verte de l'option en
+    vigueur (cartes).
+  -->
+  <ControlTemplate x:Key="WinSU.TileSkinTemplate" TargetType="ContentControl">
+    <Panel>
+      <ctl:TileCursor Name="PART_Cursor" Outside="True" Margin="0" />
+      <ctl:TileGlass Name="PART_Glass" Margin="0" CornerRadius="{TemplateBinding CornerRadius}" />
+      <ContentPresenter Name="PART_ContentPresenter"
+                        Background="Transparent"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        Content="{TemplateBinding Content}"
+                        Padding="{TemplateBinding Padding}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+      <Border Name="PART_CurrentDot" Classes="currentDot" IsVisible="False" IsHitTestVisible="False" />
+    </Panel>
+  </ControlTemplate>
+  <!--
+    Thèmes qui posent ce gabarit : un thème à nous, et non seulement un gabarit, pour que les styles des thèmes Fluent du
+    bouton et de l'élément de liste (fond de PART_ContentPresenter au survol, à l'appui, à la sélection) ne s'appliquent
+    plus : ils peignaient par-dessus le verre (la carte en vigueur apparaissait remplie).
+  -->
+  <ControlTheme x:Key="WinSU.TileButtonTheme" TargetType="Button">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Template" Value="{StaticResource WinSU.TileSkinTemplate}" />
+  </ControlTheme>
+  <ControlTheme x:Key="WinSU.TileItemTheme" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Template" Value="{StaticResource WinSU.TileSkinTemplate}" />
+  </ControlTheme>
+  <ControlTheme x:Key="WinSU.TileRowTheme" TargetType="ContentControl">
+    <!-- Un ContentControl rogne par défaut : les équerres sortent de la ligne -->
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Template" Value="{StaticResource WinSU.TileSkinTemplate}" />
+  </ControlTheme>
+
+  <!--
+    Section d'un tableau déroulant (étape 32, maquette Sprite-0005, D-128 ; Controls/FoldSection) : fermée, une capsule à
+    son titre (le titre est un bouton au style des commandes, Button.menu.foldHeader) ; ouverte (:open), la capsule devient
+    une carte et montre son contenu sous le titre. Couleurs du thème (Themes/Controls.axaml, « Tableau déroulant »). Le
+    titre s'atténue sous la barre d'aide (Controls/Covers) ; le contenu, ligne par ligne, s'il le demande.
+  -->
+  <ControlTheme x:Key="{x:Type ctl:FoldSection}" TargetType="ctl:FoldSection">
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <!-- La carte d'une section ouverte : sa partie au-dessus de la ligne de l'en-tête est atténuée (étape 34) -->
+        <Border Name="PART_Card" Classes="foldCard" ctl:Covers.MasksAbove="True">
+          <StackPanel>
+            <Button Name="PART_Header" Classes="menu foldHeader" Content="{TemplateBinding Header}" ctl:Covers.Fades="True" />
+            <ContentPresenter Name="PART_ContentPresenter" Classes="foldBody" ClipToBounds="False"
+                              Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              IsVisible="{TemplateBinding IsOpen}" />
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <!--
+    Interrupteur : ToggleButton (le FocusNavigator le bascule avec Confirmer). Piste de 44 × 24 en verre, accent quand
+    il est activé ; pastille blanche à bord blanc de 3 px qui glisse en 0,2 s. Le texte se place à droite : la commande
+    est toute la ligne. Au focus (29.15, D-100), la ligne est encadrée d'équerres et remplie de la couleur du thème ;
+    texte blanc, piste blanche et pastille foncée quand il est activé (l'accent ne se verrait plus sur l'accent).
+  -->
+  <ControlTheme x:Key="WinSU.SwitchTheme" TargetType="ToggleButton">
+    <!-- Le contour et la lueur du focus sortent de la commande -->
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+        <ctl:TileCursor Name="PART_Cursor" Outside="True" Margin="0" />
+        <ctl:TileGlass Name="PART_Glass" Margin="0" CornerRadius="{StaticResource WinSU.ButtonRadius}" Opacity="0"
+                       Fill="{DynamicResource WinSU.TileSelectedFillBrush}" Lens="{DynamicResource WinSU.TileSelectedLensBrush}" />
+        <Border Name="PART_Root" Padding="10,8" CornerRadius="{StaticResource WinSU.ButtonRadius}"
+                Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="2">
+          <Grid ColumnDefinitions="Auto,*">
+            <Panel Width="44" Height="24" VerticalAlignment="Center">
+              <Border Name="Track" CornerRadius="12" BorderThickness="1.5"
+                      Background="{DynamicResource WinSU.GlassBrush}" BorderBrush="{DynamicResource WinSU.GlassBorderBrush}"
+                      BoxShadow="{DynamicResource WinSU.GlassShadow}">
+                <Border.Transitions>
+                  <Transitions>
+                    <BrushTransition Property="Background" Duration="{x:Static ctl:Motion.Control}" Easing="CubicEaseInOut" />
+                  </Transitions>
+                </Border.Transitions>
+              </Border>
+              <Border Name="Knob" Width="22" Height="22" CornerRadius="11" HorizontalAlignment="Left" Margin="1,0,0,0"
+                      Background="White" BorderBrush="White" BorderThickness="3" BoxShadow="0 3 10 2 #26000000">
+                <Border.Transitions>
+                  <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Control}" Easing="CubicEaseInOut" />
+                  </Transitions>
+                </Border.Transitions>
+              </Border>
+            </Panel>
+            <ContentPresenter Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center"
+                              Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+          </Grid>
+        </Border>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked /template/ Border#Track">
+      <Setter Property="Background" Value="{DynamicResource WinSU.SwitchOnBrush}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+    <Style Selector="^:checked /template/ Border#Knob">
+      <Setter Property="RenderTransform" Value="translateX(20px)" />
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#PART_Root">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentFadedBrush}" />
+    </Style>
+    <!-- Verre rempli posé dans le gabarit (une valeur du gabarit passe avant le style commun de ctl|TileGlass) -->
+    <Style Selector="^ /template/ ctl|TileGlass#PART_Glass">
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="{x:Static ctl:Motion.Select}" Easing="{x:Static ctl:Motion.Soft}" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="^:focus /template/ ctl|TileGlass#PART_Glass">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="^:focus /template/ ctl|TileCursor#PART_Cursor">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="^:focus /template/ Border#PART_Root">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="^:focus">
+      <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+    </Style>
+    <Style Selector="^:focus:checked /template/ Border#Track">
+      <Setter Property="Background" Value="#F2FFFFFF" />
+    </Style>
+    <Style Selector="^:focus:checked /template/ Border#Knob">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentStrongBrush}" />
+    </Style>
+    <Style Selector="^:disabled">
+      <Setter Property="Opacity" Value="0.5" />
+    </Style>
+  </ControlTheme>
+
+  <!-- Curseur : piste de 8 px, remplie d'accent jusqu'à la valeur ; pouce « bulle » de 22 px -->
+  <ControlTheme x:Key="WinSU.SliderFillTheme" TargetType="RepeatButton">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Height="8" CornerRadius="4" VerticalAlignment="Center" Background="{TemplateBinding Background}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="WinSU.SliderThumbTheme" TargetType="Thumb">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border CornerRadius="11" BorderThickness="1" BorderBrush="#F2FFFFFF"
+                BoxShadow="0 2 6 0 #1F261F45, inset 0 0 5 0 #FFFFFFFF, 0 0 6 0 #1A9D8CF5">
+          <Border.Background>
+            <RadialGradientBrush Center="30%,30%" GradientOrigin="30%,30%" RadiusX="80%" RadiusY="80%">
+              <GradientStop Offset="0" Color="#FFFFFFFF" />
+              <GradientStop Offset="0.6" Color="#F2F3FBFF" />
+              <GradientStop Offset="1" Color="#E6E9E4FA" />
+            </RadialGradientBrush>
+          </Border.Background>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="WinSU.SliderTheme" TargetType="Slider">
+    <!-- Le contour et la lueur du focus sortent de la commande -->
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.TrackBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="PART_Root" Padding="12,6" CornerRadius="{StaticResource WinSU.RadiusMd}"
+                Background="Transparent" BorderBrush="Transparent" BorderThickness="2">
+          <Grid Height="28">
+            <Border Height="8" CornerRadius="4" VerticalAlignment="Center" BorderThickness="1"
+                    Background="{TemplateBinding Background}" BorderBrush="{DynamicResource WinSU.TrackBorderBrush}"
+                    BoxShadow="inset 0 1 2 0 #26000000" />
+            <Track Name="PART_Track" Orientation="Horizontal"
+                   Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}"
+                   Value="{TemplateBinding Value, Mode=TwoWay}" IsDirectionReversed="{TemplateBinding IsDirectionReversed}">
+              <Track.DecreaseButton>
+                <RepeatButton Name="PART_DecreaseButton" Theme="{StaticResource WinSU.SliderFillTheme}" Background="{TemplateBinding Foreground}" />
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton Name="PART_IncreaseButton" Theme="{StaticResource WinSU.SliderFillTheme}" Background="Transparent" />
+              </Track.IncreaseButton>
+              <Thumb Name="thumb" Width="22" Height="22" Theme="{StaticResource WinSU.SliderThumbTheme}">
+                <Thumb.Transitions>
+                  <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Control}" Easing="{x:Static ctl:Motion.Spring}" />
+                  </Transitions>
+                </Thumb.Transitions>
+              </Thumb>
+            </Track>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:pointerover /template/ Thumb#thumb">
+      <Setter Property="RenderTransform" Value="scale(1.15)" />
+    </Style>
+    <Style Selector="^:focus /template/ Thumb#thumb">
+      <Setter Property="RenderTransform" Value="scale(1.15)" />
+    </Style>
+    <!-- Le focus d'un curseur se voit sur sa ligne (ContentControl.focusRow : équerres et fond rempli, Controls.axaml) -->
+    <Style Selector="^:disabled">
+      <Setter Property="Opacity" Value="0.5" />
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

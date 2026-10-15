@@ -1,0 +1,27 @@
+<Project>
+  <ItemGroup>
+    <!-- UI -->
+    <PackageVersion Include="Avalonia" Version="12.1.3" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.3" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.3" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+
+    <!-- Sons d'interface -->
+    <PackageVersion Include="NAudio" Version="3.1.0" />
+    <!-- Décodage Ogg Vorbis (NAudio.Vorbis ne suit pas l'API de NAudio 3) -->
+    <PackageVersion Include="NVorbis" Version="0.10.5" />
+
+    <!-- Manettes (SDL3, binaires natifs inclus) -->
+    <PackageVersion Include="ppy.SDL3-CS" Version="2026.722.0" />
+
+    <!-- Hébergement, DI, logs -->
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
+  </ItemGroup>
+</Project>

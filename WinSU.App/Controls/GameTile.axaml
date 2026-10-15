@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             x:Class="WinSU.App.Controls.GameTile"
+             Classes="tile" ClipToBounds="False"
+             x:DataType="sh:GameTileViewModel">
+  <!-- Tuile de jeu (boîte de 160, couches : voir Themes/Controls.axaml et Controls/TileArt) : jaquette opaque qui remplit la
+       face et cache le verre ; sinon icône générée opaque (fond neutre, image de la console atténuée, nom du jeu) ; une image
+       .ico choisie est centrée sur le verre avec une zone de respiration (D-25). Le cadre de la console (réglage « Cadre de
+       la console ») fait partie de l'icône : dessiné par WinSU au rayon de la face (étape 34, Services/ConsoleArtPainter), il
+       s'étire sur toute la face. -->
+  <StackPanel Width="{x:Static ctl:TileMetrics.GameSize}" Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+    <ctl:TileArt Size="{x:Static ctl:TileMetrics.GameSize}">
+      <Panel Classes="tileBody">
+        <Border Classes="tileFace">
+          <Panel>
+            <Panel Classes="tileDefault" IsVisible="{Binding !HasCover}">
+              <Image Source="{Binding Background}" Stretch="UniformToFill" Opacity="0.3" />
+              <TextBlock Text="{Binding Name}" FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="18" TextWrapping="Wrap"
+                         TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="18,26,18,16"
+                         MaxLines="4" TextTrimming="CharacterEllipsis" />
+            </Panel>
+            <Image Source="{Binding Cover}" IsVisible="{Binding HasFillingCover}" Stretch="UniformToFill"
+                   RenderOptions.BitmapInterpolationMode="HighQuality" />
+            <Image Source="{Binding Cover}" IsVisible="{Binding HasIconCover}" Classes="tileIcon" RenderOptions.BitmapInterpolationMode="HighQuality" />
+            <Image Source="{Binding Border}" Stretch="Fill" IsHitTestVisible="False" RenderOptions.BitmapInterpolationMode="HighQuality" />
+          </Panel>
+        </Border>
+      </Panel>
+    </ctl:TileArt>
+    <TextBlock Text="{Binding Name}" Classes="tileName" FontSize="15" />
+    <TextBlock Text="{Binding Subtitle}" Classes="muted tileSubtitle" FontSize="13" TextTrimming="CharacterEllipsis" />
+  </StackPanel>
+</UserControl>

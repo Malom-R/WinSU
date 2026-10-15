@@ -1,0 +1,45 @@
+<sw:SwitchGridPage xmlns="https://github.com/avaloniaui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:sw="using:WinSU.App.Views.Switch"
+                   xmlns:ctl="using:WinSU.App.Controls"
+                   xmlns:vm="using:WinSU.App.ViewModels"
+                   xmlns:sh="using:WinSU.App.ViewModels.Shell"
+                   xmlns:loc="using:WinSU.App.Localization"
+                   x:Class="WinSU.App.Views.Switch.GamesTabView"
+                   x:DataType="sh:GamesTabViewModel">
+  <!-- Page « Jeux » du style Switch (M15, écran en bas à gauche de la référence) : grille sur toute la largeur, même marge
+       des deux côtés, autant de colonnes que la largeur en permet (D-69), titre en pastille, « Ajouter une console » en
+       grand bouton en bas, au-dessus de la barre. La grille va jusqu'en bas (étape 33) : ce qui passe sous le bouton ou sous
+       la barre est atténué (Controls/Covers, Themes/Switch.axaml). -->
+  <Grid RowDefinitions="Auto,*" Margin="40,32,40,0">
+    <Border Classes="titlePill"><TextBlock Text="{loc:Tr win_tab_games}" /></Border>
+
+    <ListBox x:Name="TileList" Grid.Row="1" Classes="tiles switchGrid" ctl:Covers.FadeItems="True" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:FittingUniformGrid VerticalAlignment="Top" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="vm:ConsoleTileViewModel">
+          <StackPanel Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+            <Border Classes="nameTab"><TextBlock Text="{Binding Name}" /></Border>
+            <Viewbox Stretch="Uniform" ClipToBounds="False">
+              <ctl:ConsoleTile />
+            </Viewbox>
+          </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:AddConsoleTileViewModel">
+          <Panel />
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <Button x:Name="AddButton" Grid.Row="1" Classes="menu wide" Click="OnAddClick">
+      <StackPanel Orientation="Horizontal" Spacing="16">
+        <TextBlock Classes="plus" Text="+" />
+        <TextBlock Text="{loc:Tr win_add_console}" VerticalAlignment="Center" />
+      </StackPanel>
+    </Button>
+  </Grid>
+</sw:SwitchGridPage>

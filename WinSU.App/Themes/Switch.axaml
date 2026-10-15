@@ -1,0 +1,156 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="using:WinSU.App.Controls">
+  <!--
+    Style de menu Switch (M15, référence Style_Maquette/Switch.png) : ce qui n'existe que dans ce style. La fenêtre porte
+    la classe « switch » (MainWindow) ; les vues sont dans Views/Switch/. Icônes : Themes/Icons.axaml (communes aux
+    styles de menu depuis M16).
+  -->
+
+  <!-- Barre du bas translucide, comme dans la référence : les pages du style y passent dessous (IExtendsUnderHintBar). -->
+  <Style Selector=":is(Window).switch Border.hintbar">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+  </Style>
+
+  <!-- Écrans repris du Standard qui ne passent pas sous la barre (« Boutons », éditeur de thèmes, assistant) : ils
+       s'arrêtent au-dessus de la barre du bas, à 24, au lieu de la toucher (étape 25). Le catalogue et la recherche
+       SteamGridDB passent dessous depuis l'étape 33 (IPassesUnderHintBar). -->
+  <Style Selector=":is(Window).switch ContentControl#PageHost.aboveHintBar">
+    <Setter Property="Margin" Value="0,0,0,24" />
+  </Style>
+
+  <!-- Icône : un tracé de 24 × 24, en traits arrondis -->
+  <Style Selector="Path.icon">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.TextBrush}" />
+    <Setter Property="StrokeThickness" Value="2" />
+    <Setter Property="StrokeLineCap" Value="Round" />
+    <Setter Property="StrokeJoin" Value="Round" />
+    <Setter Property="Stretch" Value="Uniform" />
+  </Style>
+  <!-- Glyphe d'une icône générée (tuile « Jeux », étape 29, D-85) : blanc sur le violet plein -->
+  <Style Selector="Border.tileGenerated Path.icon">
+    <Setter Property="Stroke" Value="White" />
+  </Style>
+
+  <!-- Boutons ronds (colonne de droite de l'accueil) : des boutons-icônes au style des tuiles (Button.iconTile,
+       Themes/Controls.axaml : verre des tuiles en rond ; focus = équerres, verre rempli, léger grossissement) ; ici leur
+       taille, l'icône blanche au focus ; le nom apparaît à gauche du bouton choisi -->
+  <Style Selector="Button.round">
+    <Setter Property="Width" Value="60" />
+    <Setter Property="Height" Value="60" />
+    <Setter Property="Padding" Value="15" />
+    <Setter Property="CornerRadius" Value="30" />
+  </Style>
+  <Style Selector="Button.round:focus Path.icon">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <Style Selector="Border.roundLabel">
+    <Setter Property="Padding" Value="14,6" />
+    <Setter Property="Margin" Value="0,0,14,0" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+  <Style Selector="StackPanel.roundItem:focus-within Border.roundLabel">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <!-- Nom au-dessus de la tuile choisie (« FAIRY TAIL » dans la référence) : petit onglet, visible sur la tuile qui a
+       le focus seulement ; il garde sa place sinon (la rangée ne bouge pas) -->
+  <Style Selector="Border.nameTab">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="MaxWidth" Value="{x:Static ctl:TileMetrics.GameSize}" />
+    <Setter Property="Padding" Value="10,3" />
+    <Setter Property="CornerRadius" Value="8,8,0,0" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+  <Style Selector="Border.nameTab TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected Border.nameTab, Button.tileButton:focus Border.nameTab">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <!-- Accueil : quand le logo du jeu choisi est affiché, le nom au-dessus de sa tuile disparaît (étape 33, D-141 ; sa place
+       reste : la tuile ne bouge pas) -->
+  <Style Selector="ListBox.switchRow.hasLogo > ListBoxItem Border.nameTab">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+  <!-- Logo du jeu choisi (étape 33, D-140, maquette Sprite-0011) : en haut au milieu, à la hauteur de l'heure -->
+  <Style Selector="ctl|GameLogo.switchLogo">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,32,0,0" />
+  </Style>
+  <!-- Dans une rangée du style Switch, le nom est au-dessus de la tuile choisie : pas sous chaque tuile -->
+  <Style Selector="ListBox.switchRow TextBlock.tileName">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <Style Selector="ListBox.switchRow TextBlock.tileSubtitle">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <Style Selector="ListBox.switchGrid TextBlock.tileName">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <Style Selector="ListBox.switchGrid TextBlock.tileSubtitle">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <!-- Pages en grille (Jeux, jeux d'une console) : titre en pastille en haut à gauche (la pastille de tri de la
+       référence, D-54), grand bouton d'ajout sous la grille -->
+  <Style Selector="Border.titlePill">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Margin" Value="10,0,0,0" />
+    <Setter Property="Padding" Value="16,7" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusXs}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+  </Style>
+  <Style Selector="Border.titlePill TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="19" />
+  </Style>
+  <!-- Le grand bouton d'ajout flotte en bas de la page, au-dessus de la barre (64 du bas : la barre et un écart) ; la
+       grille passe dessous, atténuée (étape 33, demande de l'utilisateur : plus rien n'est coupé net près de la barre) -->
+  <Style Selector="Button.menu.wide">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="Margin" Value="10,0,10,64" />
+    <Setter Property="Padding" Value="20,12" />
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="ctl:Covers.IsCover" Value="True" />
+  </Style>
+  <!-- La grille sous ce bouton : en bas, de quoi faire remonter la dernière rangée au-dessus de lui (64 + ≈ 60 de bouton +
+       32, l'écart d'avant entre la rangée et le bouton) -->
+  <Style Selector="ListBox.tiles.switchGrid">
+    <Setter Property="Padding" Value="20,20,20,156" />
+  </Style>
+  <!-- Réglages : le tableau déroulant commun (étape 32, D-128), au milieu de la page ; la zone qui défile va jusqu'en bas
+       et passe sous la barre du bas, ce qui passe dessous est atténué (étape 33, comme les autres styles : la marge basse
+       de la liste, celle de Controls.axaml, fait remonter la dernière section au-dessus de la barre) -->
+  <Style Selector=":is(Window).switch ScrollViewer.settingsScroller">
+    <Setter Property="Margin" Value="20,0,40,0" />
+  </Style>
+  <!-- Étape 34 : la liste monte jusqu'en haut ; au-dessus de 40 (sa ligne d'avant) ce qui passe est atténué -->
+  <Style Selector=":is(Window).switch Border.settingsTop">
+    <Setter Property="Height" Value="40" />
+  </Style>
+
+  <Style Selector="TextBlock.plus">
+    <Setter Property="FontSize" Value="30" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="Margin" Value="0,-4,0,0" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+</Styles>

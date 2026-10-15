@@ -1,0 +1,39 @@
+<wu:WiiUGridPage xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:wu="using:WinSU.App.Views.WiiU"
+                 xmlns:vm="using:WinSU.App.ViewModels"
+                 xmlns:sh="using:WinSU.App.ViewModels.Shell"
+                 xmlns:ctl="using:WinSU.App.Controls"
+                 xmlns:loc="using:WinSU.App.Localization"
+                 x:Class="WinSU.App.Views.WiiU.GamesTabView"
+                 x:DataType="sh:GamesTabViewModel">
+  <!-- Page « Jeux » du style Wii U (M16) : les consoles ajoutées, puis « Ajouter une console » dans l'emplacement suivant,
+       en pages de 5 × 3 -->
+  <Panel>
+    <ctl:PageSlots x:Name="Slots" Margin="{x:Static ctl:PageGridMetrics.GridMargin}" />
+    <ListBox x:Name="TileList" Classes="tiles wiiuGrid" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
+             Margin="{x:Static ctl:PageGridMetrics.GridMargin}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:PagedGridPanel />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <!-- Tuiles des consoles et « + » dans la boîte d'un jeu (et non celle des consoles, 176) : une fois mises à l'échelle de la
+             page, mêmes rayons et même liseré que les cadres vides et les jeux (DF-6, étape 35) -->
+        <DataTemplate x:DataType="vm:ConsoleTileViewModel">
+          <Viewbox Stretch="Uniform" ClipToBounds="False" wu:FocusName.Text="{Binding Name}">
+            <ctl:ConsoleTile GameBox="True" />
+          </Viewbox>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:AddConsoleTileViewModel">
+          <Viewbox Stretch="Uniform" ClipToBounds="False" wu:FocusName.Text="{loc:Tr win_add_console}">
+            <ctl:AddTile />
+          </Viewbox>
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <wu:Pager x:Name="Pager" />
+  </Panel>
+</wu:WiiUGridPage>

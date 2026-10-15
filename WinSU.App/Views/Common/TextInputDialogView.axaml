@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ov="using:WinSU.App.Overlays"
+             x:Class="WinSU.App.Views.Common.TextInputDialogView"
+             x:DataType="ov:TextInputDialogViewModel">
+  <Border Classes="overlayCard">
+    <StackPanel Spacing="16">
+      <TextBlock Text="{Binding Title}" Classes="section" FontSize="24" TextWrapping="Wrap" />
+      <TextBox x:Name="Input" Text="{Binding Text}" FontSize="20" Padding="14,10" MinWidth="480" />
+      <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+        <Button Classes="menu" MinWidth="170" FontSize="18" Padding="20,12"
+                Content="{Binding CancelLabel}" Command="{Binding DismissCommand}" />
+        <Button Classes="menu" MinWidth="170" FontSize="18" Padding="20,12"
+                Content="{Binding ConfirmLabel}" Command="{Binding ConfirmCommand}" />
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

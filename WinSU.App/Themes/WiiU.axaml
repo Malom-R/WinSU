@@ -1,0 +1,208 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="using:WinSU.App.Controls">
+  <!--
+    Style de menu Wii U (M16, référence Style_Maquette/Wii_U.png) : ce qui n'existe que dans ce style. Les vues sont dans
+    Views/WiiU/ ; la grille en pages est Controls/PagedGridPanel (mesures : Controls/PageGridMetrics). Pas de barre d'aide
+    sur les écrans du style (IHintBarPlacement). Cadres des emplacements : Controls/PageSlots.
+  -->
+
+  <!-- Emplacements vides : le verre des tuiles (étape 29, Controls/TileGlass : mêmes pinceaux), à la place et au rayon de
+       la face d'une tuile -->
+  <Style Selector="ctl|PageSlots">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileGlassFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileGlassLensBrush}" />
+    <Setter Property="Rim" Value="{DynamicResource WinSU.TileGlassRimBrush}" />
+    <Setter Property="Shadow" Value="{DynamicResource WinSU.TileGlassShadow}" />
+    <Setter Property="InnerGlow" Value="{DynamicResource WinSU.TileGlassInnerGlow}" />
+  </Style>
+
+  <!-- Grille en pages : le panneau place chaque élément à la place de son cadre (pas de marge d'élément) ; ni nom ni
+       sous-titre sous les tuiles : le nom de l'élément choisi est dans la pastille en haut à droite (D-66) -->
+  <Style Selector="ListBox.wiiuGrid">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+  </Style>
+  <!-- La boîte de l'élément est son cadre : les équerres et le cadre grossi en dépassent sans être rognés -->
+  <Style Selector="ListBox.wiiuGrid > ListBoxItem">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <Style Selector="ListBox.wiiuGrid > ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <Style Selector="ListBox.wiiuGrid TextBlock.tileName">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <Style Selector="ListBox.wiiuGrid TextBlock.tileSubtitle">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <!-- Un élément est sa tuile, mise à l'échelle de son cadre (étape 29, D-65 révisée : plus de tuile de 160 posée dans un
+       cadre de verre) : le verre de la tuile est le cadre, son icône le remplit, ses équerres l'entourent (29.14), et au
+       focus la tuile grossit (règles communes des tuiles, Themes/Controls.axaml). Les cadres vides sont dessinés par
+       PageSlots, au même verre et à la même place. -->
+
+  <!-- Nom de l'élément choisi (tuile ou icône du bas), en haut à droite sur la ligne du logo et de l'heure (D-66) ;
+       contour au dégradé de l'ancien anneau (WinSU.RingGradientBrush), comme la capsule des icônes -->
+  <Style Selector="Border.namePill">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="MaxWidth" Value="360" />
+    <Setter Property="Padding" Value="18,6" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.RingGradientBrush}" />
+    <Setter Property="BorderThickness" Value="2" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+  <Style Selector="Border.namePill TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="20" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+
+  <!-- Barre du haut, en trois colonnes égales autour de l'heure (au centre) : logo et nom de la page à gauche, tronqué
+       avant l'heure ; les jeux d'une console ajoutent leur nombre et leur temps dessous -->
+  <Style Selector="Grid.wiiuTopBar">
+    <Setter Property="Margin" Value="48,24,48,0" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+  <Style Selector="StackPanel.wiiuTitles">
+    <Setter Property="Margin" Value="18,0,24,0" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+  <Style Selector="TextBlock.wiiuTitle">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+  <Style Selector="TextBlock.wiiuSubtitle">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+  <Style Selector="TextBlock.wiiuClock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="36" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <!-- Flèches ‹ › (à la souris : la manette tourne les pages au bord de la grille ou avec LB/RB) -->
+  <Style Selector="Button.pageArrow">
+    <Setter Property="Width" Value="52" />
+    <Setter Property="Height" Value="52" />
+    <Setter Property="Padding" Value="14" />
+    <Setter Property="CornerRadius" Value="26" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.ControlBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.ControlBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+  </Style>
+  <Style Selector="Button.pageArrow /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WinSU.ControlBrush}" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.ControlShadow}" />
+  </Style>
+  <Style Selector="Button.pageArrow:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WinSU.ControlHoverBrush}" />
+  </Style>
+  <Style Selector="Button.pageArrow Path">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="StrokeThickness" Value="3" />
+    <Setter Property="StrokeLineCap" Value="Round" />
+    <Setter Property="StrokeJoin" Value="Round" />
+    <Setter Property="Stretch" Value="Uniform" />
+  </Style>
+
+  <!-- Points de pagination : celui de la page affichée plus gros, en couleur de la sélection (étape 29, descriptif du
+       thème Wii U) -->
+  <Style Selector="Ellipse.pageDot">
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="14" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Fill" Value="{DynamicResource WinSU.SurfaceAltBrush}" />
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="StrokeThickness" Value="1" />
+  </Style>
+  <Style Selector="Ellipse.pageDot.current">
+    <Setter Property="Width" Value="18" />
+    <Setter Property="Height" Value="18" />
+    <Setter Property="Fill" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="Stroke" Value="{x:Null}" />
+  </Style>
+
+  <!-- Icônes du bas (D-59, D-62) : glyphes épais en relief, aux couleurs du dégradé du thème (ils suivent le thème), sans
+       capsule autour depuis 30.13 (D-120) ; au style des tuiles (29.15, D-100) : chacune sur un rond de verre des tuiles ;
+       au focus, équerres, verre rempli de la couleur du thème, glyphe blanc, léger grossissement ; le nom va dans la
+       pastille en haut à droite (D-66) -->
+  <Style Selector="Border.dock">
+    <Setter Property="Margin" Value="0,0,0,26" />
+    <Setter Property="Padding" Value="28,0" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+  </Style>
+  <Style Selector="StackPanel.wiiuDock">
+    <Setter Property="Orientation" Value="Horizontal" />
+    <Setter Property="Spacing" Value="72" />
+  </Style>
+  <!-- Portrait (étape 25) : icônes resserrées -->
+  <Style Selector=":is(Window).portrait StackPanel.wiiuDock">
+    <Setter Property="Spacing" Value="24" />
+  </Style>
+  <!-- Les icônes : des boutons-icônes au style des tuiles (Button.iconTile, Themes/Controls.axaml) ; ici leur taille -->
+  <Style Selector="Button.wiiuIcon">
+    <Setter Property="Width" Value="88" />
+    <Setter Property="Height" Value="88" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="CornerRadius" Value="44" />
+  </Style>
+  <!-- L'ancienne plaque de focus (rond de verre cerclé) : remplacée par le verre du gabarit -->
+  <Style Selector="Border.iconPlate">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <!-- Les glyphes gardent leur grille commune de 24 × 24 (Themes/Icons.axaml), agrandie ×2,6 depuis son centre : étirés
+       chacun à sa propre taille (Stretch Uniform), les glyphes plus larges que hauts (manette, fenêtre) se calaient en haut
+       de leur boîte, plus haut que les autres. Trait de 2,1 dans la grille (≈ 5,5 à l'écran). -->
+  <Style Selector="Path.reliefDepth, Path.reliefFace">
+    <Setter Property="Width" Value="24" />
+    <Setter Property="Height" Value="24" />
+    <Setter Property="Stretch" Value="None" />
+    <Setter Property="StrokeThickness" Value="2.1" />
+    <Setter Property="StrokeLineCap" Value="Round" />
+    <Setter Property="StrokeJoin" Value="Round" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="RenderTransform" Value="scale(2.6)" />
+  </Style>
+  <!-- Épaisseur : le même glyphe, plus foncé, décalé de 4 vers le bas (marge du haut de 8 sur un élément centré) -->
+  <Style Selector="Path.reliefDepth">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentStrongBrush}" />
+    <Setter Property="Margin" Value="0,8,0,0" />
+  </Style>
+  <Style Selector="Path.reliefFace">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+  </Style>
+  <Style Selector="Button.wiiuIcon:focus Path.reliefFace">
+    <Setter Property="Stroke" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <!-- Page affichée : petit trait en accent sous son icône, sous la capsule -->
+  <Style Selector="Border.pageMark">
+    <Setter Property="Width" Value="22" />
+    <Setter Property="Height" Value="4" />
+    <Setter Property="Margin" Value="0,0,0,-21" />
+    <Setter Property="CornerRadius" Value="2" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+
+  <!-- Réglages (D-57) : le tableau déroulant commun (étape 32, D-128), centré (1100 au plus) ; il passe sous la barre d'aide
+       (en bas à gauche) et, depuis l'étape 34, sous la barre du haut : ce qui passe dessous est atténué -->
+  <Style Selector="Border.wiiuPage.settings">
+    <Setter Property="Margin" Value="{x:Static ctl:PageGridMetrics.SettingsMargin}" />
+  </Style>
+</Styles>

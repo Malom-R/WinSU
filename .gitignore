@@ -1,0 +1,10 @@
+# Sorties de compilation
+bin/
+obj/
+TestResults/
+
+# Fichiers des éditeurs
+*.user
+.vs/
+.idea/
+.vscode/

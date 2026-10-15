@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:wu="using:WinSU.App.Views.WiiU"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.WiiU.HomeShellView"
+             x:DataType="sh:HomeShellViewModel">
+  <!-- Écran principal du style Wii U (M16, référence Style_Maquette/Wii_U.png, retouches de Wii_U_menu_fix.png) : des
+       pages (Accueil, Jeux en grilles de leur vue ; Réglages). Logo en haut à gauche (le nom de la page seulement dans
+       les Réglages), heure au centre, nom de l'élément choisi en haut à droite (D-66) ; en bas, les icônes Accueil, Jeux,
+       Réglages, Alimentation, sans capsule (30.13, D-120 ; plus d'Apps, D-119). Retour ne ramène à l'accueil que depuis
+       les Réglages (D-68). Pas de barre d'aide, sauf dans les Réglages (D-57, D-63). -->
+  <Grid>
+    <!-- La page : pleine fenêtre pour les vues du style ; les Réglages communs sous la barre du haut (étape 32) -->
+    <Border Classes="wiiuPage" Classes.settings="{Binding SettingsTab.IsSelected}">
+      <!-- Ne rogne pas (un ContentControl rogne par défaut) : les équerres du focus sortent des vues (29.15) -->
+      <ContentControl x:Name="TabHost" Content="{Binding SelectedTab.Content}" ctl:PageFade.IsEnabled="True" ClipToBounds="False" />
+    </Border>
+
+    <Grid Classes="wiiuTopBar" ColumnDefinitions="*,Auto,*">
+      <DockPanel>
+        <ctl:BrandLogo DockPanel.Dock="Left" VerticalAlignment="Center" Height="34" Fill="{DynamicResource WinSU.TextBrush}" />
+        <StackPanel Classes="wiiuTitles" IsVisible="{Binding SettingsTab.IsSelected}">
+          <TextBlock Classes="wiiuTitle" Text="{Binding PageTitle}" />
+        </StackPanel>
+      </DockPanel>
+      <ctl:ClockText Grid.Column="1" Classes="wiiuClock" />
+      <Border x:Name="NamePill" Grid.Column="2" Classes="namePill" IsVisible="False">
+        <TextBlock x:Name="NameText" />
+      </Border>
+    </Grid>
+
+    <!-- Icônes du bas, à la place de Miiverse, eShop… (D-54) : la page affichée est marquée d'un trait -->
+    <Panel IsVisible="{Binding !SettingsTab.IsSelected}">
+      <Border Classes="dock">
+        <StackPanel Classes="wiiuDock">
+          <Button x:Name="HomeIcon" Classes="wiiuIcon iconTile" Command="{Binding OpenPageCommand}" CommandParameter="{Binding HomeTab}"
+                  wu:FocusName.Text="{loc:Tr win_tab_home}">
+            <Panel>
+              <Border Classes="iconPlate" />
+              <Path Classes="reliefDepth" Data="{StaticResource WinSU.IconHome}" />
+              <Path Classes="reliefFace" Data="{StaticResource WinSU.IconHome}" />
+              <Border Classes="pageMark" IsVisible="{Binding HomeTab.IsSelected}" />
+            </Panel>
+          </Button>
+          <Button x:Name="GamesIcon" Classes="wiiuIcon iconTile" Command="{Binding OpenPageCommand}" CommandParameter="{Binding GamesTab}"
+                  wu:FocusName.Text="{loc:Tr win_tab_games}">
+            <Panel>
+              <Border Classes="iconPlate" />
+              <Path Classes="reliefDepth" Data="{StaticResource WinSU.IconGamepad}" />
+              <Path Classes="reliefFace" Data="{StaticResource WinSU.IconGamepad}" />
+              <Border Classes="pageMark" IsVisible="{Binding GamesTab.IsSelected}" />
+            </Panel>
+          </Button>
+          <Button x:Name="SettingsIcon" Classes="wiiuIcon iconTile" Command="{Binding OpenPageCommand}" CommandParameter="{Binding SettingsTab}"
+                  wu:FocusName.Text="{loc:Tr win_tab_settings}">
+            <Panel>
+              <Border Classes="iconPlate" />
+              <Path Classes="reliefDepth" Data="{StaticResource WinSU.IconGear}" />
+              <Path Classes="reliefFace" Data="{StaticResource WinSU.IconGear}" />
+            </Panel>
+          </Button>
+          <!-- Alimentation (menu du bouton Start) : dans la rangée, à la place de Réglages (30.13, D-120 : plus de coin) -->
+          <Button x:Name="PowerIcon" Classes="wiiuIcon iconTile" Command="{Binding OpenPowerMenuCommand}"
+                  wu:FocusName.Text="{loc:Tr win_hint_power}">
+            <Panel>
+              <Border Classes="iconPlate" />
+              <Path Classes="reliefDepth" Data="{StaticResource WinSU.IconPower}" />
+              <Path Classes="reliefFace" Data="{StaticResource WinSU.IconPower}" />
+            </Panel>
+          </Button>
+        </StackPanel>
+      </Border>
+
+    </Panel>
+  </Grid>
+</UserControl>

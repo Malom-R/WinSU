@@ -1,0 +1,2 @@
+# Fins de ligne : LF partout, comme les fichiers fabriqués par tools/dev/make_public.py (sinon un pull les réécrirait en CRLF)
+* text=auto eol=lf

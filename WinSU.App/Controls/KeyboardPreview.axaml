@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             x:Class="WinSU.App.Controls.KeyboardPreview"
+             x:DataType="vm:KeyboardPreviewViewModel">
+  <!-- Clavier dessiné de l'écran « Boutons » (étape 32, D-130) : les touches en verre plat, contour du thème ; la touche
+       enfoncée s'allume au dégradé du thème, comme les touches de l'aperçu de la manette. Mis à l'échelle de sa zone. -->
+  <UserControl.Styles>
+    <Style Selector="ItemsControl.keyboard > ContentPresenter" x:DataType="vm:KeyCapViewModel">
+      <Setter Property="Canvas.Left" Value="{Binding X}" />
+      <Setter Property="Canvas.Top" Value="{Binding Y}" />
+    </Style>
+    <Style Selector="Border.keyCap">
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="BorderThickness" Value="1.5" />
+      <Setter Property="Padding" Value="4,2" />
+      <Setter Property="Background" Value="{DynamicResource WinSU.GlassFlatBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WinSU.AccentBrush}" />
+      <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassFlatShadow}" />
+    </Style>
+    <Style Selector="Border.keyCap TextBlock">
+      <Setter Property="FontSize" Value="19" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+    </Style>
+    <Style Selector="Border.keyCap.lit">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+    </Style>
+    <Style Selector="Border.keyCap.lit TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+    </Style>
+  </UserControl.Styles>
+
+  <Viewbox Stretch="Uniform" StretchDirection="Both">
+    <ItemsControl Classes="keyboard" ItemsSource="{Binding Keys}" Width="{Binding Width}" Height="{Binding Height}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Canvas />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:KeyCapViewModel">
+          <Border Classes="keyCap" Classes.lit="{Binding IsLit}" Width="{Binding Width}" Height="{Binding Height}">
+            <!-- Un nom long (« Retour arrière ») se réduit pour tenir dans sa touche -->
+            <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
+              <TextBlock Text="{Binding Label}" />
+            </Viewbox>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </Viewbox>
+</UserControl>

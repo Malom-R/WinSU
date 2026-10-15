@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Switch.HomeTabView"
+             x:DataType="sh:HomeTabViewModel">
+  <!-- Accueil du style Switch (M15) : une seule rangée en bas, au-dessus de la barre ; la bannière héro dans la zone
+       verte de la référence. L'heure et les boutons ronds sont dans l'écran principal (Views/Switch/HomeShellView). -->
+  <!-- Zone du haut et zone de la rangée dans le rapport 1 : φ (nombre d'or, étape 25) -->
+  <Grid RowDefinitions="1*,1.618*">
+    <!-- banner_top (E8) : toute la largeur et toute la hauteur, derrière la rangée et la barre du bas ; bannière de
+         l'entrée récente choisie, effacée ailleurs (D-26). Étape 28 (D-83, retour de l'utilisateur) : l'image seule porte
+         son dégradé ; plus d'opacité d'ensemble ni de dégradé de l'écran (avant : 70 % et plein en bas → 0 % en haut,
+         étape 26 ; 75 % → 0 % à 90 %, R21 ; 30 % à l'origine, D-51) -->
+    <Border x:Name="banner_top" Grid.RowSpan="2" ClipToBounds="True" IsHitTestVisible="False">
+      <!-- Image entière, sur toute la largeur, au milieu de l'écran : 100 % sur sa ligne du milieu, puis de moins en
+           moins jusqu'à 0 % à son bord haut et à son bord bas (HeroBanner.WholeFade) ; rien n'est coupé -->
+      <ctl:HeroBanner Source="{Binding Hero}" Fit="Whole" />
+    </Border>
+
+    <!-- Logo du jeu choisi (étape 33, maquette Sprite-0011) : en haut au milieu, entre l'heure et les boutons ronds -->
+    <ctl:GameLogo Classes="switchLogo" Source="{Binding Logo}" />
+
+    <!-- La rangée : jeux récents, puis « Jeux » (D-52 ; plus de « Apps » depuis 30.13, D-119) ; le nom
+         au-dessus de la tuile choisie, sauf quand son logo est affiché (étape 33, D-141 : classe hasLogo) -->
+    <ScrollViewer x:Name="RowScroller" Grid.Row="1" VerticalAlignment="Bottom" Margin="0,0,0,64" Padding="32,0"
+                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+      <StackPanel Orientation="Horizontal">
+        <ListBox x:Name="RecentList" Classes="tiles switchRow" Classes.hasLogo="{Binding Logo, Converter={x:Static ObjectConverters.IsNotNull}}"
+                 ItemsSource="{Binding Recent}" SelectedItem="{Binding SelectedRecent}"
+                 IsVisible="{Binding HasRecent}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.DataTemplates>
+            <DataTemplate x:DataType="sh:GameTileViewModel">
+              <StackPanel Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+                <Border Classes="nameTab"><TextBlock Text="{Binding Name}" /></Border>
+                <ctl:GameTile />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.DataTemplates>
+        </ListBox>
+
+        <Button x:Name="GamesTile" Classes="tileButton" Click="OnGamesClick" VerticalAlignment="Top">
+          <StackPanel Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+            <Border Classes="nameTab"><TextBlock Text="{loc:Tr win_tab_games}" /></Border>
+            <ctl:TileArt Size="{x:Static ctl:TileMetrics.GameSize}">
+              <Border Classes="tileGenerated folder">
+                <Path Classes="icon" Data="{StaticResource WinSU.IconGrid}" Width="56" Height="56" />
+              </Border>
+            </ctl:TileArt>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

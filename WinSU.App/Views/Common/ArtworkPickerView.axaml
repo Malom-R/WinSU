@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Common.ArtworkPickerView"
+             x:DataType="sh:ArtworkPickerViewModel"
+             ClipToBounds="False">
+
+  <!-- « Chercher sur SteamGridDB » (étape 31, D-116), mis en page d'après la maquette Sprite-0004 (étape 32) : titre en
+       capsule (« Recherche Image »), les boutons à sa droite, l'état de la recherche dessous, puis les jeux ou les vignettes
+       sur toute la largeur, posés sur le fond, chaque rangée centrée ; ils défilent sur toute la hauteur (étape 33) : ce qui
+       passe sous l'en-tête ou sous la barre d'aide est atténué (Controls/HeaderRoom, Controls/Covers). Les trois styles
+       reprennent cette vue. -->
+  <Panel>
+    <Panel IsVisible="{Binding ShowsList}">
+      <!-- Plusieurs jeux : nom, année, « vérifié » -->
+      <ListBox x:Name="GameList" Classes="cards wide pageCards" ctl:Covers.FadeItems="True" ctl:HeaderRoom.Header="{Binding #Header}"
+               ItemsSource="{Binding Games}" IsVisible="{Binding ShowsGames}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="sh:ArtworkGameOptionViewModel">
+            <StackPanel Spacing="2">
+              <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+              <TextBlock Text="{Binding Detail}" Classes="muted" FontSize="14" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <!-- Les vignettes, à la forme de ce qu'elles deviendront (tuile carrée, bannière large) ; un logo entier sur le verre -->
+      <ListBox x:Name="ImageList" Classes="tiles pageGrid" ctl:Covers.FadeItems="True" ctl:HeaderRoom.Header="{Binding #Header}"
+               ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" IsVisible="{Binding ShowsImages}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="sh:ArtworkTileViewModel">
+            <ctl:TileArt Classes.logo="{Binding IsLogo}" Width="{Binding TileWidth}" Height="{Binding TileHeight}">
+              <Panel Classes="tileBody">
+                <Border Classes="tileFace">
+                  <Image Classes="artThumb" Source="{Binding Thumbnail}" RenderOptions.BitmapInterpolationMode="HighQuality" />
+                </Border>
+              </Panel>
+            </ctl:TileArt>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Panel>
+
+    <!-- L'en-tête, par-dessus les listes -->
+    <StackPanel x:Name="Header" Classes="pageHeader">
+      <Grid ColumnDefinitions="Auto,*">
+        <Border Classes="pageTitle">
+          <TextBlock Text="{Binding Title}" />
+        </Border>
+        <!-- Une ligne à droite du titre ; plusieurs quand la place manque (portrait) -->
+        <WrapPanel Grid.Column="1" Classes="titleButtons">
+          <Button x:Name="RetryButton" Classes="menu" IsVisible="{Binding CanRetry}"
+                  Content="{loc:Tr win_sgdb_retry}" Command="{Binding RetryCommand}" />
+          <Button x:Name="EditButton" Classes="menu" IsVisible="{Binding CanEditSearch}"
+                  Content="{loc:Tr win_sgdb_edit_search}" Command="{Binding EditSearchCommand}" />
+          <Button x:Name="OtherGameButton" Classes="menu" IsVisible="{Binding CanChangeGame}"
+                  Content="{loc:Tr win_sgdb_other_game}" Command="{Binding ChangeGameCommand}" />
+        </WrapPanel>
+      </Grid>
+      <StackPanel Classes="pageStatus">
+        <TextBlock Text="{Binding StatusText}" Classes="muted" FontSize="16" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding DetailText}" Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="15"
+                   IsVisible="{Binding ShowsImages}" />
+      </StackPanel>
+    </StackPanel>
+  </Panel>
+</UserControl>

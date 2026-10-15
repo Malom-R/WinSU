@@ -1,0 +1,104 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WinSU.App.ViewModels"
+        xmlns:ctl="using:WinSU.App.Controls"
+        xmlns:loc="using:WinSU.App.Localization"
+        x:Class="WinSU.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="WinSU"
+        Icon="/WinSU.ico"
+        MinWidth="400"
+        MinHeight="400"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WinSU.BackgroundBrush}"
+        Foreground="{DynamicResource WinSU.TextBrush}"
+        FontFamily="{DynamicResource WinSU.BodyFont}"
+        FontWeight="Medium">
+
+  <Panel>
+    <!-- Fond : lampe à lave et motif, derrière toutes les pages ; les gouttes avancent quand l'utilisateur se sert de WinSU -->
+    <ctl:Backdrop IsRunning="{Binding Backdrop.IsRunning}" />
+    <!-- Tout le reste en cache (essai de M10, section 16 des notes) : à chaque image de la lampe à lave, le compositeur
+         redessine le fond puis pose l'interface déjà rendue, au lieu de redessiner chaque panneau, tuile et ombre
+         (au repos : 10 % d'un cœur au lieu de 58 %). Le cache est refait dès que l'interface change. -->
+    <Panel x:Name="UiRoot">
+      <Panel.CacheMode>
+        <BitmapCache />
+      </Panel.CacheMode>
+      <!-- Le cache couvre toujours toute la fenêtre (étape 29, défaut 29.12) : la couche en cache ne fait redessiner que
+           la zone où elle dessine. Quand un écran plus étroit en remplace un autre (style Wii U puis Standard), les marges
+           gardaient l'image de l'ancien tant que la lampe à lave ne bougeait pas. Ce fond invisible les y inclut. -->
+      <Border Background="Transparent" IsHitTestVisible="False" />
+      <!-- Toute l'interface est mise à l'échelle de la fenêtre (Controls/UiScale, étape 25) : dessinée comme dans une
+           fenêtre de référence en rectangle d'or, puis agrandie ou réduite. La transformation est sous le cache : il est
+           rendu à la taille de la fenêtre, donc net. -->
+      <LayoutTransformControl x:Name="Scaler">
+    <Grid RowDefinitions="*,Auto">
+      <ContentControl x:Name="PageHost" Content="{Binding CurrentPage}" ctl:PageFade.IsEnabled="True" />
+      <!-- Relais invisible du focus (voir MainWindow.OnActivated) : hors des écrans, donc jamais atteint par les flèches. -->
+      <Border x:Name="FocusSink" Focusable="True" Width="1" Height="1" Opacity="0" IsHitTestVisible="False"
+              HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+      <!-- Fenêtres superposées (menu contextuel, confirmation) : voile tiré du thème sur toute la fenêtre (D-170),
+           clic à l'extérieur = annuler. La barre d'aide, déclarée après, reste lisible par-dessus. -->
+      <Grid x:Name="OverlayHost" Grid.RowSpan="2" IsVisible="{Binding HasOverlay}" Background="{DynamicResource WinSU.ScrimBrush}">
+        <!-- Toute la fenêtre : chaque vue se place (dialogues au milieu, menus collés au bord droit, 30.14) -->
+        <ContentControl Content="{Binding CurrentOverlay}" />
+      </Grid>
+
+      <!-- Barre d'aide : icônes de manette ou touches du clavier selon le dernier périphérique utilisé. Style Switch (M15) :
+           barre pleine largeur, logo et nom de l'écran à gauche (Themes/Controls.axaml, classe « switch » de la fenêtre).
+           Style Wii U (M16) : masquée sur les écrans du style (IHintBarPlacement). -->
+      <!-- Les tuiles d'une file qui passent dessous sont atténuées (ctl:Covers, étapes 30 et 32) -->
+      <Border x:Name="HintBar" Grid.Row="1" Classes="hintbar" ctl:Covers.IsCover="True">
+        <!-- Aides dans la colonne étoilée : leur largeur y est bornée, elles passent à la ligne s'il le faut (portrait) -->
+        <Grid ColumnDefinitions="Auto,*">
+        <StackPanel Classes="hintTitle" Orientation="Horizontal" Spacing="16" VerticalAlignment="Center" Margin="0,0,24,0">
+          <ctl:BrandLogo VerticalAlignment="Center" Height="20" Fill="{DynamicResource WinSU.TextBrush}" />
+          <TextBlock Text="{Binding CurrentPage.PageTitle}" FontSize="17" VerticalAlignment="Center" />
+        </StackPanel>
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding Hints}" HorizontalAlignment="Right">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <!-- Une ligne ; deux quand la fenêtre est trop étroite (portrait, étape 25) -->
+              <WrapPanel Orientation="Horizontal" ItemSpacing="28" LineSpacing="6" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:HintItem">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <Border Classes="keycap" Classes.glyph="{Binding IsGlyph}">
+                  <TextBlock Text="{Binding KeyText}" Tag="{Binding Tint}" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </Grid>
+      </Border>
+
+      <!-- Pendant un jeu (D-182) : au milieu de l'écran, sur le voile du thème, par-dessus tout (pages, barre d'aide,
+           fenêtres superposées). Le voile s'assombrit puis la fenêtre apparaît, l'inverse au retour (Controls/VeilFade,
+           posé par MainWindow) ; il prend tous les clics, la molette et le survol pendant le jeu seulement (au retour, les
+           entrées reviennent tout de suite, le fondu ne fait que finir). Seul « Reprendre WinSU » se touche, à la souris :
+           il arrête de suivre un jeu qui ne se fermerait pas. La carte est dans un panneau qui fond (la sienne s'anime
+           seule à l'affichage, comme les boîtes de dialogue). -->
+      <Grid x:Name="GameHold" Grid.RowSpan="2" IsVisible="False" IsHitTestVisible="{Binding IsGameRunning}"
+            Background="{DynamicResource WinSU.ScrimBrush}">
+        <Panel x:Name="GameHoldCard">
+        <Border Classes="overlayCard">
+          <StackPanel Spacing="16">
+            <TextBlock Text="{loc:Tr win_game_running_title}" Classes="section" FontSize="24" TextWrapping="Wrap" />
+            <TextBlock Text="{loc:Tr win_game_running_message}" Classes="muted" FontSize="17" TextWrapping="Wrap" />
+            <Button Classes="menu" MinWidth="170" FontSize="18" Padding="20,12" Margin="0,12,0,0" HorizontalAlignment="Right"
+                    Focusable="False" Content="{loc:Tr win_game_resume}" Command="{Binding ResumeCommand}" />
+          </StackPanel>
+        </Border>
+        </Panel>
+      </Grid>
+    </Grid>
+      </LayoutTransformControl>
+    </Panel>
+  </Panel>
+</Window>

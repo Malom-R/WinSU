@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 3,
+  "consoles": [
+    {
+      "id": "nes",
+      "aliases": [
+        "famicom"
+      ],
+      "name": "Nintendo Entertainment System",
+      "alternativeNames": [
+        "Famicom",
+        "NES"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 1983,
+      "color": "#B3262E",
+      "icon": "Icons/nes.png",
+      "pad": "Icons/Pads/nes.png"
+    },
+    {
+      "id": "snes",
+      "aliases": [
+        "sfc"
+      ],
+      "name": "Super Nintendo Entertainment System",
+      "alternativeNames": [
+        "Super Famicom",
+        "Super Nintendo",
+        "SNES"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 1990,
+      "color": "#6B4FBB",
+      "icon": "Icons/snes.png",
+      "pad": "Icons/Pads/snes.png"
+    },
+    {
+      "id": "n64",
+      "aliases": [],
+      "name": "Nintendo 64",
+      "alternativeNames": [
+        "N64"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 1996,
+      "color": "#1F8F4E",
+      "icon": "Icons/n64.png",
+      "pad": "Icons/Pads/n64.png"
+    },
+    {
+      "id": "gc",
+      "aliases": [],
+      "name": "Nintendo GameCube",
+      "alternativeNames": [
+        "GameCube"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2001,
+      "color": "#4C3FA6",
+      "icon": "Icons/gc.png",
+      "pad": "Icons/Pads/gc.png"
+    },
+    {
+      "id": "wii",
+      "aliases": [],
+      "name": "Wii",
+      "alternativeNames": [],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2006,
+      "color": "#2196D3",
+      "icon": "Icons/wii.png",
+      "pad": "Icons/Pads/wii.png"
+    },
+    {
+      "id": "wiiu",
+      "aliases": [],
+      "name": "Wii U",
+      "alternativeNames": [],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2012,
+      "color": "#008C9E",
+      "icon": "Icons/wiiu.png",
+      "pad": "Icons/Pads/wiiu.png"
+    },
+    {
+      "id": "switch",
+      "aliases": [],
+      "name": "Nintendo Switch",
+      "alternativeNames": [
+        "Switch"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2017,
+      "color": "#E3352B",
+      "icon": "Icons/switch.png",
+      "pad": "Icons/Pads/switch.png"
+    },
+    {
+      "id": "gb",
+      "aliases": [],
+      "name": "Game Boy",
+      "alternativeNames": [
+        "GB"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 1989,
+      "color": "#6E7F22",
+      "icon": "Icons/gb.png",
+      "pad": "Icons/Pads/gb.png"
+    },
+    {
+      "id": "gbc",
+      "aliases": [],
+      "name": "Game Boy Color",
+      "alternativeNames": [
+        "GBC"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 1998,
+      "color": "#D98A00",
+      "icon": "Icons/gbc.png",
+      "pad": "Icons/Pads/gbc.png"
+    },
+    {
+      "id": "gba",
+      "aliases": [],
+      "name": "Game Boy Advance",
+      "alternativeNames": [
+        "GBA"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2001,
+      "color": "#5C49C9",
+      "icon": "Icons/gba.png",
+      "pad": "Icons/Pads/gba.png"
+    },
+    {
+      "id": "nds",
+      "aliases": [],
+      "name": "Nintendo DS",
+      "alternativeNames": [
+        "DS"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2004,
+      "color": "#5A6B78",
+      "icon": "Icons/nds.png",
+      "pad": "Icons/Pads/nds.png"
+    },
+    {
+      "id": "n3ds",
+      "aliases": [],
+      "name": "Nintendo 3DS",
+      "alternativeNames": [
+        "3DS"
+      ],
+      "manufacturer": "Nintendo",
+      "releaseYear": 2011,
+      "color": "#C7224F",
+      "icon": "Icons/n3ds.png",
+      "pad": "Icons/Pads/n3ds.png"
+    },
+    {
+      "id": "megadrive",
+      "aliases": [
+        "genesis"
+      ],
+      "name": "Sega Mega Drive",
+      "alternativeNames": [
+        "Sega Genesis",
+        "Genesis"
+      ],
+      "manufacturer": "Sega",
+      "releaseYear": 1988,
+      "color": "#1B4FA0",
+      "icon": "Icons/megadrive.png",
+      "pad": "Icons/Pads/megadrive.png"
+    },
+    {
+      "id": "sega32x",
+      "aliases": [
+        "sega32xjp",
+        "sega32xna"
+      ],
+      "name": "Sega 32X",
+      "alternativeNames": [
+        "Super 32X",
+        "Genesis 32X"
+      ],
+      "manufacturer": "Sega",
+      "releaseYear": 1994,
+      "color": "#D2462B",
+      "icon": "Icons/sega32x.png",
+      "pad": "Icons/Pads/sega32x.png"
+    },
+    {
+      "id": "saturn",
+      "aliases": [],
+      "name": "Sega Saturn",
+      "alternativeNames": [
+        "Saturn"
+      ],
+      "manufacturer": "Sega",
+      "releaseYear": 1994,
+      "color": "#4E5D6C",
+      "icon": "Icons/saturn.png",
+      "pad": "Icons/Pads/saturn.png"
+    },
+    {
+      "id": "dreamcast",
+      "aliases": [],
+      "name": "Sega Dreamcast",
+      "alternativeNames": [
+        "Dreamcast"
+      ],
+      "manufacturer": "Sega",
+      "releaseYear": 1998,
+      "color": "#E67A1E",
+      "icon": "Icons/dreamcast.png",
+      "pad": "Icons/Pads/dreamcast.png"
+    },
+    {
+      "id": "gamegear",
+      "aliases": [],
+      "name": "Sega Game Gear",
+      "alternativeNames": [
+        "Game Gear"
+      ],
+      "manufacturer": "Sega",
+      "releaseYear": 1990,
+      "color": "#2F3E9E",
+      "icon": "Icons/gamegear.png",
+      "pad": "Icons/Pads/gamegear.png"
+    },
+    {
+      "id": "psx",
+      "aliases": [],
+      "name": "PlayStation",
+      "alternativeNames": [
+        "PS1",
+        "PSX",
+        "PS one"
+      ],
+      "manufacturer": "Sony",
+      "releaseYear": 1994,
+      "color": "#7A7F8C",
+      "icon": "Icons/psx.png",
+      "pad": "Icons/Pads/psx.png"
+    },
+    {
+      "id": "ps2",
+      "aliases": [],
+      "name": "PlayStation 2",
+      "alternativeNames": [
+        "PS2"
+      ],
+      "manufacturer": "Sony",
+      "releaseYear": 2000,
+      "color": "#1E3A8A",
+      "icon": "Icons/ps2.png",
+      "pad": "Icons/Pads/ps2.png"
+    },
+    {
+      "id": "ps3",
+      "aliases": [],
+      "name": "PlayStation 3",
+      "alternativeNames": [
+        "PS3"
+      ],
+      "manufacturer": "Sony",
+      "releaseYear": 2006,
+      "color": "#3B3F47",
+      "icon": "Icons/ps3.png",
+      "pad": "Icons/Pads/ps3.png"
+    },
+    {
+      "id": "psp",
+      "aliases": [],
+      "name": "PlayStation Portable",
+      "alternativeNames": [
+        "PSP"
+      ],
+      "manufacturer": "Sony",
+      "releaseYear": 2004,
+      "color": "#455A6E",
+      "icon": "Icons/psp.png",
+      "pad": "Icons/Pads/psp.png"
+    },
+    {
+      "id": "psvita",
+      "aliases": [],
+      "name": "PlayStation Vita",
+      "alternativeNames": [
+        "PS Vita"
+      ],
+      "manufacturer": "Sony",
+      "releaseYear": 2011,
+      "color": "#1565C0",
+      "icon": "Icons/psvita.png",
+      "pad": "Icons/Pads/psvita.png"
+    },
+    {
+      "id": "xbox",
+      "aliases": [],
+      "name": "Xbox",
+      "alternativeNames": [],
+      "manufacturer": "Microsoft",
+      "releaseYear": 2001,
+      "color": "#3E7A1E",
+      "icon": "Icons/xbox.png",
+      "pad": "Icons/Pads/xbox.png"
+    },
+    {
+      "id": "xbox360",
+      "aliases": [],
+      "name": "Xbox 360",
+      "alternativeNames": [],
+      "manufacturer": "Microsoft",
+      "releaseYear": 2005,
+      "color": "#6BAA2C",
+      "icon": "Icons/xbox360.png",
+      "pad": "Icons/Pads/xbox360.png"
+    },
+    {
+      "id": "windows",
+      "aliases": [],
+      "name": "Windows",
+      "alternativeNames": [
+        "Microsoft Windows",
+        "PC"
+      ],
+      "manufacturer": "Microsoft",
+      "releaseYear": 1985,
+      "color": "#0A78D7",
+      "icon": "Icons/windows.png",
+      "pad": "Icons/Pads/windows.png"
+    }
+  ]
+}

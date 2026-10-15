@@ -1,0 +1,21 @@
+Sons d'interface de WinSU — Interface sounds of WinSU
+=====================================================
+
+Source : « Interface Sounds » 1.0 de Kenney (www.kenney.nl), https://kenney.nl/assets/interface-sounds
+Licence : Creative Commons Zero (CC0 1.0, domaine public), https://creativecommons.org/publicdomain/zero/1.0/
+          « This content is free to use in personal, educational and commercial projects. » Le crédit n'est pas
+          obligatoire ; WinSU le donne volontiers. Credit is not required; WinSU gives it anyway.
+Auteur : Kenney Vleugels (Kenney).
+
+Modifications : fichiers Ogg Vorbis renommés d'après leur usage dans WinSU, contenu inchangé. WinSU baisse leur niveau
+à la lecture (Infrastructure/Audio/UiSoundPlayer.cs) pour l'accorder entre eux.
+Changes: Ogg Vorbis files renamed after their use in WinSU, content unchanged; WinSU lowers their level when playing them.
+
+Correspondance — Mapping (WinSU → Kenney, dossier Audio/)
+navigate.ogg       glass_006.ogg         déplacement du focus — focus moves
+open.ogg           maximize_009.ogg      Confirmer, écran ou fenêtre qui s'ouvre — confirm, screen or window opens
+close.ogg          minimize_009.ogg      Retour, fenêtre qui se ferme — back, window closes
+context_menu.ogg   toggle_001.ogg        menu Options — Options menu
+enter_console.ogg  select_001.ogg        entrée dans une console — entering a console
+exit_console.ogg   select_003.ogg        sortie d'une console — leaving a console
+launch.ogg         confirmation_001.ogg  lancement d'un jeu — launching a game

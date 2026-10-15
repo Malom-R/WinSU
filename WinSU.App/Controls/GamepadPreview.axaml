@@ -1,0 +1,171 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             x:Class="WinSU.App.Controls.GamepadPreview"
+             ClipToBounds="False"
+             x:DataType="vm:GamepadPreviewViewModel">
+  <!-- Aperçu de la manette (étape 22 ; dessin propre à WinSU depuis l'étape 38, D-191) : silhouette symétrique dans le repère
+       de GamepadMetrics, mis à l'échelle ; corps en verre du thème, poignées dans l'accent foncé du thème, contour et
+       épaisseur d'accent ; sticks, croix et boutons de face chacun dans une pastille ; touches en contour, sans lettres (le
+       glyphe n'est que dans la dernière action, dessous) ni bouton Guide, allumées au dégradé du thème ; gâchettes et
+       boutons de tranche au-dessus du corps. Sans manette reconnue : silhouette atténuée.
+       Les tracés (StreamGeometry) sont écrits par tools/dev/gamepad_shape.py : les changer là, puis relancer l'outil. -->
+  <UserControl.Resources>
+    <!-- Corps : face ; l'épaisseur est le même tracé décalé vers le bas -->
+    <StreamGeometry x:Key="PadShape">M 383,160 C 330,160 290,158 244,158 C 180,155 134,176 110,214 C 86,254 66,330 52,410 C 40,478 30,548 42,586 C 56,626 106,640 140,618 C 170,598 194,560 220,528 C 244,498 270,484 306,480 C 334,477 358,476 383,476 C 408,476 432,477 460,480 C 496,484 522,498 546,528 C 572,560 596,598 626,618 C 660,640 710,626 724,586 C 736,548 726,478 714,410 C 700,330 680,254 656,214 C 632,176 586,155 522,158 C 476,158 436,160 383,160 Z</StreamGeometry>
+    <!-- Poignées : zones coupées au contour du corps -->
+    <StreamGeometry x:Key="PadGrips">M -55,290 C 86,330 173,420 228,580 L 228,700 L -55,700 Z M 821,290 C 680,330 593,420 538,580 L 538,700 L 821,700 Z</StreamGeometry>
+    <!-- Croix : quatre branches, chacune s'allume seule -->
+    <StreamGeometry x:Key="PadArmUp">M 282,351 Q 282,344 289,344 L 307,344 Q 314,344 314,351 L 314,376 L 298,392 L 282,376 Z</StreamGeometry>
+    <StreamGeometry x:Key="PadArmRight">M 339,376 Q 346,376 346,383 L 346,401 Q 346,408 339,408 L 314,408 L 298,392 L 314,376 Z</StreamGeometry>
+    <StreamGeometry x:Key="PadArmDown">M 314,433 Q 314,440 307,440 L 289,440 Q 282,440 282,433 L 282,408 L 298,392 L 314,408 Z</StreamGeometry>
+    <StreamGeometry x:Key="PadArmLeft">M 257,408 Q 250,408 250,401 L 250,383 Q 250,376 257,376 L 282,376 L 298,392 L 282,408 Z</StreamGeometry>
+  </UserControl.Resources>
+
+  <UserControl.Styles>
+    <Style Selector="Path.padBody">
+      <Setter Property="Fill" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    </Style>
+    <Style Selector="Path.padGrip">
+      <Setter Property="Fill" Value="{DynamicResource WinSU.AccentStrongBrush}" />
+    </Style>
+    <!-- Contour, par-dessus les poignées -->
+    <Style Selector="Path.padOutline">
+      <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentBrush}" />
+      <Setter Property="StrokeThickness" Value="3" />
+    </Style>
+    <Style Selector="Path.padDepth">
+      <Setter Property="Fill" Value="{DynamicResource WinSU.AccentStrongBrush}" />
+      <Setter Property="Opacity" Value="0.35" />
+    </Style>
+    <!-- Pastille d'un groupe ; celle d'un stick s'allume quand il compte comme une direction -->
+    <Style Selector="Ellipse.padRing">
+      <Setter Property="Width" Value="{x:Static ctl:GamepadMetrics.StickBaseSize}" />
+      <Setter Property="Height" Value="{x:Static ctl:GamepadMetrics.StickBaseSize}" />
+      <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentBrush}" />
+      <Setter Property="StrokeThickness" Value="4" />
+      <Setter Property="Opacity" Value="0.55" />
+    </Style>
+    <Style Selector="Ellipse.padRing.lit">
+      <Setter Property="Stroke" Value="{DynamicResource WinSU.FocusRingBrush}" />
+      <Setter Property="StrokeThickness" Value="6" />
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <!-- Touches : contour de la couleur du texte ; allumées au dégradé du thème -->
+    <Style Selector="Path.padArm, Ellipse.padKey">
+      <Setter Property="Fill" Value="Transparent" />
+      <Setter Property="Stroke" Value="{DynamicResource WinSU.TextBrush}" />
+      <Setter Property="StrokeThickness" Value="3.5" />
+      <Setter Property="StrokeJoin" Value="Round" />
+    </Style>
+    <Style Selector="Path.padArm.lit, Ellipse.padKey.lit">
+      <Setter Property="Fill" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+      <Setter Property="Stroke" Value="{DynamicResource WinSU.AccentBrush}" />
+    </Style>
+    <Style Selector="Border.padKey">
+      <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WinSU.TextBrush}" />
+      <Setter Property="BorderThickness" Value="3.5" />
+    </Style>
+    <Style Selector="Border.padKey.lit">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WinSU.AccentBrush}" />
+      <Setter Property="BoxShadow" Value="{DynamicResource WinSU.FocusGlow}" />
+    </Style>
+    <Style Selector="Border.padKey.stick">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="CornerRadius" Value="999" />
+    </Style>
+    <Style Selector="Border.padKey.stick.lit">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    </Style>
+    <Style Selector="Border.triggerFill">
+      <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+    <Style Selector="Viewbox.idle">
+      <Setter Property="Opacity" Value="0.4" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid RowDefinitions="*,Auto">
+    <Viewbox Stretch="Uniform" Classes.idle="{Binding !HasGamepad}">
+      <Canvas Width="{x:Static ctl:GamepadMetrics.Width}" Height="{x:Static ctl:GamepadMetrics.Height}">
+        <!-- Gâchettes : pilules verticales au-dessus des épaules, qui se remplissent par le bas selon la pression -->
+        <Border Classes="padKey" Classes.lit="{Binding LeftTrigger.IsLit}" Canvas.Left="200" Canvas.Top="22"
+                Width="46" Height="{x:Static ctl:GamepadMetrics.TriggerHeight}" CornerRadius="23" ClipToBounds="True">
+          <Border Classes="triggerFill" Height="{Binding LeftTrigger.Value, Converter={x:Static ctl:GamepadMetrics.TriggerFill}}" />
+        </Border>
+        <Border Classes="padKey" Classes.lit="{Binding RightTrigger.IsLit}" Canvas.Left="520" Canvas.Top="22"
+                Width="46" Height="{x:Static ctl:GamepadMetrics.TriggerHeight}" CornerRadius="23" ClipToBounds="True">
+          <Border Classes="triggerFill" Height="{Binding RightTrigger.Value, Converter={x:Static ctl:GamepadMetrics.TriggerFill}}" />
+        </Border>
+
+        <!-- Boutons de tranche : pilules horizontales, sous les gâchettes, séparées du corps -->
+        <Border Classes="padKey" Classes.lit="{Binding LeftShoulder.IsLit}" Canvas.Left="171" Canvas.Top="118" Width="104" Height="22" CornerRadius="11" />
+        <Border Classes="padKey" Classes.lit="{Binding RightShoulder.IsLit}" Canvas.Left="491" Canvas.Top="118" Width="104" Height="22" CornerRadius="11" />
+
+        <!-- Corps : une épaisseur décalée vers le bas, la face, les poignées (coupées au contour), puis le contour -->
+        <Path Classes="padDepth" Canvas.Top="28" Data="{StaticResource PadShape}" />
+        <Path Classes="padBody" Data="{StaticResource PadShape}" />
+        <Canvas Width="{x:Static ctl:GamepadMetrics.Width}" Height="{x:Static ctl:GamepadMetrics.Height}" Clip="{StaticResource PadShape}">
+          <Path Classes="padGrip" Data="{StaticResource PadGrips}" />
+        </Canvas>
+        <Path Classes="padOutline" Data="{StaticResource PadShape}" />
+
+        <!-- Stick gauche (en haut à gauche) : pastille allumée quand il compte comme une direction ; le stick se déplace
+             et s'allume quand il est cliqué -->
+        <Ellipse Classes="padRing" Classes.lit="{Binding LeftStick.IsTilted}" Canvas.Left="157" Canvas.Top="208" />
+        <Canvas Canvas.Left="157" Canvas.Top="208" Width="{x:Static ctl:GamepadMetrics.StickBaseSize}" Height="{x:Static ctl:GamepadMetrics.StickBaseSize}">
+          <Border Classes="padKey stick" Classes.lit="{Binding LeftStick.IsPressed}"
+                  Width="{x:Static ctl:GamepadMetrics.StickKnobSize}" Height="{x:Static ctl:GamepadMetrics.StickKnobSize}"
+                  Canvas.Left="{Binding LeftStick.X, Converter={x:Static ctl:GamepadMetrics.StickKnobOffset}}"
+                  Canvas.Top="{Binding LeftStick.Y, Converter={x:Static ctl:GamepadMetrics.StickKnobOffset}}" />
+        </Canvas>
+
+        <!-- Boutons de face (en haut à droite) : quatre ronds en losange, sans lettres -->
+        <Ellipse Classes="padRing" Canvas.Left="489" Canvas.Top="208" />
+        <Ellipse Classes="padKey" Classes.lit="{Binding North.IsLit}" Canvas.Left="532" Canvas.Top="213" Width="34" Height="34" />
+        <Ellipse Classes="padKey" Classes.lit="{Binding South.IsLit}" Canvas.Left="532" Canvas.Top="289" Width="34" Height="34" />
+        <Ellipse Classes="padKey" Classes.lit="{Binding West.IsLit}" Canvas.Left="494" Canvas.Top="251" Width="34" Height="34" />
+        <Ellipse Classes="padKey" Classes.lit="{Binding East.IsLit}" Canvas.Left="570" Canvas.Top="251" Width="34" Height="34" />
+
+        <!-- Select (Back) et Start : deux petits ronds de part et d'autre du milieu (pas de bouton Guide) -->
+        <Ellipse Classes="padKey" Classes.lit="{Binding Back.IsLit}" Canvas.Left="320" Canvas.Top="254" Width="28" Height="28" />
+        <Ellipse Classes="padKey" Classes.lit="{Binding Start.IsLit}" Canvas.Left="418" Canvas.Top="254" Width="28" Height="28" />
+
+        <!-- Croix (en bas à gauche) : chaque branche s'allume seule -->
+        <Ellipse Classes="padRing" Canvas.Left="238" Canvas.Top="332" />
+        <Path Classes="padArm" Classes.lit="{Binding DPadUp.IsLit}" Data="{StaticResource PadArmUp}" />
+        <Path Classes="padArm" Classes.lit="{Binding DPadRight.IsLit}" Data="{StaticResource PadArmRight}" />
+        <Path Classes="padArm" Classes.lit="{Binding DPadDown.IsLit}" Data="{StaticResource PadArmDown}" />
+        <Path Classes="padArm" Classes.lit="{Binding DPadLeft.IsLit}" Data="{StaticResource PadArmLeft}" />
+
+        <!-- Stick droit (en bas à droite) -->
+        <Ellipse Classes="padRing" Classes.lit="{Binding RightStick.IsTilted}" Canvas.Left="408" Canvas.Top="332" />
+        <Canvas Canvas.Left="408" Canvas.Top="332" Width="{x:Static ctl:GamepadMetrics.StickBaseSize}" Height="{x:Static ctl:GamepadMetrics.StickBaseSize}">
+          <Border Classes="padKey stick" Classes.lit="{Binding RightStick.IsPressed}"
+                  Width="{x:Static ctl:GamepadMetrics.StickKnobSize}" Height="{x:Static ctl:GamepadMetrics.StickKnobSize}"
+                  Canvas.Left="{Binding RightStick.X, Converter={x:Static ctl:GamepadMetrics.StickKnobOffset}}"
+                  Canvas.Top="{Binding RightStick.Y, Converter={x:Static ctl:GamepadMetrics.StickKnobOffset}}" />
+        </Canvas>
+      </Canvas>
+    </Viewbox>
+
+    <!-- Sous la manette, une seule ligne (la hauteur va à la manette) : son nom (ou pourquoi elle n'est pas suivie) à
+         gauche, la dernière action à droite : « Ⓐ → Valider » (au clavier : le nom de l'action seul) -->
+    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Height="36">
+      <TextBlock Text="{Binding Status}" Classes="muted" FontSize="15" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" Margin="16,0,0,0">
+        <TextBlock Classes="chipGlyph" Text="{Binding ActionGlyph}" Tag="{Binding ActionTint}" FontSize="28"
+                   IsVisible="{Binding ActionGlyph, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+        <TextBlock Text="{Binding ActionSource}" FontSize="18" VerticalAlignment="Center"
+                   IsVisible="{Binding ActionSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+        <TextBlock Text="→" Classes="muted" FontSize="18" VerticalAlignment="Center" IsVisible="{Binding HasActionSource}" />
+        <TextBlock Text="{Binding ActionLabel}" FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="24" VerticalAlignment="Center"
+                   Foreground="{DynamicResource WinSU.AccentBrush}" />
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

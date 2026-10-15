@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Common.ConsolePickerView"
+             x:DataType="sh:ConsolePickerViewModel"
+             ClipToBounds="False">
+
+  <!-- Ajouter une console (étape 32, maquette Sprite-0003) : titre en capsule, le catalogue sur toute la largeur, posé sur
+       le fond, chaque rangée centrée ; il défile sur toute la hauteur (étape 33) : les tuiles qui passent sous l'en-tête ou
+       sous la barre d'aide sont atténuées (Controls/HeaderRoom, Controls/Covers) -->
+  <Panel>
+    <ListBox x:Name="TileList" Classes="tiles pageGrid" ctl:Covers.FadeItems="True" ctl:HeaderRoom.Header="{Binding #Header}"
+             ItemsSource="{Binding Tiles}" SelectedItem="{Binding SelectedTile}">
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="vm:ConsoleTileViewModel">
+          <StackPanel Width="{x:Static ctl:TileMetrics.ConsoleSize}" Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+            <ctl:ConsoleTile />
+            <TextBlock Text="{Binding Name}" Classes="tileName" FontSize="15" />
+            <TextBlock Text="{Binding Subtitle}" Classes="muted" FontSize="13" TextTrimming="CharacterEllipsis" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <!-- L'en-tête, par-dessus la grille -->
+    <StackPanel x:Name="Header" Classes="pageHeader">
+      <Border Classes="pageTitle">
+        <TextBlock Text="{loc:Tr win_add_console}" />
+      </Border>
+      <StackPanel Classes="pageStatus">
+        <TextBlock Text="{Binding Summary}" Classes="muted" FontSize="16" />
+        <TextBlock Text="{loc:Tr win_catalog_empty}" IsVisible="{Binding IsEmpty}"
+                   Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="18" Margin="0,24,0,0" />
+      </StackPanel>
+    </StackPanel>
+  </Panel>
+</UserControl>

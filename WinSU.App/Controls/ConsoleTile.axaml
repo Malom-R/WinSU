@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Controls.ConsoleTile"
+             Classes="tile" ClipToBounds="False"
+             x:DataType="vm:ConsoleTileViewModel">
+  <!-- Tuile d'une console, la même dans les trois styles et dans « Ajouter une console » (étape 36) : son image, dessinée par
+       WinSU (Services/ConsoleArtPainter), à 90 % de la face sur le verre (D-24) ; « Ajoutée » en haut à droite quand la
+       console est déjà dans la bibliothèque (seul « Ajouter une console » le dit). Boîte d'une console, ou d'un jeu (GameBox). -->
+  <ctl:TileArt x:Name="Art" Size="{x:Static ctl:TileMetrics.ConsoleSize}">
+    <Panel Classes="tileBody">
+      <Border Classes="tileFace">
+        <Image x:Name="ArtImage" Source="{Binding Image}" Classes="consoleArt" RenderOptions.BitmapInterpolationMode="HighQuality" />
+      </Border>
+    </Panel>
+    <Border Classes="badge" IsVisible="{Binding IsAdded}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+      <TextBlock Text="{loc:Tr win_picker_added}" />
+    </Border>
+  </ctl:TileArt>
+</UserControl>

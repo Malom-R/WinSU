@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Standard.HomeTabView"
+             x:DataType="sh:HomeTabViewModel">
+
+  <!--
+    Accueil du Standard 2.0 (étape 30, maquette Sprite-0001, D-103), sur toute la page : les jeux et applications lancés
+    récemment en file diagonale à droite (du haut à droite, le plus récent, vers le bas à gauche) ; la tuile choisie reste au
+    point fixe et la file glisse (Controls/TrackPanel) ; Haut et Bas la parcourent. Derrière, la bannière héro de l'entrée
+    choisie occupe la droite de l'écran : 90 % d'opacité au bord droit, 0 % au bord des onglets.
+  -->
+  <Panel>
+    <!-- Zone banner_top : l'image couvre la zone, sa fin (bord droit) collée au bord droit de l'écran, son début coupé
+         à gauche (30.13) ; le masque l'efface de 90 % (#E6) au bord droit à 0 % à gauche -->
+    <Border x:Name="banner_top" Classes="heroRight" IsHitTestVisible="False" ClipToBounds="True">
+      <Border.OpacityMask>
+        <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+          <GradientStop Offset="0" Color="#00000000" />
+          <GradientStop Offset="0.3" Color="#59000000" />
+          <GradientStop Offset="0.65" Color="#CC000000" />
+          <GradientStop Offset="1" Color="#E6000000" />
+        </LinearGradientBrush>
+      </Border.OpacityMask>
+      <ctl:HeroBanner Source="{Binding Hero}" Fit="FillRight" />
+    </Border>
+
+    <!-- Logo du jeu choisi (étape 33, maquette Sprite-0010) : sous les onglets, au milieu de la place qui va jusqu'à la barre
+         d'aide (Themes/Standard.axaml) -->
+    <Panel Classes="logoZone">
+      <ctl:GameLogo Source="{Binding Logo}" />
+    </Panel>
+
+    <!-- File diagonale : Confirmer relance, Options ouvre le menu de l'entrée -->
+    <ListBox x:Name="RecentList" Classes="tiles diagonal showsChoice" ItemsSource="{Binding Recent}" SelectedItem="{Binding SelectedRecent}"
+             IsVisible="{Binding HasRecent}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:TrackPanel Classes="diagonal" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="sh:GameTileViewModel">
+          <ctl:GameTile />
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <!-- Rien de lancé encore (et, sans console, le chemin vers « Ajouter une console ») -->
+    <StackPanel Classes="homeEmpty" IsVisible="{Binding HasNoRecent}">
+      <TextBlock Text="{loc:Tr win_home_recent_empty}" Classes="muted" FontSize="18" TextWrapping="Wrap" />
+      <TextBlock Text="{loc:Tr win_home_no_consoles}" IsVisible="{Binding HasNoConsoles}" Classes="muted" FontSize="18" TextWrapping="Wrap" />
+      <Button Classes="menu" IsVisible="{Binding HasNoConsoles}" HorizontalAlignment="Left" FontSize="18" Padding="20,12"
+              Content="{loc:Tr win_add_console}" Command="{Binding AddConsoleCommand}" />
+    </StackPanel>
+  </Panel>
+</UserControl>

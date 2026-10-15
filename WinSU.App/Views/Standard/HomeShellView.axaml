@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Standard.HomeShellView"
+             x:DataType="sh:HomeShellViewModel">
+
+  <!--
+    Style Standard 2.0 (étape 30, maquettes Sprite-0001 et 0002 de l'utilisateur) : capsule du logo, de la date et de
+    l'heure en haut à gauche ; onglets à la verticale le long du bord gauche (Accueil, Jeux, Réglages : plus d'Apps) ;
+    la barre d'aide en bas à gauche (Themes/Standard.axaml, classe « standard » de la fenêtre). La page passe sous la
+    barre d'aide : l'Accueil et les Jeux occupent tout l'écran (bannière héro, colonnes à droite), les Réglages (tableau
+    déroulant commun, étape 32) sont à droite des onglets.
+  -->
+  <Panel>
+    <!-- Contenu de l'onglet. Ne rogne pas (un ContentControl rogne par défaut) : les équerres du focus sortent des vues -->
+    <Border x:Name="PagePanel" Classes="tabPanel">
+      <ContentControl x:Name="TabHost" Content="{Binding SelectedTab.Content}" ctl:PageFade.IsEnabled="True" ClipToBounds="False" />
+    </Border>
+
+    <!-- Colonne de gauche, par-dessus la page -->
+    <StackPanel Classes="sideColumn">
+      <Border Classes="glass capsule standardHeader">
+        <StackPanel Orientation="Horizontal" Spacing="22">
+          <ctl:BrandLogo VerticalAlignment="Center" Height="26" Fill="{DynamicResource WinSU.TextBrush}" />
+          <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+            <ctl:ClockText Format="dddd d MMMM" Classes="muted headerDate" FontSize="15" VerticalAlignment="Center" />
+            <ctl:ClockText FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="28" VerticalAlignment="Center" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <ItemsControl Classes="sideTabs" ItemsSource="{Binding Tabs}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="sh:ShellTab">
+            <!-- Non focusable : à la manette, les onglets se changent avec LB/RB ; clic à la souris -->
+            <Button Classes="sideTab" Focusable="False"
+                    Command="{Binding $parent[ItemsControl].((sh:HomeShellViewModel)DataContext).SelectTabCommand}"
+                    CommandParameter="{Binding}">
+              <Border Classes="sideTabCapsule">
+                <Border Classes="sideTabPill" Classes.selected="{Binding IsSelected}">
+                  <TextBlock Text="{Binding Title}" />
+                </Border>
+              </Border>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </Panel>
+</UserControl>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="WinSU.App/WinSU.App.csproj" />
+  <Project Path="WinSU.Core/WinSU.Core.csproj" />
+  <Project Path="WinSU.Infrastructure/WinSU.Infrastructure.csproj" />
+</Solution>

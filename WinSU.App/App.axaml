@@ -1,0 +1,34 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="WinSU.App.App"
+             RequestedThemeVariant="Default">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://WinSU/Themes/Theme.axaml" />
+        <ResourceInclude Source="avares://WinSU/Themes/ControlThemes.axaml" />
+        <ResourceInclude Source="avares://WinSU/Themes/Icons.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Police des commandes Fluent (champs de saisie…) : DM Sans aussi (D-41) -->
+      <FontFamily x:Key="ContentControlThemeFontFamily">avares://WinSU/Fonts/DMSans#DM Sans</FontFamily>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <!-- Accent et fond des thèmes Clair et Sombre (palette « Prisme », voir Themes/Theme.axaml) -->
+        <ColorPaletteResources x:Key="Light" Accent="#6A5AE0" RegionColor="#ECEBF3" />
+        <ColorPaletteResources x:Key="Dark" Accent="#B39CFF" RegionColor="#100F17" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+    <StyleInclude Source="avares://WinSU/Themes/Controls.axaml" />
+    <!-- Style de menu Switch (M15) : ce qui n'existe que dans ce style -->
+    <StyleInclude Source="avares://WinSU/Themes/Switch.axaml" />
+    <!-- Style de menu Wii U (M16) : ce qui n'existe que dans ce style -->
+    <StyleInclude Source="avares://WinSU/Themes/WiiU.axaml" />
+    <!-- Style de menu Standard 2.0 (étape 30) : ce qui n'existe que dans ce style -->
+    <StyleInclude Source="avares://WinSU/Themes/Standard.axaml" />
+  </Application.Styles>
+</Application>

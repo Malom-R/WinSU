@@ -1,0 +1,1110 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="using:WinSU.App.Controls"
+        xmlns:nav="using:WinSU.App.Input">
+
+  <!--
+    Styles communs de WinSU, pensés pour la manette :
+    le focus se voit toujours, comme sur les tuiles (29.15, D-100) : équerres aux couleurs de la lampe à lave et fond rempli
+    de la couleur du thème, avec un léger grossissement ou soulèvement.
+    Courbes : douce 0,25,0,45,0,5,1 ; rebond 0,34,1,56,0,64,1. Durées et courbes : Controls/Motion.cs, les mêmes
+    pour tous les styles (30.11).
+  -->
+
+  <!-- Textes -->
+  <Style Selector="TextBlock.title">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="48" />
+  </Style>
+  <Style Selector="TextBlock.section">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="24" />
+  </Style>
+  <Style Selector="TextBlock.muted">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+  </Style>
+  <!-- Grand titre en dégradé (dégradé du thème) -->
+  <Style Selector="TextBlock.gradient">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+  </Style>
+
+  <!--
+    Écrans communs aux trois styles (étape 32, maquettes Sprite-0003 à 0008 de l'utilisateur, ≈ 2 px par DIP) : Ajouter
+    une console, recherche SteamGridDB, Boutons, éditeur de thèmes, assistant. Couleurs du thème, jamais figées (D-126).
+    Titre : une capsule sombre en haut à gauche, qui sort de l'écran à gauche, arrondie à droite (comme le titre des menus,
+    30.14, de l'autre côté).
+  -->
+  <Style Selector="Border.pageTitle">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="MinHeight" Value="76" />
+    <Setter Property="Margin" Value="0,20,24,0" />
+    <Setter Property="Padding" Value="56,4,44,4" />
+    <Setter Property="CornerRadius" Value="0,38,38,0" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,1.5,1.5,1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.DialogShadow}" />
+  </Style>
+  <Style Selector="Border.pageTitle TextBlock">
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="44" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+  <Style Selector=":is(Window).portrait Border.pageTitle TextBlock">
+    <Setter Property="FontSize" Value="34" />
+  </Style>
+  <!-- Texte sous le titre (état d'une recherche, manette branchée…), tout près de lui (étape 33, demande de l'utilisateur :
+       la première rangée d'une grille ne le touche pas) -->
+  <Style Selector="StackPanel.pageStatus">
+    <Setter Property="Margin" Value="32,6,32,6" />
+    <Setter Property="Spacing" Value="4" />
+  </Style>
+  <!-- En-tête posé par-dessus une grille qui passe dessous (étape 33 : Ajouter une console, recherche SteamGridDB ;
+       Controls/HeaderRoom) : ce qui touche le titre ou les boutons est à 10 % (Controls/Covers) ; pas les lignes d'état
+       (demande de l'utilisateur). -->
+  <Style Selector="StackPanel.pageHeader">
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+  <Style Selector="StackPanel.pageHeader Border.pageTitle">
+    <Setter Property="ctl:Covers.IsCover" Value="True" />
+  </Style>
+  <Style Selector="StackPanel.pageHeader WrapPanel.titleButtons > Button">
+    <Setter Property="ctl:Covers.IsCover" Value="True" />
+  </Style>
+  <!-- Veille derrière un jeu (D-181, Services/WindowControl) : les horloges s'arrêtent, remises à l'heure au retour -->
+  <Style Selector=":is(Window).resting ctl|ClockText">
+    <Setter Property="IsTicking" Value="False" />
+  </Style>
+  <!-- Bande sombre d'un bord à l'autre (assistant, Sprite-0008), sous le titre et au-dessus de la barre d'aide -->
+  <Style Selector="Border.band">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+  </Style>
+  <!-- Panneau collé au bord gauche, arrondi à droite (actions de l'écran « Boutons », Sprite-0006 ; éditeur de thèmes) -->
+  <Style Selector="Border.sidePanel">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,1.5,1.5,1.5" />
+    <Setter Property="CornerRadius" Value="0,40,40,0" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+  </Style>
+  <!-- Onglets à droite du titre en capsule (Manette | Clavier de l'écran « Boutons », Sprite-0006) -->
+  <Style Selector="Border.titleTabs">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,26,24,0" />
+  </Style>
+  <!-- Panneau de gauche et zone de droite côte à côte (Boutons, éditeur de thèmes), au-dessus de la barre d'aide -->
+  <Style Selector="Grid.sideSplit">
+    <Setter Property="Margin" Value="0,6,0,12" />
+  </Style>
+  <Style Selector="Grid.sideSplit > Border.sidePanel">
+    <Setter Property="Margin" Value="0,0,14,0" />
+    <Setter Property="Padding" Value="32,14,20,8" />
+  </Style>
+  <Style Selector="Grid.sideSplit > Border.sideStage">
+    <Setter Property="Grid.Column" Value="1" />
+    <Setter Property="Padding" Value="24,20" />
+  </Style>
+  <!-- Portrait : la zone de droite passe sous le panneau (pas de valeur locale dans les vues : elle l'emporterait) -->
+  <Style Selector=":is(Window).portrait Grid.sideSplit > Border.sidePanel">
+    <Setter Property="Grid.ColumnSpan" Value="2" />
+    <Setter Property="Margin" Value="0,0,14,14" />
+  </Style>
+  <Style Selector=":is(Window).portrait Grid.sideSplit > Border.sideStage">
+    <Setter Property="Grid.Row" Value="1" />
+    <Setter Property="Grid.Column" Value="0" />
+    <Setter Property="Grid.ColumnSpan" Value="2" />
+    <Setter Property="Height" Value="360" />
+    <Setter Property="Margin" Value="14,0,0,0" />
+  </Style>
+  <!-- Zone de droite de ces écrans (aperçu de la manette ou du clavier, du thème) : jusqu'au bord droit -->
+  <Style Selector="Border.sideStage">
+    <Setter Property="Background" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5,1.5,0,1.5" />
+    <Setter Property="CornerRadius" Value="40,0,0,40" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.DialogShadow}" />
+  </Style>
+
+  <!--
+    Verre Mizu, variante opaque (pas de flou d'arrière-plan dans Avalonia) : fond, bordure de 1,5 px et liseré lumineux
+    intérieur (ombres inset). .panel : grand panneau des grilles (rayon 40) ; .capsule : pilule (en-tête, dock).
+  -->
+  <Style Selector="Border.glass">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.CardRadius}" />
+  </Style>
+  <Style Selector="Border.glass.panel">
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PanelRadius}" />
+    <Setter Property="Padding" Value="20" />
+  </Style>
+  <Style Selector="Border.glass.capsule">
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+  </Style>
+  <Style Selector="Border.glass.flat">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassFlatBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassFlatBorderBrush}" />
+    <Setter Property="BorderThickness" Value="2" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassFlatShadow}" />
+  </Style>
+
+  <!--
+    Boutons : au style des tuiles depuis 29.15 (D-100) : verre des tuiles (gabarit WinSU.TileSkinTemplate,
+    ControlThemes.axaml), Cal Sans, rayon 14. Survol : soulevé de 2 px, reflet plus clair ; focus : soulevé, équerres et
+    verre rempli de la couleur du thème, texte blanc (règles communes du focus, plus bas). Les équerres sortent du bouton :
+    il ne rogne pas.
+  -->
+  <Style Selector="Button.menu">
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="Padding" Value="24,14" />
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="20" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.ButtonRadius}" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileButtonTheme}" />
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Control}" Easing="{x:Static ctl:Motion.Soft}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="Button.menu:pointerover">
+    <Setter Property="RenderTransform" Value="translateY(-2px)" />
+  </Style>
+  <Style Selector="Button.menu:pressed">
+    <Setter Property="RenderTransform" Value="scale(0.98)" />
+  </Style>
+  <Style Selector="Button.menu:focus">
+    <Setter Property="RenderTransform" Value="translateY(-2px)" />
+  </Style>
+  <!-- Bouton principal d'un écran (M14 : « Enregistrer » de l'éditeur de thèmes) : verre au dégradé du thème, texte sur
+       l'accent, même au focus (règle placée après celles du focus, plus bas) -->
+  <Style Selector="Button.menu.accent /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+  </Style>
+  <Style Selector="Button.menu.accent /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <Style Selector="Button.menu:disabled">
+    <Setter Property="Opacity" Value="0.55" />
+  </Style>
+  <Style Selector="Button.menu:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+  </Style>
+
+  <!-- Interrupteurs et curseurs : thèmes de ControlThemes.axaml -->
+  <Style Selector="ToggleButton.switch">
+    <Setter Property="Theme" Value="{StaticResource WinSU.SwitchTheme}" />
+  </Style>
+  <Style Selector="Slider">
+    <Setter Property="Theme" Value="{StaticResource WinSU.SliderTheme}" />
+  </Style>
+
+  <!--
+    Cartes de choix (style du menu, thème, style des boutons, police, langue… ; thème de l'assistant, base et mode
+    de l'éditeur de thèmes) : groupe « radio » du site. On choisit par Confirmer (étape 26, D-78, ConfirmToSelect) : le
+    focus s'y promène sans rien changer ; la carte choisie (sélection de la liste) est l'option en vigueur : bordure
+    accent et bord du verre en accent, et une boule verte en bas à droite. Au style des tuiles (29.15, D-100) : verre des
+    tuiles au repos ; avec le focus : équerres, verre rempli de la couleur du thème, texte blanc, soulevée de 2 px.
+  -->
+  <!-- La zone de la rangée rogne ce qui la dépasse : elle s'étend au dehors de la portée de la lueur et du contour
+       (marge négative), et sa marge intérieure grandit d'autant : les cartes restent à leur place (4 × 6 du bord) -->
+  <!-- Les cartes passent à la ligne quand la place manque (29.15, demande de l'utilisateur : plus de carte hors champ,
+       atteinte en défilant de côté) ; la navigation en lignes des Réglages suit les lignes affichées -->
+  <!-- Chaque carte s'atténue seule sous la barre d'aide ou près du haut d'une zone qui défile (étape 34 : une rangée sur
+       deux lignes ne s'atténue plus en bloc quand sa deuxième ligne passe sous la barre ; Controls/Covers) -->
+  <Style Selector="ListBox.cards">
+    <Setter Property="ctl:Covers.FadeItems" Value="True" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Margin" Value="-20,-18" />
+    <Setter Property="Padding" Value="24,24" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="nav:ConfirmToSelect.IsEnabled" Value="True" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" ItemSpacing="14" LineSpacing="14" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem">
+    <!-- Un élément de liste rogne son contenu : les équerres du focus en sortent -->
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Margin" Value="0" />
+    <!-- À droite, la place de la boule verte de l'option en vigueur (12 et son écart) : le texte ne passe pas dessous (DF-12) -->
+    <Setter Property="Padding" Value="20,14,32,14" />
+    <Setter Property="Width" Value="240" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusMd}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileItemTheme}" />
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Control}" Easing="{x:Static ctl:Motion.Soft}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <!-- Cartes plus larges, pour des noms longs (jeux trouvés sur SteamGridDB, étape 31) -->
+  <Style Selector="ListBox.cards.wide > ListBoxItem">
+    <Setter Property="Width" Value="340" />
+  </Style>
+  <!-- Cartes d'un écran commun (étape 32 : jeux trouvés sur SteamGridDB) : la liste défile elle-même sur toute la page, sous
+       l'en-tête (étape 33, Controls/HeaderRoom) ; en bas, de quoi faire remonter la dernière ligne au-dessus de la barre
+       d'aide ; chaque ligne centrée, mêmes marges à gauche et à droite (étape 33, demande de l'utilisateur) -->
+  <Style Selector="ListBox.cards.pageCards">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="20,12,20,104" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" ItemSpacing="14" LineSpacing="14" ItemsAlignment="Center" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+  <!-- Boutons à droite du titre en capsule (recherche SteamGridDB, Sprite-0004) -->
+  <Style Selector="WrapPanel.titleButtons">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,26,24,0" />
+  </Style>
+  <Style Selector="WrapPanel.titleButtons > Button.menu">
+    <Setter Property="MinWidth" Value="220" />
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="Padding" Value="20,12" />
+    <Setter Property="Margin" Value="16,0,0,10" />
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem /template/ Border.currentDot">
+    <Setter Property="Width" Value="12" />
+    <Setter Property="Height" Value="12" />
+    <Setter Property="CornerRadius" Value="6" />
+    <Setter Property="Margin" Value="0,0,12,12" />
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="Background" Value="{StaticResource WinSU.CurrentDotBrush}" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.CurrentDotGlow}" />
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem:selected /template/ Border.currentDot">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <!-- L'option en vigueur : texte et bord du verre en accent (et la boule verte) -->
+  <Style Selector="ListBox.cards > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem:selected /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Rim" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+  <Style Selector="ListBox.cards > ListBoxItem:focus">
+    <Setter Property="RenderTransform" Value="translateY(-2px)" />
+  </Style>
+
+  <!--
+    Grilles de tuiles : l'identité de WinSU (étape 29, d'après le thème Wii U). Une tuile = des couches dans sa boîte carrée
+    (.tileArt : 160 pour les applications et les jeux, 176 pour les consoles), en retrait de 4, au rayon 18 :
+      1. le verre (ctl:TileGlass), toujours là : reflet du haut au bas courbe, bande plus sombre dessous, bord lumineux,
+         ombre douce ;
+      2. l'icône (.tileBody > .tileFace), opaque (D-86), au même rayon : une jaquette ou une image choisie la remplit et
+         cache le verre ; une icône (Image.tileIcon) est centrée dans sa boîte, le verre autour (D-25) ; l'image d'une
+         console (Image.consoleArt) est réduite à 90 % (D-24) ; le cadre de la console est rogné au même rayon. Les icônes
+         générées (.tileGenerated) ont un fond plein et un glyphe blanc : « + » en magenta, « Jeux » en violet ;
+      3. l'éclair de l'appui (.tileFlash, invisible au repos) ;
+      4. le balayage de lumière au focus (ctl:TileSheen, D-90).
+    La tuile choisie de la liste qui a le focus (29.14, d'après la Wii U) : quatre équerres aux coins (ctl:TileCursor,
+    couleurs du thème, sans lueur), son verre rempli de la couleur du thème, son image réduite à 82 % dans ce cadre ; elle
+    grossit à 1,06 avec le rebond du site.
+    La structure est écrite une seule fois (étape 36) : Controls/TileArt (tileArt > ctl:TileCursor, ctl:TileGlass, la face
+    posée par la vue : tileBody > tileFace, ou tileGenerated ; tileFlash, ctl:TileSheen). Tuiles prêtes : Controls/GameTile
+    (jeu), Controls/ConsoleTile (console), Controls/AddTile (« + »).
+    Tailles, grossissement et espacements : Controls/TileMetrics.cs (espaces calculés à partir du facteur de grossissement).
+  -->
+  <!-- La boîte de chaque élément contient la tuile grossie et ses équerres (TileMetrics.ItemPadding) ; la marge de la grille,
+       la lueur au bord de la zone qui défile (TileMetrics.ListPadding). -->
+  <Style Selector="ListBox.tiles">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Padding" Value="{x:Static ctl:TileMetrics.ListPadding}" />
+  </Style>
+  <Style Selector="ListBox.tiles > ListBoxItem">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="{x:Static ctl:TileMetrics.ItemPadding}" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.CardRadius}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+  </Style>
+  <Style Selector="ListBox.tiles > ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <Style Selector="ListBox.tiles > ListBoxItem:selected">
+    <Setter Property="ZIndex" Value="1" />
+  </Style>
+  <!-- Grille d'un écran commun (étape 32 : catalogue, vignettes de SteamGridDB) : toute la largeur, sur le fond ; en bas, de
+       quoi faire remonter la dernière rangée au-dessus de la barre d'aide (ce qui passe dessous est atténué, Controls/Covers) ;
+       en haut, sous l'en-tête de l'écran (étape 33, Controls/HeaderRoom). Chaque rangée centrée, la dernière aussi : mêmes
+       marges à gauche et à droite, quelle que soit la largeur (étape 33, demande de l'utilisateur) -->
+  <Style Selector="ListBox.tiles.pageGrid">
+    <Setter Property="Padding" Value="20,12,20,104" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" ItemsAlignment="Center" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <!-- Tuiles en UserControl (jeux, applications) : ne pas rogner les équerres ni la tuile grossie -->
+  <Style Selector="UserControl.tile /template/ ContentPresenter">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <Style Selector="Panel.tileArt">
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Grow}" Easing="{x:Static ctl:Motion.Spring}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <!-- 1. Verre de la tuile (Controls/TileGlass), permanent : l'icône le cache quand elle remplit la face ; il reste visible
+       autour d'une icône plus petite, et sous une icône qui s'efface. Reflet au bas courbe, bande plus sombre dessous,
+       bord lumineux : relevés sur une tuile de la Wii U (retour de l'utilisateur : « plus vivant ») -->
+  <Style Selector="ctl|TileGlass">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.FaceMargin}" />
+    <Setter Property="CornerRadius" Value="{x:Static ctl:TileMetrics.FaceCornerRadius}" />
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileGlassFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileGlassLensBrush}" />
+    <Setter Property="Rim" Value="{DynamicResource WinSU.TileGlassRimBrush}" />
+    <Setter Property="Shadow" Value="{DynamicResource WinSU.TileGlassShadow}" />
+    <Setter Property="InnerGlow" Value="{DynamicResource WinSU.TileGlassInnerGlow}" />
+  </Style>
+  <!-- 2. L'icône : transparente où l'image ne couvre pas (le verre se voit), rognée au rayon de la face -->
+  <Style Selector="Border.tileFace">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.FaceMargin}" />
+    <Setter Property="CornerRadius" Value="{x:Static ctl:TileMetrics.FaceCornerRadius}" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <!-- Icône d'un programme ou image .ico : entière, centrée dans sa boîte, sur le verre (D-25).
+       RenderOptions.BitmapInterpolationMode ne se règle pas par un style (Avalonia 12) : il est posé sur chaque image. -->
+  <Style Selector="Image.tileIcon">
+    <Setter Property="Width" Value="{x:Static ctl:TileMetrics.IconSize}" />
+    <Setter Property="Height" Value="{x:Static ctl:TileMetrics.IconSize}" />
+    <Setter Property="Stretch" Value="Uniform" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+  <!-- Image d'une console : 90 % de la face, centrée, sur le verre ; elle a son propre cadre et ses coins transparents (D-24) -->
+  <Style Selector="Image.consoleArt">
+    <Setter Property="Width" Value="{x:Static ctl:TileMetrics.ConsoleArtSize}" />
+    <Setter Property="Height" Value="{x:Static ctl:TileMetrics.ConsoleArtSize}" />
+    <Setter Property="Stretch" Value="Uniform" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+  <!-- Tuile d'un jeu sans image : icône générée opaque (fond neutre, image de la console atténuée, nom du jeu) -->
+  <Style Selector="Panel.tileDefault">
+    <Setter Property="Background" Value="{DynamicResource WinSU.SurfaceAltBrush}" />
+  </Style>
+  <!-- Icônes générées (D-85) : fond plein au rayon de la face, glyphe blanc ; « + » (ajouter) en magenta comme le
+       « Create Folder » de la Wii U, « Jeux » en violet comme son dossier « Misc » -->
+  <Style Selector="Border.tileGenerated">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.FaceMargin}" />
+    <Setter Property="CornerRadius" Value="{x:Static ctl:TileMetrics.FaceCornerRadius}" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.TileGlassShadow}" />
+  </Style>
+  <Style Selector="Border.tileGenerated.add">
+    <Setter Property="Background" Value="{DynamicResource WinSU.SignatureBrush}" />
+  </Style>
+  <Style Selector="Border.tileGenerated.folder">
+    <Setter Property="Background" Value="{DynamicResource WinSU.SignatureAltBrush}" />
+  </Style>
+  <Style Selector="Border.tileGenerated TextBlock">
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+  <!-- 3. Éclair de l'appui (Confirmer ou clic, D-87) : blanc par-dessus l'icône, invisible au repos -->
+  <Style Selector="Border.tileFlash">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.FaceMargin}" />
+    <Setter Property="CornerRadius" Value="{x:Static ctl:TileMetrics.FaceCornerRadius}" />
+    <Setter Property="Background" Value="White" />
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+  <!-- 4. Balayage de lumière (Controls/TileSheen, D-90) : par-dessus l'icône, au rayon de la face ; quand la tuile prend le
+       focus (Play), une bande oblique traverse la face (0,7 s à la vitesse normale, après un court temps, pendant le
+       grossissement), puis plus rien : aucun coût au repos. Durée tirée des réglages (Réglages → Thème : coupé, vitesse),
+       posée par ThemeService dans la ressource WinSU.TileSheenDuration -->
+  <Style Selector="ctl|TileSheen">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.FaceMargin}" />
+    <Setter Property="CornerRadius" Value="{x:Static ctl:TileMetrics.FaceCornerRadius}" />
+    <Setter Property="Brush" Value="{DynamicResource WinSU.TileSheenBrush}" />
+    <Setter Property="Duration" Value="{DynamicResource WinSU.TileSheenDuration}" />
+  </Style>
+  <!-- Repère de la tuile choisie (29.14, d'après le curseur de la Wii U) : quatre équerres, une couleur du thème par coin,
+       sans lueur (Controls/TileCursor, D-96), apparition en 0,12 s -->
+  <Style Selector="ctl|TileCursor">
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.CursorMargin}" />
+    <Setter Property="TopLeft" Value="{DynamicResource WinSU.CursorTopLeftBrush}" />
+    <Setter Property="TopRight" Value="{DynamicResource WinSU.CursorTopRightBrush}" />
+    <Setter Property="BottomRight" Value="{DynamicResource WinSU.CursorBottomRightBrush}" />
+    <Setter Property="BottomLeft" Value="{DynamicResource WinSU.CursorBottomLeftBrush}" />
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{x:Static ctl:Motion.Select}" Easing="{x:Static ctl:Motion.Soft}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <!-- L'image de la tuile (ou son icône générée) se réduit dans le cadre de couleur quand la tuile est choisie (D-95) -->
+  <Style Selector="Panel.tileBody, Border.tileGenerated">
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Select}" Easing="{x:Static ctl:Motion.Soft}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <!-- Tuile-bouton (la tuile « Jeux » au bout de la rangée du Switch) : un bouton qui porte une tuile (Controls/TileArt),
+       mêmes mesures et même focus que les tuiles des listes, posé dans leur marge intérieure pour avoir leur hauteur -->
+  <Style Selector="Button.tileButton">
+    <Setter Property="Padding" Value="{x:Static ctl:TileMetrics.ItemPadding}" />
+    <Setter Property="Margin" Value="{x:Static ctl:TileMetrics.ListPadding}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <Style Selector="Button.tileButton /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <!-- Survol à la souris (D-87) : la tuile grossit un peu (1,03) et le reflet de son verre s'éclaircit. Posé avant les
+       règles de la tuile choisie, qui l'emportent (1,06). L'appui (Confirmer ou clic) est joué par Input/PressFeedback. -->
+  <Style Selector="ListBox.tiles > ListBoxItem:pointerover Panel.tileArt, Button.tileButton:pointerover Panel.tileArt">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.HoverTransform}" />
+  </Style>
+  <Style Selector="ListBox.tiles > ListBoxItem:pointerover ctl|TileGlass, Button.tileButton:pointerover ctl|TileGlass">
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileGlassLensHoverBrush}" />
+  </Style>
+  <!-- Tuile choisie (29.14), écrite une fois (étape 36, C-7) : grossie à 1,06 avec le rebond, équerres visibles, verre
+       rempli de la couleur du thème (D-94), image réduite dans ce cadre, balayage de lumière. La tuile choisie d'une liste
+       qui a le focus ; d'une liste qui montre toujours son choix (.showsChoice : l'accueil du Standard, où la tuile au point
+       fixe est toujours la tuile choisie, 30.6) ; une tuile-bouton qui a le focus. -->
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected Panel.tileArt, ListBox.showsChoice > ListBoxItem:selected Panel.tileArt, Button.tileButton:focus Panel.tileArt">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.FocusTransform}" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected ctl|TileCursor, ListBox.showsChoice > ListBoxItem:selected ctl|TileCursor, Button.tileButton:focus ctl|TileCursor">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected ctl|TileGlass, ListBox.showsChoice > ListBoxItem:selected ctl|TileGlass, Button.tileButton:focus ctl|TileGlass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileSelectedFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileSelectedLensBrush}" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected Panel.tileBody, ListBox.tiles:focus-within > ListBoxItem:selected Border.tileGenerated, ListBox.showsChoice > ListBoxItem:selected Panel.tileBody, ListBox.showsChoice > ListBoxItem:selected Border.tileGenerated, Button.tileButton:focus Panel.tileBody, Button.tileButton:focus Border.tileGenerated">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.SelectedArtTransform}" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected ctl|TileSheen, ListBox.showsChoice > ListBoxItem:selected ctl|TileSheen, Button.tileButton:focus ctl|TileSheen">
+    <Setter Property="Play" Value="True" />
+  </Style>
+  <!-- Bouton-icône qui se comporte comme une tuile (29.15, D-100), écrit une fois (étape 36, C-7) : les boutons ronds du
+       Switch et les icônes du Wii U. Gabarit des tuiles (WinSU.TileButtonTheme) ; 1,03 et reflet plus clair au survol
+       (D-87) ; au focus, 1,06 avec le rebond, équerres et verre rempli de la couleur du thème. Chaque style pose sa taille
+       et son rayon. -->
+  <Style Selector="Button.iconTile">
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileButtonTheme}" />
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{x:Static ctl:Motion.Grow}" Easing="{x:Static ctl:Motion.Spring}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="Button.iconTile:pointerover">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.HoverTransform}" />
+  </Style>
+  <Style Selector="Button.iconTile:pointerover /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileGlassLensHoverBrush}" />
+  </Style>
+  <Style Selector="Button.iconTile:focus">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.FocusTransform}" />
+  </Style>
+  <Style Selector="Button.iconTile:focus /template/ ctl|TileCursor#PART_Cursor">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="Button.iconTile:focus /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileSelectedFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileSelectedLensBrush}" />
+  </Style>
+  <!-- Nom sous la tuile choisie : Cal Sans, comme les étiquettes des tuiles du site -->
+  <Style Selector="TextBlock.tileName">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+  <Style Selector="ListBox.tiles:focus-within > ListBoxItem:selected TextBlock.tileName">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+
+  <!-- Assistant : la bande des étapes (Sprite-0008, D-132), sous le titre, au-dessus de la barre d'aide -->
+  <Style Selector="Border.band.wizardBand">
+    <Setter Property="Margin" Value="0,24,0,12" />
+    <Setter Property="Padding" Value="64,24" />
+  </Style>
+  <Style Selector=":is(Window).portrait Border.band.wizardBand">
+    <Setter Property="Padding" Value="24,16" />
+  </Style>
+  <!-- Assistant : les trois boutons de l'essai, leur texte passe à la ligne au besoin -->
+  <Style Selector="Button.menu.wizardButton">
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="Padding" Value="20,12" />
+  </Style>
+
+  <!-- Assistant : lignes de mapping (en cours = dégradé, faites = entrée en couleur d'accent) -->
+  <Style Selector="Border.mappingRow">
+    <Setter Property="Padding" Value="18,9" />
+    <Setter Property="Margin" Value="0,0,0,4" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusSm}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+  <Style Selector="Border.mappingRow.current">
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+  </Style>
+  <Style Selector="Border.mappingRow.current TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <Style Selector="Border.mappingRow.done TextBlock.binding">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+
+  <!-- Assistant : témoins de l'écran de test (puces de verre plat, allumées en dégradé) -->
+  <Style Selector="Border.pill">
+    <Setter Property="Padding" Value="14,7" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassFlatBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassFlatBorderBrush}" />
+    <Setter Property="BorderThickness" Value="2" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassFlatShadow}" />
+  </Style>
+  <Style Selector="Border.pill.lit">
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+  </Style>
+  <Style Selector="Border.pill.lit TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <!-- Assistant : zone d'essai de l'étape de test (l'aperçu de la manette, étape 22), focusable ; focus (29.15, D-100) :
+       équerres autour de la zone (ctl:TileCursor.padCursor, posé dans la zone et ramené à son bord par une marge
+       négative : marge intérieure 20,8 + bordure 3) ; pas de remplissage, qui cacherait l'aperçu -->
+  <Style Selector="Border.padZone">
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Padding" Value="20,8" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.CardRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassFlatBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassFlatBorderBrush}" />
+    <Setter Property="BorderThickness" Value="3" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassFlatShadow}" />
+  </Style>
+  <Style Selector="Border.padZone ctl|TileCursor.padCursor">
+    <Setter Property="Outside" Value="True" />
+    <Setter Property="Margin" Value="-23,-11" />
+  </Style>
+  <Style Selector="Border.padZone:focus ctl|TileCursor.padCursor">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <!-- Logo du jeu choisi (étape 33, D-140) : 320 × 190 au plus (≈ la place relevée sur les maquettes Sprite-0010 et 0011),
+       pour tous les styles qui le montrent ; la place et l'alignement : Standard.axaml, Switch.axaml -->
+  <Style Selector="ctl|GameLogo">
+    <Setter Property="MaxWidth" Value="320" />
+    <Setter Property="MaxHeight" Value="190" />
+  </Style>
+  <!-- Vignettes de l'écran SteamGridDB : une jaquette ou une bannière remplit sa case ; un logo s'y montre entier, sur le
+       verre, avec un peu d'air (étape 33) -->
+  <Style Selector="Image.artThumb">
+    <Setter Property="Stretch" Value="UniformToFill" />
+  </Style>
+  <Style Selector="Panel.tileArt.logo Image.artThumb">
+    <Setter Property="Stretch" Value="Uniform" />
+    <Setter Property="Margin" Value="16" />
+  </Style>
+
+  <!-- Barre d'aide des touches : pilule de verre flottante en bas à gauche (Standard 2.0, étape 30 ; aussi en Wii U depuis
+       l'étape 32, D-127 : celle des maquettes Sprite-0003 à 0008). 10,5 en bas : remontée de 4,5 (30.13) ; un peu plus
+       haute que l'ancienne barre en bas à droite (30.10). -->
+  <Style Selector="Border.hintbar">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Margin" Value="12,0,0,10.5" />
+    <Setter Property="Padding" Value="26,12" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+  </Style>
+  <Style Selector="Border.hintbar TextBlock">
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+  </Style>
+  <Style Selector="Border.hintbar StackPanel.hintTitle">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>  <!-- Style Switch (M15) : barre du bas sur toute la largeur, sous un trait, logo et nom de l'écran à gauche
+       (l'icône de la console dans la référence) -->
+  <Style Selector=":is(Window).switch Border.hintbar">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="40,10" />
+    <Setter Property="CornerRadius" Value="0" />
+    <Setter Property="BorderThickness" Value="0,1,0,0" />
+    <Setter Property="BoxShadow" Value="0 0 0 0 Transparent" />
+  </Style>
+  <Style Selector=":is(Window).switch Border.hintbar StackPanel.hintTitle">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+  <Style Selector=":is(Window).switch Border.hintbar StackPanel.hintTitle TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <!-- Écran debout (fenêtre plus haute que large, classe « portrait » de la fenêtre, étape 25) : l'interface est à
+       l'échelle d'une fenêtre de référence debout (Controls/UiScale) ; ce qui manque de largeur se réorganise ici. -->
+  <Style Selector=":is(Window).portrait TextBlock.headerDate">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <!-- Assistant : place des actions du mapping et des boutons de l'essai, couché (pas de valeur locale dans la vue : elle
+       l'emporterait sur les styles du portrait) -->
+  <Style Selector="Grid.mappingStep > ItemsControl.mappingRows">
+    <Setter Property="Grid.Column" Value="2" />
+  </Style>
+  <Style Selector="Grid.testStep > StackPanel.testButtons">
+    <Setter Property="Grid.Row" Value="2" />
+    <Setter Property="Grid.Column" Value="2" />
+  </Style>
+  <!-- Assistant, mapping : les actions sous la consigne -->
+  <Style Selector=":is(Window).portrait Grid.mappingStep > ItemsControl.mappingRows">
+    <Setter Property="Grid.Row" Value="1" />
+    <Setter Property="Grid.Column" Value="0" />
+    <Setter Property="Grid.ColumnSpan" Value="3" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,16,0,0" />
+  </Style>
+  <!-- Assistant, essai : la manette sur toute la largeur, les trois boutons empilés sous les témoins (la hauteur ne manque
+       pas ; côte à côte, leurs textes étaient coupés) -->
+  <Style Selector=":is(Window).portrait Grid.testStep > Border.padZone">
+    <Setter Property="Grid.ColumnSpan" Value="3" />
+  </Style>
+  <Style Selector=":is(Window).portrait Grid.testStep > StackPanel.testButtons">
+    <Setter Property="Grid.Row" Value="4" />
+    <Setter Property="Grid.Column" Value="0" />
+    <Setter Property="Grid.ColumnSpan" Value="3" />
+  </Style>
+
+  <Style Selector="Border.keycap">
+    <Setter Property="Padding" Value="8,2" />
+    <Setter Property="MinHeight" Value="26" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusXs}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.SurfaceAltBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+  <Style Selector="Border.keycap TextBlock">
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <!-- Glyphes de boutons (Console Sans, zone privée U+E0A0…) : pas de fond, glyphe plus grand -->
+  <Style Selector="Border.keycap.glyph">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  <Style Selector="Border.keycap.glyph TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource WinSU.ButtonGlyphFont}" />
+    <Setter Property="FontSize" Value="24" />
+    <Setter Property="FontWeight" Value="Normal" />
+  </Style>
+
+  <!--
+    Fenêtres superposées : carte de verre (dialogue du site : rayon 24) qui apparaît en fondu (animation du menu
+    contextuel du site ; le zoom de 0,98 à 1 est omis : Avalonia 12 n'anime pas RenderTransform par images clés).
+  -->
+  <Style Selector="Border.overlayCard">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Padding" Value="28,24" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.CardRadius}" />
+    <Setter Property="MinWidth" Value="420" />
+    <Setter Property="MaxWidth" Value="640" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.DialogShadow}" />
+    <Style.Animations>
+      <Animation Duration="{x:Static ctl:Motion.Select}" Easing="CubicEaseOut" FillMode="Both">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+  <!-- Menus : lignes au verre des tuiles ; la ligne choisie (le focus) a ses équerres et son verre rempli (29.15, D-100).
+       La liste s'étend au dehors de la place des équerres (elle rogne ce qui la dépasse), son contenu ne bouge pas -->
+  <Style Selector="ListBox.menuList">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Margin" Value="-12" />
+    <Setter Property="Padding" Value="12" />
+  </Style>
+  <Style Selector="ListBox.menuList > ListBoxItem">
+    <Setter Property="Padding" Value="18,11" />
+    <Setter Property="Margin" Value="0,0,0,10" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusSm}" />
+    <Setter Property="FontSize" Value="19" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileItemTheme}" />
+  </Style>
+  <Style Selector="ListBox.menuList > ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+
+  <!-- Menus de tous les styles (30.14, maquette de l'utilisateur, 2 px par DIP) : panneau collé au bord droit (Views/Common/
+       ContextMenuView) ; titre dans une capsule sombre de 60 de haut, arrondie à gauche, qui sort de l'écran à droite ;
+       choix de 395 de large, à 20 du bord (place des équerres, 30.15), l'un sous l'autre à 10 d'écart, sur un verre sombre (celui des boîtes de
+       dialogue : rien ne transparaît du fond) ; un groupe de choix semblables commence 40 plus bas (« groupStart ») : neuf
+       choix en trois groupes tiennent dans la fenêtre de 730 ; sinon la liste défile (le choix qui a le focus reste
+       visible) -->
+  <Style Selector="Grid.sideMenu">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="Width" Value="470" />
+  </Style>
+  <Style Selector="Border.menuTitle">
+    <Setter Property="Height" Value="60" />
+    <Setter Property="CornerRadius" Value="30,0,0,30" />
+    <Setter Property="Padding" Value="26,0,24,0" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1.5,1.5,0,1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.DialogShadow}" />
+  </Style>
+  <Style Selector="Border.menuTitle TextBlock">
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="26" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <!-- La liste a 12 de marge intérieure autour des choix (place des équerres, dans la zone qui défile) : 8 à droite met
+       les choix à 20 du bord ; 10 en haut les met 22 sous le titre -->
+  <Style Selector="ListBox.sideMenu">
+    <Setter Property="Width" Value="419" />
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,10,8,4" />
+  </Style>
+  <Style Selector="ListBox.sideMenu > ListBoxItem">
+    <Setter Property="Padding" Value="20,12" />
+    <Setter Property="FontSize" Value="21" />
+  </Style>
+  <Style Selector="ListBox.sideMenu > ListBoxItem:not(:selected) /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.DialogBrush}" />
+  </Style>
+  <Style Selector="ListBox.sideMenu > ListBoxItem.groupStart">
+    <Setter Property="Margin" Value="0,30,0,10" />
+  </Style>
+  <!-- Switch : la barre d'aide prend toute la largeur en bas ; portrait : panneau plus étroit -->
+  <Style Selector=":is(Window).switch ListBox.sideMenu">
+    <Setter Property="Margin" Value="0,6,8,48" />
+  </Style>
+  <Style Selector=":is(Window).switch ListBox.sideMenu > ListBoxItem">
+    <Setter Property="Padding" Value="20,10" />
+  </Style>
+  <Style Selector=":is(Window).switch ListBox.sideMenu > ListBoxItem.groupStart">
+    <Setter Property="Margin" Value="0,20,0,10" />
+  </Style>
+  <Style Selector=":is(Window).portrait Grid.sideMenu">
+    <Setter Property="Width" Value="380" />
+  </Style>
+  <Style Selector=":is(Window).portrait ListBox.sideMenu">
+    <Setter Property="Width" Value="345" />
+  </Style>
+
+  <!-- En-tête : pilule de verre (barre de navigation du site) ; onglets en Cal Sans, onglet actif en dégradé -->
+  <Style Selector="Border.header">
+    <Setter Property="Padding" Value="22,7,26,7" />
+  </Style>
+  <Style Selector="Border.tab">
+    <Setter Property="Padding" Value="22,8" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="Border.tab TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="20" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+  </Style>
+  <Style Selector="Border.tab.selected">
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+  </Style>
+  <Style Selector="Border.tab.selected TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <!-- Portrait (étape 29, bloc 6) : onglets resserrés, sinon le dernier passait sous l'heure. Après « Border.tab » : à
+       priorité égale, le dernier style l'emporte. -->
+  <Style Selector=":is(Window).portrait Border.tab">
+    <Setter Property="Padding" Value="14,8" />
+  </Style>
+
+  <!-- Pastille « Ajoutée » sur une tuile du catalogue (puce du site) -->
+  <Style Selector="Border.badge">
+    <Setter Property="Padding" Value="10,4" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+  </Style>
+  <Style Selector="Border.badge TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+
+  <!--
+    Écran « Boutons » (M11) : une ligne par action, séparées d'un trait ; chaque liaison est une pastille de verre plat
+    (glyphe de manette et/ou texte), « Ajouter » est écrit en accent. Focus : anneau magenta et lueur, comme les
+    boutons ; pendant une capture, « Appuyez… » passe en dégradé.
+  -->
+  <Style Selector="Border.bindingRow">
+    <Setter Property="Padding" Value="0,8" />
+    <Setter Property="BorderThickness" Value="0,0,0,1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.SeparatorBrush}" />
+  </Style>
+  <Style Selector="Button.chip">
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Margin" Value="0,4,12,4" />
+    <Setter Property="Padding" Value="16,4" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="MinWidth" Value="60" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+    <Setter Property="FontSize" Value="17" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileButtonTheme}" />
+  </Style>
+  <Style Selector="Button.chip.add">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+  <!-- Pendant une capture, « Appuyez… » : verre au dégradé du thème, texte sur l'accent -->
+  <Style Selector="Button.chip.capturing /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+  </Style>
+  <Style Selector="Button.chip.capturing /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <!-- Pastille de couleur de l'éditeur de thèmes (M14) : celle que règle le sélecteur a le bord du verre en accent -->
+  <Style Selector="Button.chip.swatch">
+    <Setter Property="Padding" Value="10,4,16,4" />
+  </Style>
+  <Style Selector="Button.chip.swatch.editing /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Rim" Value="{DynamicResource WinSU.AccentBrush}" />
+  </Style>
+  <Style Selector="TextBlock.chipGlyph">
+    <Setter Property="FontFamily" Value="{StaticResource WinSU.ButtonGlyphFont}" />
+    <Setter Property="FontSize" Value="26" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <!--
+    Lignes des Réglages (29.15, D-100 : « autour de toute la ligne ») : un curseur et son texte dans un ContentControl.focusRow.
+    Au repos rien ne se voit ; quand la ligne a le focus : équerres, verre rempli, texte et curseur en blanc. Marge
+    négative et marge intérieure égales : la ligne ne bouge pas. (Les interrupteurs, dont le texte est le contenu, sont
+    leur propre ligne : Themes/ControlThemes.axaml.)
+  -->
+  <Style Selector="ContentControl.focusRow">
+    <Setter Property="Theme" Value="{StaticResource WinSU.TileRowTheme}" />
+    <Setter Property="Padding" Value="10,6" />
+    <Setter Property="Margin" Value="-10,-6" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.ButtonRadius}" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+  </Style>
+  <Style Selector="ContentControl.focusRow /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{x:Static ctl:Motion.Select}" Easing="{x:Static ctl:Motion.Soft}" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="ContentControl.focusRow:focus-within /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="ContentControl.focusRow:focus-within Slider">
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+
+  <!--
+    Tableau déroulant (étape 32, maquette Sprite-0005, D-128 ; Controls/FoldSection) : une capsule sombre par section, son
+    titre en grand ; la section ouverte devient une carte sombre (verre des boîtes de dialogue) avec son contenu sous le
+    titre. Le titre a le focus des commandes (équerres, verre rempli : règles communes plus bas) ; au repos, son verre est
+    celui de la carte, sans reflet. Liste et place selon le style : StackPanel.foldList ici, Switch.axaml, WiiU.axaml.
+  -->
+  <!-- Toute la largeur de sa place, 1100 au plus (centrée au-delà : Switch, Wii U) -->
+  <Style Selector="StackPanel.foldList">
+    <Setter Property="Spacing" Value="14" />
+    <Setter Property="MaxWidth" Value="1100" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <!-- 20 à gauche : la zone qui défile s'étend d'autant pour les équerres (ScrollViewer.foldScroller) ; en bas, de quoi
+         faire remonter la dernière section au-dessus de la barre d'aide -->
+    <Setter Property="Margin" Value="20,6,24,104" />
+  </Style>
+  <!-- Dans un panneau (éditeur de thèmes) : toute sa largeur, il s'arrête au-dessus de la barre d'aide -->
+  <Style Selector="Border.sidePanel StackPanel.foldList">
+    <Setter Property="MaxWidth" Value="Infinity" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Margin" Value="20,6,12,16" />
+  </Style>
+  <!-- Réglages (étape 34) : zone invisible en haut, sur toute la largeur, jusqu'à la ligne de l'en-tête du style ; la liste
+       commence dessous, ce qui y passe est à 10 % (Controls/Covers). Wii U : la barre du haut ; Standard et Switch :
+       Standard.axaml, Switch.axaml -->
+  <Style Selector="Border.settingsTop">
+    <Setter Property="Height" Value="{x:Static ctl:PageGridMetrics.TopBarHeight}" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+  <Style Selector="ScrollViewer.foldScroller">
+    <Setter Property="Margin" Value="-20,0,0,0" />
+  </Style>
+  <Style Selector="Border.foldCard">
+    <Setter Property="CornerRadius" Value="38" />
+    <Setter Property="BorderThickness" Value="1.5" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="ctl|FoldSection:open /template/ Border#PART_Card">
+    <Setter Property="Background" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.DialogShadow}" />
+  </Style>
+  <Style Selector="Button.menu.foldHeader">
+    <Setter Property="MinHeight" Value="76" />
+    <Setter Property="Padding" Value="40,0" />
+    <Setter Property="FontSize" Value="27" />
+    <Setter Property="CornerRadius" Value="38" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+  <Style Selector="Button.menu.foldHeader /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.DialogBrush}" />
+    <Setter Property="Lens" Value="Transparent" />
+  </Style>
+  <!-- Même écart au-dessus du premier réglage (sous le titre) et sous le dernier (étape 33, demande de l'utilisateur) -->
+  <Style Selector="ContentPresenter.foldBody">
+    <Setter Property="Margin" Value="40,24,32,24" />
+  </Style>
+  <Style Selector=":is(Window).portrait Button.menu.foldHeader">
+    <Setter Property="MinHeight" Value="64" />
+    <Setter Property="FontSize" Value="23" />
+  </Style>
+  <Style Selector=":is(Window).portrait ContentPresenter.foldBody">
+    <Setter Property="Margin" Value="24,20,20,20" />
+  </Style>
+  <!-- Contenu d'une section : ses lignes l'une sous l'autre ; chacune s'atténue sous la barre d'aide et près du haut de la
+       zone qui défile (Controls/Covers ; Réglages, éditeur de thèmes) -->
+  <Style Selector="StackPanel.foldRows">
+    <Setter Property="Spacing" Value="16" />
+    <Setter Property="ctl:Covers.FadeChildren" Value="True" />
+  </Style>
+  <!-- Les cartes d'une section ne ramènent pas d'elles-mêmes leur carte choisie à l'écran : à l'ouverture de « Thème », la
+       liste des polices tirait toute la page jusqu'à la police choisie, titre sorti par le haut (DF-13, étape 35) ; c'est
+       le focus qui ramène la carte utile (Input/FocusNavigator) -->
+  <Style Selector="StackPanel.foldRows ListBox.cards">
+    <Setter Property="AutoScrollToSelectedItem" Value="False" />
+  </Style>
+
+  <!-- Survol à la souris des commandes au style des tuiles : reflet du verre plus clair (D-87) -->
+  <Style Selector="Button.menu:pointerover /template/ ctl|TileGlass#PART_Glass, Button.chip:pointerover /template/ ctl|TileGlass#PART_Glass, ListBox.cards > ListBoxItem:pointerover /template/ ctl|TileGlass#PART_Glass, ListBox.menuList > ListBoxItem:pointerover /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileGlassLensHoverBrush}" />
+  </Style>
+
+  <!--
+    Focus des commandes au style des tuiles (29.15, D-100), comme la tuile choisie (29.14) : équerres aux couleurs de la
+    lampe à lave, verre rempli de la couleur du thème, texte blanc. Plus d'anneau magenta. Les boutons ronds et sections
+    (Switch.axaml) et les icônes du Wii U (WiiU.axaml) ont les mêmes règles dans leur fichier.
+  -->
+  <Style Selector="Button.menu:focus /template/ ctl|TileCursor#PART_Cursor, Button.chip:focus /template/ ctl|TileCursor#PART_Cursor, ListBox.cards > ListBoxItem:focus /template/ ctl|TileCursor#PART_Cursor, ListBox.menuList > ListBoxItem:selected /template/ ctl|TileCursor#PART_Cursor, ContentControl.focusRow:focus-within /template/ ctl|TileCursor#PART_Cursor">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="Button.menu:focus /template/ ctl|TileGlass#PART_Glass, Button.chip:focus /template/ ctl|TileGlass#PART_Glass, ListBox.cards > ListBoxItem:focus /template/ ctl|TileGlass#PART_Glass, ListBox.menuList > ListBoxItem:selected /template/ ctl|TileGlass#PART_Glass, ContentControl.focusRow:focus-within /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileSelectedFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileSelectedLensBrush}" />
+  </Style>
+  <Style Selector="Button.menu:focus /template/ ContentPresenter#PART_ContentPresenter, Button.chip:focus /template/ ContentPresenter#PART_ContentPresenter, ListBox.cards > ListBoxItem:focus /template/ ContentPresenter#PART_ContentPresenter, ListBox.menuList > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter, ContentControl.focusRow:focus-within /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+  <!-- Textes atténués d'une carte (description) : blancs, un peu transparents, sur le verre rempli -->
+  <Style Selector="ListBox.cards > ListBoxItem:focus TextBlock.muted">
+    <Setter Property="Foreground" Value="#D9FFFFFF" />
+  </Style>
+  <!-- Le bouton principal garde son dégradé au focus -->
+  <Style Selector="Button.menu.accent:focus /template/ ctl|TileGlass#PART_Glass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+  </Style>
+
+  <!-- Champ de saisie (renommer) : verre opaque, focus accent + lueur -->
+  <Style Selector="TextBox">
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.RadiusSm}" />
+  </Style>
+  <Style Selector="TextBox /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+  </Style>
+  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassOpaqueBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.AccentBrush}" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.AccentGlowShadow}" />
+  </Style>
+
+  <!--
+    Glyphes de boutons en couleurs (M12, D-34) : la couleur (GlyphTint) est portée par Tag. En dernier, pour passer avant
+    la couleur des textes (barre d'aide, carte choisie, ligne de l'assistant).
+  -->
+  <Style Selector="TextBlock[Tag=Green]">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.GlyphGreenBrush}" />
+  </Style>
+  <Style Selector="TextBlock[Tag=Red]">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.GlyphRedBrush}" />
+  </Style>
+  <Style Selector="TextBlock[Tag=Blue]">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.GlyphBlueBrush}" />
+  </Style>
+  <Style Selector="TextBlock[Tag=Yellow]">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.GlyphYellowBrush}" />
+  </Style>
+  <Style Selector="TextBlock[Tag=Pink]">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.GlyphPinkBrush}" />
+  </Style>
+</Styles>

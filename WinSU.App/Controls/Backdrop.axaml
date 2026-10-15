@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Controls.Backdrop"
+             IsHitTestVisible="False" ClipToBounds="True">
+  <!--
+    Fond de WinSU : couleur de page, lampe à lave (M10, D-30 : des gouttes aux couleurs du thème) et, par-dessus, le motif
+    du thème (étape 34, D-169 : fines lignes obliques tous les 12).
+  -->
+  <Panel>
+    <Border Background="{DynamicResource WinSU.BackgroundBrush}" />
+    <ctl:LavaLamp IsRunning="{Binding $parent[ctl:Backdrop].IsRunning}"
+                  Palette="{DynamicResource WinSU.LavaPaletteBrush}"
+                  Opacity="{DynamicResource WinSU.LavaOpacity}" />
+    <Border Background="{DynamicResource WinSU.BackgroundPatternBrush}" />
+  </Panel>
+</UserControl>

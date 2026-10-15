@@ -1,0 +1,146 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:wiz="using:WinSU.App.ViewModels.Wizard"
+             xmlns:loc="using:WinSU.App.Localization"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Common.FirstRunWizardView"
+             x:DataType="wiz:FirstRunWizardViewModel">
+
+  <!-- Assistant du premier démarrage, d'après la maquette Sprite-0008 (étape 32, D-132) : titre en capsule, étapes dans une
+       bande sombre d'un bord à l'autre (couleurs du thème), barre d'aide de la maquette ; la bande s'arrête au-dessus. -->
+  <Grid RowDefinitions="Auto,*">
+    <Border Classes="pageTitle">
+      <TextBlock Text="{loc:Tr win_wizard_title}" />
+    </Border>
+
+    <Border Grid.Row="1" Classes="band wizardBand">
+    <Grid>
+
+    <!-- 1. Détection de la manette -->
+    <StackPanel IsVisible="{Binding IsWelcome}" VerticalAlignment="Center" Spacing="20" MaxWidth="900">
+      <TextBlock Text="{loc:Tr win_wizard_welcome_prompt}" FontSize="34" FontWeight="SemiBold" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding ControllersText}" Classes="muted" FontSize="18" />
+      <TextBlock Text="{loc:Tr win_wizard_input_unavailable}" IsVisible="{Binding InputUnavailable}"
+                 Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="18" TextWrapping="Wrap" />
+      <TextBlock Text="{loc:Tr win_wizard_welcome_keyboard}" Classes="muted" FontSize="16" Margin="0,24,0,0" />
+    </StackPanel>
+
+    <!-- 2. Mapping action par action -->
+    <Grid IsVisible="{Binding IsMapping}" Classes="mappingStep" ColumnDefinitions="*,24,Auto" RowDefinitions="*,Auto" Margin="0">
+      <StackPanel VerticalAlignment="Center" Spacing="12">
+        <TextBlock Text="{loc:Tr win_wizard_mapping_prompt}" FontSize="24" Classes="muted" />
+        <TextBlock Text="{Binding CurrentActionLabel}" FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="64"
+                   Foreground="{DynamicResource WinSU.AccentGradientBrush}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding MappingProgress}" Classes="muted" FontSize="18" />
+        <TextBlock Text="{Binding MappingMessage}" IsVisible="{Binding MappingMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding ControllerName, StringFormat={loc:Tr win_wizard_controller}}"
+                   IsVisible="{Binding ControllerName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Classes="muted" FontSize="16" Margin="0,24,0,0" TextWrapping="Wrap" />
+        <!-- Passe à la ligne (coupé sur la capture de l'utilisateur, Sprite-0008) -->
+        <TextBlock Text="{loc:Tr win_wizard_mapping_skip_hint}" Classes="muted" FontSize="16" TextWrapping="Wrap" />
+      </StackPanel>
+
+      <!-- Dix actions en deux colonnes (Haut/Bas, Gauche/Droite, Valider/Retour, Menu/Start, onglets) : sur une seule
+           colonne, la dernière sortait du panneau à 200 % (retour de l'utilisateur) -->
+      <!-- Place dans la grille : par les styles (Themes/Controls.axaml), à droite couché, dessous en portrait -->
+      <ItemsControl Classes="mappingRows" ItemsSource="{Binding MappingRows}" VerticalAlignment="Center">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Columns="2" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="wiz:MappingRowViewModel">
+            <Border Classes="mappingRow" Classes.current="{Binding IsCurrent}" Classes.done="{Binding IsDone}" Width="300" Margin="0,0,8,6">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="{Binding Label}" FontSize="17" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                  <TextBlock Classes="binding chipGlyph" Text="{Binding BindingGlyph}" Tag="{Binding BindingTint}" FontSize="22"
+                             IsVisible="{Binding BindingGlyph, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <TextBlock Classes="binding" Text="{Binding BindingText}" FontSize="17" FontWeight="SemiBold" VerticalAlignment="Center" />
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Grid>
+
+    <!-- 3. Test (D-45) : la manette est la zone d'essai (focus d'abord ; chaque appui ne fait que s'allumer, Droite mène
+         aux boutons), les trois boutons empilés à droite, en haut ; les témoins des actions dessous, sur toute la largeur
+         (disposition de la maquette de l'utilisateur, étape 25). -->
+    <Grid IsVisible="{Binding IsTest}" Classes="testStep" RowDefinitions="Auto,Auto,*,Auto,Auto" ColumnDefinitions="2.618*,32,1*">
+      <TextBlock Grid.ColumnSpan="3" Text="{loc:Tr win_wizard_test_title}" Classes="section" FontSize="28" />
+      <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{loc:Tr win_wizard_test_body}" Classes="muted" FontSize="18"
+                 TextWrapping="Wrap" Margin="0,4,0,10" />
+
+      <Border x:Name="PadZone" Grid.Row="2" Classes="padZone" Focusable="True">
+        <Panel>
+          <ctl:GamepadPreview DataContext="{Binding Pad}" />
+          <!-- Équerres du focus autour de la zone (29.15, D-100 ; Themes/Controls.axaml) -->
+          <ctl:TileCursor Classes="padCursor" />
+        </Panel>
+      </Border>
+
+      <ItemsControl Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Indicators}" Margin="0,12,0,-10">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="wiz:ActionIndicatorViewModel">
+            <Border Classes="pill" Classes.lit="{Binding IsLit}" Margin="0,0,10,10">
+              <TextBlock Text="{Binding Label}" FontSize="15" />
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <!-- Colonne des boutons : φ² : 1 avec la manette (nombre d'or) ; en portrait, sous les témoins -->
+      <StackPanel Classes="testButtons" VerticalAlignment="Top" Margin="0,16,0,0" Spacing="16">
+        <!-- Textes qui passent à la ligne : « Recommencer le mapping » était coupé (Sprite-0008) -->
+        <Button Classes="menu wizardButton" HorizontalAlignment="Stretch" Command="{Binding RestartMappingCommand}">
+          <TextBlock Text="{loc:Tr win_wizard_test_restart}" TextWrapping="Wrap" />
+        </Button>
+        <Button Classes="menu wizardButton" HorizontalAlignment="Stretch" Command="{Binding StandardLayoutCommand}">
+          <TextBlock Text="{loc:Tr win_wizard_standard_layout}" TextWrapping="Wrap" />
+        </Button>
+        <Button x:Name="ValidateTestButton" Classes="menu wizardButton" HorizontalAlignment="Stretch" Command="{Binding ValidateTestCommand}">
+          <TextBlock Text="{loc:Tr win_wizard_test_validate}" TextWrapping="Wrap" />
+        </Button>
+        <TextBlock Text="{Binding TestMessage}" IsVisible="{Binding TestMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" />
+      </StackPanel>
+    </Grid>
+
+    <!-- 4. Thème -->
+    <StackPanel IsVisible="{Binding IsTheme}" Spacing="20" Margin="0">
+      <TextBlock Text="{loc:Tr win_theme_prompt}" Classes="section" FontSize="28" />
+      <ListBox x:Name="ThemeList" Classes="cards" ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding SelectedTheme}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:ThemeOption">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{Binding Label}" FontSize="20" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Description}" Classes="muted" FontSize="14" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      <Button Classes="menu" Width="260" HorizontalAlignment="Left" Content="{loc:Tr win_wizard_continue}" Command="{Binding ValidateThemeCommand}" />
+    </StackPanel>
+
+    <!-- 5. Fin -->
+    <StackPanel IsVisible="{Binding IsDone}" VerticalAlignment="Center" Spacing="20" MaxWidth="900">
+      <TextBlock Text="{loc:Tr win_wizard_done_title}" FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="64"
+                 Foreground="{DynamicResource WinSU.AccentGradientBrush}" />
+      <TextBlock Text="{loc:Tr win_wizard_done_body}" Classes="muted" FontSize="20" TextWrapping="Wrap" />
+      <Button x:Name="FinishButton" Classes="menu" Width="300" HorizontalAlignment="Left" Margin="0,24,0,0"
+              Content="{loc:Tr win_wizard_start}" Command="{Binding FinishCommand}" />
+    </StackPanel>
+    </Grid>
+    </Border>
+  </Grid>
+</UserControl>

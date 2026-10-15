@@ -1,0 +1,125 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:loc="using:WinSU.App.Localization"
+             xmlns:nav="using:WinSU.App.Input"
+             xmlns:ctl="using:WinSU.App.Controls"
+             x:Class="WinSU.App.Views.Common.ButtonsView"
+             x:DataType="vm:ButtonsViewModel"
+             ClipToBounds="False">
+
+  <!-- Écran « Boutons » (M11 ; étape 32, maquette Sprite-0006) : titre en capsule, onglets Manette et Clavier à droite
+       (LB/RB ou clic) ; dessous, à gauche, une ligne par action, ses liaisons en pastilles (deux au plus, D-130), puis
+       « Ajouter » ; à droite, la manette ou le clavier dessinés, qui s'allument quand on appuie. Parcours en lignes : Haut
+       et Bas ne sautent aucune action. Les deux panneaux s'arrêtent au-dessus de la barre d'aide. -->
+  <Grid RowDefinitions="Auto,Auto,*">
+    <Grid ColumnDefinitions="Auto,*">
+      <Border Classes="pageTitle">
+        <TextBlock Text="{loc:Tr win_buttons_title}" />
+      </Border>
+      <Border Grid.Column="1" Classes="glass capsule header titleTabs">
+        <ItemsControl ItemsSource="{Binding Tabs}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal" Spacing="6" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:InputDeviceTab">
+              <!-- Non focusable : à la manette, les onglets se changent avec LB/RB. -->
+              <Button Focusable="False" Padding="0" Background="Transparent" BorderThickness="0"
+                      Command="{Binding $parent[ItemsControl].((vm:ButtonsViewModel)DataContext).SelectTabCommand}"
+                      CommandParameter="{Binding}">
+                <Border Classes="tab" Classes.selected="{Binding IsSelected}">
+                  <TextBlock Text="{Binding Title}" />
+                </Border>
+              </Button>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Border>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Classes="pageStatus">
+      <TextBlock Text="{Binding DeviceText}" Classes="muted" FontSize="16" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding Message}" Foreground="{DynamicResource WinSU.AccentBrush}" FontSize="17"
+                 FontWeight="SemiBold" TextWrapping="Wrap" MinHeight="24" />
+    </StackPanel>
+
+    <!-- Côte à côte ; en portrait, la manette ou le clavier passent sous les actions (place dans la grille : par les
+         styles, Themes/Controls.axaml) -->
+    <Grid Grid.Row="2" Classes="sideSplit" ColumnDefinitions="1.08*,*" RowDefinitions="*,Auto">
+      <!-- Les actions, dans un panneau collé au bord gauche -->
+      <Border Classes="sidePanel buttonsList">
+        <ScrollViewer x:Name="Scroller">
+          <StackPanel x:Name="RowsPanel" Spacing="0" Margin="0,0,0,24" nav:RowNavigation.IsEnabled="True">
+            <ItemsControl ItemsSource="{Binding Rows}" ctl:Covers.FadeItems="True">
+              <!-- Les listes et les conteneurs des lignes et des pastilles rognent leur contenu : les équerres du focus d'une
+                   pastille en sortent (étape 29, bloc 4) -->
+              <ItemsControl.Styles>
+                <Style Selector="ContentPresenter">
+                  <Setter Property="ClipToBounds" Value="False" />
+                </Style>
+                <Style Selector="ItemsControl">
+                  <Setter Property="ClipToBounds" Value="False" />
+                </Style>
+                <Style Selector="ItemsPresenter">
+                  <Setter Property="ClipToBounds" Value="False" />
+                </Style>
+              </ItemsControl.Styles>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:BindingRowViewModel">
+                  <Border Classes="bindingRow">
+                    <!-- Les pastilles de toutes les lignes commencent à la même place (Sprite-0006) -->
+                    <Grid ColumnDefinitions="230,*">
+                      <TextBlock Text="{Binding Label}" FontFamily="{DynamicResource WinSU.TitleFont}" FontSize="20"
+                                 VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,12,0" />
+                      <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{Binding Chips}">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:BindingChipViewModel">
+                              <Button Classes="chip" Command="{Binding ReplaceCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                  <TextBlock Classes="chipGlyph" Text="{Binding Glyph}" Tag="{Binding Tint}" IsVisible="{Binding HasGlyph}" />
+                                  <TextBlock Text="{Binding Text}" IsVisible="{Binding HasText}" VerticalAlignment="Center" />
+                                </StackPanel>
+                              </Button>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Classes="chip add" Classes.capturing="{Binding IsCapturing}" IsVisible="{Binding CanAdd}"
+                                Command="{Binding AddCommand}">
+                          <TextBlock Text="{Binding AddLabel}" />
+                        </Button>
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button Classes="menu" Width="320" HorizontalAlignment="Left" FontSize="18" Padding="20,12" Margin="0,18,0,0"
+                    Content="{loc:Tr win_buttons_reset_button}" Command="{Binding ResetCommand}" />
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+
+      <!-- La manette (onglet Manette) ou le clavier (onglet Clavier) dessinés, jusqu'au bord droit -->
+      <Border Classes="sideStage">
+        <Panel>
+          <Panel IsVisible="{Binding !IsKeyboard}">
+            <ctl:GamepadPreview DataContext="{Binding Pad}" />
+          </Panel>
+          <Panel IsVisible="{Binding IsKeyboard}">
+            <ctl:KeyboardPreview DataContext="{Binding Keys}" Margin="12" />
+          </Panel>
+        </Panel>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ov="using:WinSU.App.Overlays"
+             x:Class="WinSU.App.Views.Common.ConfirmDialogView"
+             x:DataType="ov:ConfirmDialogViewModel">
+  <Border Classes="overlayCard">
+    <StackPanel Spacing="16">
+      <TextBlock Text="{Binding Title}" Classes="section" FontSize="24" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding Message}" Classes="muted" FontSize="17" TextWrapping="Wrap" />
+      <!-- « Annuler » est à gauche : c'est le premier élément, donc celui qui reçoit le focus (D-9). -->
+      <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,0" HorizontalAlignment="Right">
+        <Button Classes="menu" MinWidth="170" FontSize="18" Padding="20,12" IsVisible="{Binding HasCancel}"
+                Content="{Binding CancelLabel}" Command="{Binding DismissCommand}" />
+        <Button Classes="menu" MinWidth="170" FontSize="18" Padding="20,12"
+                Content="{Binding ConfirmLabel}" Command="{Binding ConfirmCommand}" />
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

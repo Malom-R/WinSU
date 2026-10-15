@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Standard.ConsoleGamesView"
+             x:DataType="sh:ConsoleGamesViewModel">
+
+  <Grid RowDefinitions="Auto,*" Margin="40,32,40,0">
+    <!-- En-tête : tuile de la console (image à 90 % sur le verre, comme dans les grilles, D-24 et étape 29), nom,
+         nombre de jeux et temps total -->
+    <StackPanel Orientation="Horizontal" Spacing="24">
+      <Panel Width="{x:Static ctl:TileMetrics.ConsoleHeaderSize}" Height="{x:Static ctl:TileMetrics.ConsoleHeaderSize}">
+        <ctl:TileGlass Margin="0" CornerRadius="{StaticResource WinSU.RadiusMd}" />
+        <Border Classes="tileFace" Margin="0" CornerRadius="{StaticResource WinSU.RadiusMd}">
+          <Image Source="{Binding Image}" Classes="consoleArt" RenderOptions.BitmapInterpolationMode="HighQuality"
+                 Width="{x:Static ctl:TileMetrics.ConsoleHeaderArtSize}" Height="{x:Static ctl:TileMetrics.ConsoleHeaderArtSize}" />
+        </Border>
+      </Panel>
+      <StackPanel VerticalAlignment="Center" Spacing="4">
+        <TextBlock Text="{Binding Title}" Classes="title" FontSize="44" />
+        <TextBlock Text="{Binding Subtitle}" Classes="muted" FontSize="17" />
+      </StackPanel>
+    </StackPanel>
+
+    <!-- Grille et non StackPanel : la liste doit recevoir une hauteur finie pour défiler (sinon les tuiles du bas sont inaccessibles).
+         Dans un grand panneau de verre, comme les onglets. -->
+    <Border Grid.Row="1" Classes="glass panel" Margin="0,24,0,0" Padding="20,16,12,4">
+    <Grid RowDefinitions="Auto,*">
+      <TextBlock Text="{loc:Tr win_games_empty}" IsVisible="{Binding IsEmpty}" Classes="muted" FontSize="16" TextWrapping="Wrap" MaxWidth="900" HorizontalAlignment="Left" Margin="0,0,0,8" />
+
+      <ListBox x:Name="TileList" Grid.Row="1" Classes="tiles" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.DataTemplates>
+          <DataTemplate x:DataType="sh:GameTileViewModel">
+            <ctl:GameTile />
+          </DataTemplate>
+          <DataTemplate x:DataType="sh:AddGamesTileViewModel">
+            <StackPanel Width="{x:Static ctl:TileMetrics.GameSize}" Spacing="{x:Static ctl:TileMetrics.LabelSpacing}">
+              <ctl:AddTile />
+              <TextBlock Text="{loc:Tr win_games_add}" Classes="tileName" FontSize="15" />
+              <TextBlock Text="{loc:Tr win_games_add_hint}" Classes="muted" FontSize="13" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.DataTemplates>
+      </ListBox>
+    </Grid>
+    </Border>
+  </Grid>
+</UserControl>

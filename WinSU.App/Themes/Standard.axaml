@@ -1,0 +1,219 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="using:WinSU.App.Controls">
+
+  <!--
+    Style Standard 2.0 (étape 30, maquettes Sprite-0001 et 0002 de l'utilisateur). Mesures relevées sur les maquettes
+    (2551 × 1445 pixels, soit la fenêtre agrandie de l'utilisateur à 200 % : un pixel de maquette = un demi-DIP).
+  -->
+
+  <!-- Colonne de gauche : capsule du logo, de la date et de l'heure, puis les onglets -->
+  <Style Selector="StackPanel.sideColumn">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+  <Style Selector="Border.standardHeader">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Margin" Value="13,21,0,0" />
+    <Setter Property="Padding" Value="28,8,30,8" />
+    <Setter Property="MinHeight" Value="57" />
+  </Style>
+
+  <!-- Onglets : des capsules de verre collées au bord gauche (arrondies à droite) ; l'onglet choisi dans une pastille au
+       dégradé du thème. Non focusables : LB/RB ou clic -->
+  <Style Selector="ItemsControl.sideTabs">
+    <Setter Property="Margin" Value="0,52,0,0" />
+  </Style>
+  <Style Selector="Button.sideTab">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Margin" Value="0,0,0,2" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Content="{TemplateBinding Content}" Background="Transparent" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="Border.sideTabCapsule">
+    <Setter Property="Background" Value="{DynamicResource WinSU.GlassBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WinSU.GlassBorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,1.5,1.5,1.5" />
+    <Setter Property="BoxShadow" Value="{DynamicResource WinSU.GlassShadow}" />
+    <Setter Property="CornerRadius" Value="0,30,30,0" />
+    <!-- 44 à gauche : onglets décalés de 40 vers la droite, la capsule toujours collée au bord (30.13, capture de
+         l'utilisateur « avant / après ») -->
+    <Setter Property="Padding" Value="44,8,34,8" />
+  </Style>
+  <Style Selector="Border.sideTabPill">
+    <Setter Property="Padding" Value="20,4" />
+    <Setter Property="CornerRadius" Value="{StaticResource WinSU.PillRadius}" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="Border.sideTabPill TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="24" />
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextMutedBrush}" />
+  </Style>
+  <Style Selector="Button.sideTab:pointerover Border.sideTabPill TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.TextBrush}" />
+  </Style>
+  <Style Selector="Border.sideTabPill.selected">
+    <Setter Property="Background" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="BoxShadow" Value="{StaticResource WinSU.PillShadow}" />
+  </Style>
+  <Style Selector="Border.sideTabPill.selected TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource WinSU.OnAccentBrush}" />
+  </Style>
+
+  <!-- Contenu de l'onglet : à droite des onglets, du haut jusqu'en bas (Réglages : tableau déroulant commun, étape 32 ; ce
+       qui passe sous la barre d'aide est atténué ; étape 34 : il monte jusqu'en haut, ce qui passe au-dessus de la ligne de
+       la capsule WinSU est atténué, Border.settingsTop) ; l'Accueil et les Jeux (classe « fullPage », posée par la vue)
+       occupent tout l'écran -->
+  <Style Selector="Border.tabPanel">
+    <Setter Property="Margin" Value="256,0,24,0" />
+  </Style>
+  <Style Selector=":is(Window).standard Border.settingsTop">
+    <Setter Property="Height" Value="{x:Static ctl:StandardMetrics.PageTop}" />
+  </Style>
+  <Style Selector="Border.tabPanel.fullPage">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="BoxShadow" Value="0 0 0 0 Transparent" />
+  </Style>
+
+  <!--
+    Accueil (D-103) : bannière héro sur la droite de la page, file diagonale des récents. La file occupe toute la page et
+    ne défile pas : c'est elle qui glisse (Controls/TrackPanel, point fixe et pas dans Controls/StandardMetrics) ; les noms
+    ne sont pas sous les tuiles (la bannière dit le jeu choisi, comme sur la maquette).
+  -->
+  <Style Selector="Border.heroRight">
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.HeroMargin}" />
+  </Style>
+  <Style Selector="ListBox.tiles.diagonal">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+  </Style>
+  <Style Selector="ctl|TrackPanel.diagonal">
+    <Setter Property="Step" Value="{x:Static ctl:StandardMetrics.DiagonalVector}" />
+    <Setter Property="AnchorX" Value="{x:Static ctl:StandardMetrics.DiagonalAnchorX}" />
+    <Setter Property="AnchorY" Value="{x:Static ctl:StandardMetrics.DiagonalAnchorY}" />
+  </Style>
+  <Style Selector="ListBox.diagonal TextBlock.tileName, ListBox.diagonal TextBlock.tileSubtitle, ListBox.gameColumn TextBlock.tileName, ListBox.gameColumn TextBlock.tileSubtitle">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <!-- La tuile au point fixe est toujours la tuile choisie (30.6, retour de l'utilisateur : le style de la tuile choisie
+       manquait sur son accueil), que la file ait le focus clavier ou non : la file porte la classe showsChoice (règles de la
+       tuile choisie, Themes/Controls.axaml). Le rétrécissement de l'image dans son cadre (D-95) et le glissement de la file
+       vont au même tempo (30.11, Controls/Motion.cs) : l'image finit de se réduire quand la tuile arrive au point fixe (30.7). -->
+  <!-- Portrait (étape 25) : la page est étroite ; point fixe plus au centre, bannière plus large -->
+  <Style Selector=":is(Window).portrait ctl|TrackPanel.diagonal">
+    <Setter Property="AnchorX" Value="{x:Static ctl:StandardMetrics.PortraitAnchorX}" />
+    <Setter Property="AnchorY" Value="{x:Static ctl:StandardMetrics.PortraitAnchorY}" />
+  </Style>
+  <Style Selector=":is(Window).portrait Border.heroRight">
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.PortraitHeroMargin}" />
+  </Style>
+  <!-- Logo du jeu choisi (étape 33, D-140, maquette Sprite-0010) : sa place sous les onglets, le logo au milieu ; debout, en
+       haut de cette place (la file diagonale passe plus bas, à gauche) -->
+  <Style Selector="Panel.logoZone">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Width" Value="{x:Static ctl:StandardMetrics.LogoZoneWidth}" />
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.LogoZoneMargin}" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+  <Style Selector="Panel.logoZone > ctl|GameLogo">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="MaxWidth" Value="{x:Static ctl:StandardMetrics.LogoMaxWidth}" />
+    <Setter Property="MaxHeight" Value="{x:Static ctl:StandardMetrics.LogoMaxHeight}" />
+  </Style>
+  <Style Selector=":is(Window).portrait Panel.logoZone > ctl|GameLogo">
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+  <Style Selector="StackPanel.homeEmpty">
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.HeroMargin}" />
+    <Setter Property="MaxWidth" Value="520" />
+    <Setter Property="Spacing" Value="14" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <!--
+    Jeux (D-104) : deux colonnes qui glissent (Controls/TrackPanel). Consoles : point fixe en bas, la console choisie a
+    toujours son verre rempli et son image réduite (le contexte des jeux), ses équerres et son grossissement quand la colonne
+    a le focus ; la flèche vers ses jeux à sa gauche. Jeux : le « + » (dernier de la liste) au rang 0, en face de la console,
+    les jeux au-dessus ; Haut monte, Bas descend ; la colonne ne glisse que si le jeu choisi sortirait de l'écran.
+  -->
+  <Style Selector="ListBox.tiles.trackColumn">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+  </Style>
+  <Style Selector="ListBox.consoleColumn">
+    <Setter Property="Width" Value="{x:Static ctl:StandardMetrics.ConsoleColumnWidth}" />
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.ConsoleColumnMargin}" />
+  </Style>
+  <Style Selector="ListBox.consoleColumn > ListBoxItem">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+  <Style Selector="ListBox.gameColumn">
+    <Setter Property="Width" Value="{x:Static ctl:StandardMetrics.ColumnWidth}" />
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.GameColumnMargin}" />
+  </Style>
+  <Style Selector="ctl|TrackPanel.consoleColumn">
+    <Setter Property="Step" Value="{x:Static ctl:StandardMetrics.ConsoleVector}" />
+    <Setter Property="AnchorX" Value="{x:Static ctl:StandardMetrics.ConsoleAnchorX}" />
+    <Setter Property="AnchorY" Value="{x:Static ctl:StandardMetrics.ColumnAnchorY}" />
+  </Style>
+  <!-- DF-15 : le jeu choisi tient toujours entier à l'écran (places entières, ItemSize) ; la place du haut, coupée par le
+       bord, reste un aperçu à 10 % (le bord haut couvre, Controls/Covers) -->
+  <Style Selector="ctl|TrackPanel.gameColumn">
+    <Setter Property="Step" Value="{x:Static ctl:StandardMetrics.GameVector}" />
+    <Setter Property="AnchorY" Value="{x:Static ctl:StandardMetrics.ColumnAnchorY}" />
+    <Setter Property="LastFirst" Value="True" />
+    <Setter Property="Follow" Value="Edge" />
+    <Setter Property="ItemSize" Value="{x:Static ctl:TileMetrics.GameSize}" />
+    <Setter Property="ctl:Covers.TopEdgeCovers" Value="True" />
+    <Setter Property="TowardsPrevious" Value="Down" />
+    <Setter Property="TowardsNext" Value="Up" />
+  </Style>
+  <Style Selector="ListBox.consoleColumn > ListBoxItem:selected ctl|TileGlass">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.TileSelectedFillBrush}" />
+    <Setter Property="Lens" Value="{DynamicResource WinSU.TileSelectedLensBrush}" />
+  </Style>
+  <Style Selector="ListBox.consoleColumn > ListBoxItem:selected Panel.tileBody, ListBox.consoleColumn > ListBoxItem:selected Border.tileGenerated">
+    <Setter Property="RenderTransform" Value="{x:Static ctl:TileMetrics.SelectedArtTransform}" />
+  </Style>
+  <Style Selector="Path.gamesArrow">
+    <Setter Property="Fill" Value="{DynamicResource WinSU.AccentGradientBrush}" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-76,0,0,0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+  <Style Selector="ListBox.consoleColumn > ListBoxItem:selected Path.gamesArrow">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+  <Style Selector="Border.consolesHeader">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Width" Value="220" />
+    <Setter Property="Margin" Value="{x:Static ctl:StandardMetrics.ConsolesHeaderMargin}" />
+    <Setter Property="Padding" Value="0,20,0,16" />
+    <Setter Property="BorderThickness" Value="1.5,0,1.5,1.5" />
+    <Setter Property="CornerRadius" Value="0,0,32,32" />
+  </Style>
+  <Style Selector="Border.consolesHeader TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource WinSU.TitleFont}" />
+    <Setter Property="FontSize" Value="24" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <!-- Barre d'aide : en bas à gauche, la règle commune (Themes/Controls.axaml, étape 32) -->
+</Styles>

@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ov="using:WinSU.App.Overlays"
+             x:Class="WinSU.App.Views.Common.ContextMenuView"
+             x:DataType="ov:ContextMenuViewModel">
+  <!-- Menu (30.14, maquette de l'utilisateur), le même pour les trois styles : un panneau collé au bord droit, arrivé
+       depuis la droite (Controls/SlideIn) ; le titre dans une capsule sombre en haut à droite ; les choix en larges lignes,
+       les groupes de choix semblables séparés par un espace (Overlays/MenuChoice). Le voile assombrit tout l'écran
+       derrière (MainWindow). Styles : Themes/Controls.axaml (« sideMenu »). -->
+  <Grid x:Name="MenuPanel" Classes="sideMenu" RowDefinitions="Auto,*">
+    <Border Classes="menuTitle">
+      <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+    </Border>
+    <!-- La liste défile elle-même (barre cachée) : sa marge intérieure, dans la zone qui défile, laisse la place des
+         équerres du choix sélectionné (une zone qui défile autour rognait celles du haut et de la droite, 30.15).
+         Panneau simple, non virtualisé : tous les choix existent dès l'ouverture (virtualisé, seuls ceux déjà dans
+         l'écran étaient créés, et le menu arrive de hors de l'écran : « Lancer » seul, puis les autres, 30.15). -->
+    <ListBox x:Name="MenuList" Grid.Row="1" Classes="menuList sideMenu" ItemsSource="{Binding Items}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="ov:ContextMenuItem">
+          <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis" />
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Grid>
+</UserControl>

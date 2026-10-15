@@ -1,0 +1,309 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!--
+    Jetons des thèmes Clair et Sombre de WinSU. Palette « Prisme » (étape 34, bloc 5, D-168) : ciel, lavande, orchidée,
+    tirée de l'icône de WinSU ; fond à fines lignes obliques (D-169) ; voile des fenêtres tiré du thème (D-170). Verre en
+    variante opaque (Avalonia n'a pas de flou d'arrière-plan). Les thèmes enregistrés tirent ces jetons de leurs couleurs
+    (Core/Appearance/ThemePalette, Themes/ThemeResources) ; le motif du fond et les ombres restent ceux de leur base.
+    Les ressources suivies de "Brush" s'utilisent avec DynamicResource pour suivre le thème à chaud.
+  -->
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Light">
+      <!-- Page : gris lavande clair ; fines lignes obliques blanches (D-169) dans le motif ci-dessous -->
+      <SolidColorBrush x:Key="WinSU.BackgroundBrush" Color="#ECEBF3" />
+      <!-- Lampe à lave (M10) : opacité des gouttes sur la page -->
+      <x:Double x:Key="WinSU.LavaOpacity">0.6</x:Double>
+      <!-- Une ligne oblique (du bas à gauche vers le haut à droite) tous les 12, épaisse de 1 -->
+      <DrawingBrush x:Key="WinSU.BackgroundPatternBrush" TileMode="Tile" Stretch="None" SourceRect="0,0,12,12" DestinationRect="0,0,12,12">
+        <DrawingBrush.Drawing>
+          <DrawingGroup>
+            <GeometryDrawing Brush="Transparent" Geometry="M0,0 H12 V12 H0 Z" />
+            <!-- La diagonale et ses bouts dans les coins : les traits se raccordent d'une case à l'autre -->
+            <GeometryDrawing Geometry="M0,12 L12,0 M-1,1 L1,-1 M11,13 L13,11">
+              <GeometryDrawing.Pen>
+                <Pen Brush="#FFFFFF" Thickness="1" />
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+          </DrawingGroup>
+        </DrawingBrush.Drawing>
+      </DrawingBrush>
+      <!-- Surfaces opaques et fond des emplacements d'image, à peine teintés de lavande -->
+      <SolidColorBrush x:Key="WinSU.SurfaceBrush" Color="#FAF9FE" />
+      <SolidColorBrush x:Key="WinSU.SurfaceAltBrush" Color="#DFDEE8" />
+      <!-- Textes : courant, secondaire, tertiaire -->
+      <SolidColorBrush x:Key="WinSU.TextBrush" Color="#212529" />
+      <SolidColorBrush x:Key="WinSU.TextMutedBrush" Color="#47474B" />
+      <SolidColorBrush x:Key="WinSU.TextTertiaryBrush" Color="#6C757D" />
+      <!-- Accent lavande soutenue en clair (lisible sur le fond) ; survol, voiles et version foncée comme ThemePalette -->
+      <SolidColorBrush x:Key="WinSU.AccentBrush" Color="#6A5AE0" />
+      <SolidColorBrush x:Key="WinSU.AccentHoverBrush" Color="#5D4FC5" />
+      <SolidColorBrush x:Key="WinSU.AccentFadedBrush" Color="#1A6A5AE0" />
+      <SolidColorBrush x:Key="WinSU.AccentTintBrush" Color="#246A5AE0" />
+      <SolidColorBrush x:Key="WinSU.AccentStrongBrush" Color="#3A327B" />
+      <SolidColorBrush x:Key="WinSU.OnAccentBrush" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="WinSU.SeparatorBrush" Color="#14000000" />
+      <!-- Glyphes de boutons en couleurs (M12, D-34) : couleurs des manettes, foncées pour rester lisibles sur le verre clair -->
+      <SolidColorBrush x:Key="WinSU.GlyphGreenBrush" Color="#2E9B3A" />
+      <SolidColorBrush x:Key="WinSU.GlyphRedBrush" Color="#D63A2F" />
+      <SolidColorBrush x:Key="WinSU.GlyphBlueBrush" Color="#1F74D0" />
+      <SolidColorBrush x:Key="WinSU.GlyphYellowBrush" Color="#B98A00" />
+      <SolidColorBrush x:Key="WinSU.GlyphPinkBrush" Color="#C8489A" />
+
+      <!-- Verre (sans flou : reflet laiteux en haut à gauche sur une base gris lavande) -->
+      <RadialGradientBrush x:Key="WinSU.GlassBrush" Center="25%,25%" GradientOrigin="25%,25%" RadiusX="110%" RadiusY="110%">
+        <GradientStop Offset="0" Color="#F6F5FB" />
+        <GradientStop Offset="0.48" Color="#ECEBF4" />
+        <GradientStop Offset="1" Color="#E5E4EE" />
+      </RadialGradientBrush>
+      <SolidColorBrush x:Key="WinSU.GlassOpaqueBrush" Color="#FAF9FE" />
+      <SolidColorBrush x:Key="WinSU.GlassBorderBrush" Color="#B3FFFFFF" />
+      <BoxShadows x:Key="WinSU.GlassShadow">0 2 6 0 #140F172A, 0 1 2 0 #0D0F172A, inset 0 0 18 2 #F2FFFFFF, inset 0 1 0 0 #FFFFFFFF, inset 0 -1 0 0 #0D0F172A</BoxShadows>
+      <!-- Verre plat : pastilles, puces -->
+      <SolidColorBrush x:Key="WinSU.GlassFlatBrush" Color="#66FFFFFF" />
+      <SolidColorBrush x:Key="WinSU.GlassFlatBorderBrush" Color="#40FFFFFF" />
+      <BoxShadows x:Key="WinSU.GlassFlatShadow">0 2 6 0 #1A000000</BoxShadows>
+      <!-- Commandes de verre : boutons -->
+      <LinearGradientBrush x:Key="WinSU.ControlBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#F8F7FC" />
+        <GradientStop Offset="1" Color="#E2E1EA" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="WinSU.ControlHoverBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#FFFFFF" />
+        <GradientStop Offset="1" Color="#EDECF3" />
+      </LinearGradientBrush>
+      <SolidColorBrush x:Key="WinSU.ControlBorderBrush" Color="#CCFFFFFF" />
+      <BoxShadows x:Key="WinSU.ControlShadow">inset 0 0 10 0 #FFFFFFFF, 0 2 5 0 #40000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.ControlHoverShadow">inset 0 0 10 0 #FFFFFFFF, 0 5 15 0 #80FFFFFF, 0 5 20 0 #40000000</BoxShadows>
+      <!-- Voile des fenêtres superposées (D-170) : le fond du thème assombri (80 %) et teinté de son accent (25 %), à 65 %,
+           sans motif (ThemePalette « Scrim » fait de même pour un thème enregistré) -->
+      <SolidColorBrush x:Key="WinSU.ScrimBrush" Color="#A63E3A5D" />
+      <SolidColorBrush x:Key="WinSU.DialogBrush" Color="#F4F3FA" />
+      <BoxShadows x:Key="WinSU.DialogShadow">inset 0 0 18 2 #F2FFFFFF, inset 0 1 0 0 #FFFFFFFF, 0 12 40 0 #40000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.AccentGlowShadow">0 0 12 0 #4D6A5AE0</BoxShadows>
+      <!-- Interrupteur, curseur -->
+      <SolidColorBrush x:Key="WinSU.SwitchOnBrush" Color="#6A5AE0" />
+      <SolidColorBrush x:Key="WinSU.TrackBrush" Color="#73FFFFFF" />
+      <SolidColorBrush x:Key="WinSU.TrackBorderBrush" Color="#80FFFFFF" />
+      <!-- Verre des tuiles (étape 29, relevé sur une tuile de la Wii U ; dessiné par Controls/TileGlass) : voile léger ; reflet
+           du haut dont le bas est une courbe qui descend au milieu ; bande plus sombre sous le reflet, qui s'éclaircit vers le
+           bas ; bord lumineux et lueur intérieure (les deux petites taches de lumière de la référence sont retirées, demande de
+           l'utilisateur). En clair : un fin contour sombre pour détacher la tuile. -->
+      <!-- Fond du verre en clair : sur un panneau presque blanc, rien ne transparaît (la Wii U doit sa couleur à son fond
+           cyan) : teinté de l'accent, plus soutenu dans la bande sous le reflet, plus pâle en bas (ThemePalette « GlassFill »
+           fait de même pour un thème enregistré clair) -->
+      <LinearGradientBrush x:Key="WinSU.TileGlassFillBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#386A5AE0" />
+        <GradientStop Offset="0.58" Color="#2E6A5AE0" />
+        <GradientStop Offset="0.66" Color="#735D4FC5" />
+        <GradientStop Offset="0.84" Color="#406A5AE0" />
+        <GradientStop Offset="1" Color="#266A5AE0" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="WinSU.TileGlassLensBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#8CFFFFFF" />
+        <GradientStop Offset="0.75" Color="#4DFFFFFF" />
+        <GradientStop Offset="1" Color="#66FFFFFF" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="WinSU.TileGlassLensHoverBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#B3FFFFFF" />
+        <GradientStop Offset="0.75" Color="#73FFFFFF" />
+        <GradientStop Offset="1" Color="#8CFFFFFF" />
+      </LinearGradientBrush>
+      <SolidColorBrush x:Key="WinSU.TileGlassRimBrush" Color="#F2FFFFFF" />
+      <BoxShadows x:Key="WinSU.TileGlassShadow">0 0 0 1 #1F0F172A, 0 4 12 0 #26000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.TileGlassInnerGlow">inset 0 0 10 1 #8CFFFFFF</BoxShadows>
+      <!-- Tuile choisie (29.14, D-94, d'après le cadre cyan de la Wii U) : son verre est rempli de l'accent, opaque, un peu
+           plus sombre au milieu et plus clair en bas (ThemePalette « SelectedFill » pour un thème enregistré) -->
+      <LinearGradientBrush x:Key="WinSU.TileSelectedFillBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#6A5AE0" />
+        <GradientStop Offset="0.6" Color="#6556D5" />
+        <GradientStop Offset="1" Color="#8073E5" />
+      </LinearGradientBrush>
+      <!-- Balayage de lumière au focus (étape 29, D-90, Controls/TileSheen) : bande oblique (blanc 55 % au milieu) -->
+      <LinearGradientBrush x:Key="WinSU.TileSheenBrush" StartPoint="0%,50%" EndPoint="100%,50%">
+        <GradientStop Offset="0" Color="#00FFFFFF" />
+        <GradientStop Offset="0.5" Color="#8CFFFFFF" />
+        <GradientStop Offset="1" Color="#00FFFFFF" />
+      </LinearGradientBrush>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Dark">
+      <!-- Page : nuit à peine lavande ; lignes obliques blanches à 7 % -->
+      <SolidColorBrush x:Key="WinSU.BackgroundBrush" Color="#100F17" />
+      <x:Double x:Key="WinSU.LavaOpacity">0.6</x:Double>
+      <DrawingBrush x:Key="WinSU.BackgroundPatternBrush" TileMode="Tile" Stretch="None" SourceRect="0,0,12,12" DestinationRect="0,0,12,12">
+        <DrawingBrush.Drawing>
+          <DrawingGroup>
+            <GeometryDrawing Brush="Transparent" Geometry="M0,0 H12 V12 H0 Z" />
+            <!-- La diagonale et ses bouts dans les coins : les traits se raccordent d'une case à l'autre -->
+            <GeometryDrawing Geometry="M0,12 L12,0 M-1,1 L1,-1 M11,13 L13,11">
+              <GeometryDrawing.Pen>
+                <Pen Brush="#12FFFFFF" Thickness="1" />
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+          </DrawingGroup>
+        </DrawingBrush.Drawing>
+      </DrawingBrush>
+      <SolidColorBrush x:Key="WinSU.SurfaceBrush" Color="#16151D" />
+      <SolidColorBrush x:Key="WinSU.SurfaceAltBrush" Color="#27262F" />
+      <SolidColorBrush x:Key="WinSU.TextBrush" Color="#F5F3F8" />
+      <SolidColorBrush x:Key="WinSU.TextMutedBrush" Color="#C5C1CC" />
+      <SolidColorBrush x:Key="WinSU.TextTertiaryBrush" Color="#DEFFFFFF" />
+      <!-- Accent lavande claire en sombre ; texte foncé dessus (le blanc y serait peu lisible ; ThemePalette fait de même) -->
+      <SolidColorBrush x:Key="WinSU.AccentBrush" Color="#B39CFF" />
+      <SolidColorBrush x:Key="WinSU.AccentHoverBrush" Color="#9E89E0" />
+      <SolidColorBrush x:Key="WinSU.AccentFadedBrush" Color="#1AB39CFF" />
+      <SolidColorBrush x:Key="WinSU.AccentTintBrush" Color="#24B39CFF" />
+      <SolidColorBrush x:Key="WinSU.AccentStrongBrush" Color="#62568C" />
+      <SolidColorBrush x:Key="WinSU.OnAccentBrush" Color="#212529" />
+      <SolidColorBrush x:Key="WinSU.SeparatorBrush" Color="#17FFFFFF" />
+      <SolidColorBrush x:Key="WinSU.GlyphGreenBrush" Color="#62C54A" />
+      <SolidColorBrush x:Key="WinSU.GlyphRedBrush" Color="#F2564B" />
+      <SolidColorBrush x:Key="WinSU.GlyphBlueBrush" Color="#4FA3F7" />
+      <SolidColorBrush x:Key="WinSU.GlyphYellowBrush" Color="#F5C542" />
+      <SolidColorBrush x:Key="WinSU.GlyphPinkBrush" Color="#EE7FC4" />
+
+      <!-- Verre sombre : presque opaque, avec son liseré lumineux -->
+      <SolidColorBrush x:Key="WinSU.GlassBrush" Color="#F216151D" />
+      <SolidColorBrush x:Key="WinSU.GlassOpaqueBrush" Color="#16151D" />
+      <SolidColorBrush x:Key="WinSU.GlassBorderBrush" Color="#54686B76" />
+      <BoxShadows x:Key="WinSU.GlassShadow">inset 0 0 4 1 #18FFFFFF, inset 0 0 16 6 #0BFFFFFF, 0 3 8 0 #1D000000</BoxShadows>
+      <SolidColorBrush x:Key="WinSU.GlassFlatBrush" Color="#80000000" />
+      <SolidColorBrush x:Key="WinSU.GlassFlatBorderBrush" Color="#14FFFFFF" />
+      <BoxShadows x:Key="WinSU.GlassFlatShadow">inset 0 0 4 2 #0DFFFFFF</BoxShadows>
+      <SolidColorBrush x:Key="WinSU.ControlBrush" Color="#F2191820" />
+      <SolidColorBrush x:Key="WinSU.ControlHoverBrush" Color="#F2201F28" />
+      <SolidColorBrush x:Key="WinSU.ControlBorderBrush" Color="#49777A86" />
+      <BoxShadows x:Key="WinSU.ControlShadow">inset 0 0 2 0.75 #44FFFFFF, inset 0 0 7 2 #0EFFFFFF, 0 3 8 0 #1D000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.ControlHoverShadow">inset 0 0 3 1 #68FFFFFF, inset 0 0 22 7 #20FFFFFF, 0 3 8 0 #1D000000</BoxShadows>
+      <!-- Voile (D-170, voir le thème clair) -->
+      <SolidColorBrush x:Key="WinSU.ScrimBrush" Color="#A62F2944" />
+      <SolidColorBrush x:Key="WinSU.DialogBrush" Color="#0F0E15" />
+      <BoxShadows x:Key="WinSU.DialogShadow">inset 0 0 4 1 #18FFFFFF, inset 0 0 16 6 #0BFFFFFF, 0 12 40 0 #80000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.AccentGlowShadow">0 0 12 0 #4DB39CFF</BoxShadows>
+      <SolidColorBrush x:Key="WinSU.SwitchOnBrush" Color="#B39CFF" />
+      <SolidColorBrush x:Key="WinSU.TrackBrush" Color="#66000000" />
+      <SolidColorBrush x:Key="WinSU.TrackBorderBrush" Color="#26FFFFFF" />
+      <!-- Verre des tuiles (étape 29, voir le thème clair) : sur le fond sombre, voile blanc léger, bande sous le reflet
+           assombrie (noir), bord blanc plus discret. -->
+      <LinearGradientBrush x:Key="WinSU.TileGlassFillBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#1AFFFFFF" />
+        <GradientStop Offset="0.58" Color="#14FFFFFF" />
+        <GradientStop Offset="0.66" Color="#38000000" />
+        <GradientStop Offset="0.84" Color="#14FFFFFF" />
+        <GradientStop Offset="1" Color="#38FFFFFF" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="WinSU.TileGlassLensBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#4DFFFFFF" />
+        <GradientStop Offset="0.75" Color="#24FFFFFF" />
+        <GradientStop Offset="1" Color="#33FFFFFF" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="WinSU.TileGlassLensHoverBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#6BFFFFFF" />
+        <GradientStop Offset="0.75" Color="#38FFFFFF" />
+        <GradientStop Offset="1" Color="#47FFFFFF" />
+      </LinearGradientBrush>
+      <SolidColorBrush x:Key="WinSU.TileGlassRimBrush" Color="#8CFFFFFF" />
+      <BoxShadows x:Key="WinSU.TileGlassShadow">0 4 12 0 #40000000</BoxShadows>
+      <BoxShadows x:Key="WinSU.TileGlassInnerGlow">inset 0 0 10 1 #33FFFFFF</BoxShadows>
+      <!-- Tuile choisie (29.14, D-94) : verre rempli de l'accent (voir le thème clair) -->
+      <LinearGradientBrush x:Key="WinSU.TileSelectedFillBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Offset="0" Color="#B39CFF" />
+        <GradientStop Offset="0.6" Color="#AA94F2" />
+        <GradientStop Offset="1" Color="#BEABFF" />
+      </LinearGradientBrush>
+      <!-- Balayage de lumière au focus (étape 29, D-90, Controls/TileSheen) : bande oblique (blanc 40 % au milieu) -->
+      <LinearGradientBrush x:Key="WinSU.TileSheenBrush" StartPoint="0%,50%" EndPoint="100%,50%">
+        <GradientStop Offset="0" Color="#00FFFFFF" />
+        <GradientStop Offset="0.5" Color="#66FFFFFF" />
+        <GradientStop Offset="1" Color="#00FFFFFF" />
+      </LinearGradientBrush>
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+
+  <!-- Dégradé du thème (D-168) : ciel, lavande, orchidée, en diagonale. Onglet actif, textes en dégradé, remplissages -->
+  <LinearGradientBrush x:Key="WinSU.AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Offset="0" Color="#6EC3F5" />
+    <GradientStop Offset="0.5" Color="#9D8CF5" />
+    <GradientStop Offset="1" Color="#D88CEB" />
+  </LinearGradientBrush>
+  <!-- Même dégradé à 45° : du bas à gauche vers le haut à droite. Logo, petits textes -->
+  <LinearGradientBrush x:Key="WinSU.AccentGradient45Brush" StartPoint="0%,100%" EndPoint="100%,0%">
+    <GradientStop Offset="0" Color="#6EC3F5" />
+    <GradientStop Offset="0.5" Color="#9D8CF5" />
+    <GradientStop Offset="1" Color="#D88CEB" />
+  </LinearGradientBrush>
+  <!-- Couleurs des gouttes de la lampe à lave (M10), prises à tour de rôle : le dégradé et une lavande plus vive. Seuls
+       les arrêts comptent ; l'éditeur de thèmes les rend modifiables (M14). -->
+  <LinearGradientBrush x:Key="WinSU.LavaPaletteBrush">
+    <GradientStop Offset="0" Color="#6EC3F5" />
+    <GradientStop Offset="0.33" Color="#9D8CF5" />
+    <GradientStop Offset="0.67" Color="#D88CEB" />
+    <GradientStop Offset="1" Color="#8E7BEF" />
+  </LinearGradientBrush>
+  <!-- Décor du style Wii U (capsule des icônes, coin Alimentation, pastille du nom du style) : le dégradé éclairci, dans
+       l'autre sens (orchidée en bas à gauche, ciel en haut à droite), comme ThemePalette « RingGradient ». La sélection,
+       elle, est magenta. -->
+  <LinearGradientBrush x:Key="WinSU.RingGradientBrush" StartPoint="0%,100%" EndPoint="100%,0%">
+    <GradientStop Offset="0" Color="#EAC0F4" />
+    <GradientStop Offset="0.5" Color="#C9C0FA" />
+    <GradientStop Offset="1" Color="#AFDEFA" />
+  </LinearGradientBrush>
+  <!-- Sélection (étape 29, D-85, descriptif du thème Wii U) : anneau magenta uni et sa lueur rayonnante (0 0 18 2, voir
+       TileMetrics.GlowRadius et GlowSpread) ; sert encore aux touches allumées de la manette dessinée. Les thèmes
+       enregistrés remplacent ces couleurs par celles tirées du thème (ThemeResources). -->
+  <SolidColorBrush x:Key="WinSU.FocusRingBrush" Color="#FF00C8" />
+  <BoxShadows x:Key="WinSU.FocusGlow">0 0 18 2 #AAFF00C8</BoxShadows>
+  <!-- Équerres de la tuile choisie (29.14, Controls/TileCursor) : une couleur par coin, comme le curseur de la Wii U ; ce
+       sont les gouttes de la lampe à lave (WinSU.LavaPaletteBrush), telles quelles, dans le sens des aiguilles d'une montre
+       depuis le haut à gauche (29.15, D-97). Thèmes enregistrés : leurs gouttes (ThemePalette « Cursor »). -->
+  <SolidColorBrush x:Key="WinSU.CursorTopLeftBrush" Color="#6EC3F5" />
+  <SolidColorBrush x:Key="WinSU.CursorTopRightBrush" Color="#9D8CF5" />
+  <SolidColorBrush x:Key="WinSU.CursorBottomRightBrush" Color="#D88CEB" />
+  <SolidColorBrush x:Key="WinSU.CursorBottomLeftBrush" Color="#8E7BEF" />
+  <!-- Reflet du verre de la tuile choisie, sur son remplissage de couleur : adouci (le cadre de la Wii U est presque uni) -->
+  <LinearGradientBrush x:Key="WinSU.TileSelectedLensBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+    <GradientStop Offset="0" Color="#38FFFFFF" />
+    <GradientStop Offset="0.75" Color="#14FFFFFF" />
+    <GradientStop Offset="1" Color="#1FFFFFFF" />
+  </LinearGradientBrush>
+  <!-- Sélection des commandes (boutons, cartes, pastilles, interrupteurs, boutons ronds ; bloc 4) : leur bordure de 2 prend
+       la couleur de l'anneau, ce contour net de 2 la prolonge au dehors (anneau de 4 comme les tuiles, sans que le contenu
+       bouge), puis la lueur. Voir TileMetrics.ControlRingBorder et OutlineSpread. -->
+  <BoxShadows x:Key="WinSU.FocusOutline">0 0 0 2 #FF00C8, 0 0 18 4 #AAFF00C8</BoxShadows>
+  <!-- Icônes générées (étape 29, D-85) : tuile d'ajout « + » en magenta plein (« Create Folder » de la Wii U), tuile
+       « Jeux » en lavande vive (dossier « Misc »), assez foncée pour un glyphe blanc -->
+  <SolidColorBrush x:Key="WinSU.SignatureBrush" Color="#FF00C8" />
+  <SolidColorBrush x:Key="WinSU.SignatureAltBrush" Color="#5433FF" />
+  <!-- Ombre des pilules (onglets, en-têtes) : lavande très sombre -->
+  <BoxShadows x:Key="WinSU.PillShadow">0 2 8 0 #40261F45</BoxShadows>
+  <!-- Boule verte de l'option en vigueur (étape 26, D-78) : vert franc, en relief (reflet en haut à gauche, bord plus
+       foncé), avec une lueur verte. Fixe : elle ne suit pas le thème. -->
+  <RadialGradientBrush x:Key="WinSU.CurrentDotBrush" Center="35%,30%" GradientOrigin="35%,30%" RadiusX="75%" RadiusY="75%">
+    <GradientStop Offset="0" Color="#DCFCE7" />
+    <GradientStop Offset="0.3" Color="#4ADE80" />
+    <GradientStop Offset="0.75" Color="#22C55E" />
+    <GradientStop Offset="1" Color="#15803D" />
+  </RadialGradientBrush>
+  <BoxShadows x:Key="WinSU.CurrentDotGlow">0 0 8 0 #9922C55E</BoxShadows>
+
+  <!--
+    Polices (D-12, D-41 ; 30.10, D-129) : DM Sans (SIL OFL 1.1, graisse 500 par défaut) pour le texte et les titres, ou
+    la police choisie dans les Réglages (Themes/AppFonts). Glyphes de boutons de manette (U+E0A0…) : « WinSU Glyphs »,
+    notre police (tools/dev/glyph_font.py).
+  -->
+  <FontFamily x:Key="WinSU.TitleFont">avares://WinSU/Fonts/DMSans#DM Sans</FontFamily>
+  <FontFamily x:Key="WinSU.BodyFont">avares://WinSU/Fonts/DMSans#DM Sans</FontFamily>
+  <FontFamily x:Key="WinSU.ButtonGlyphFont">avares://WinSU/Fonts/WinSUGlyphs#WinSU Glyphs</FontFamily>
+
+  <!-- Rayons -->
+  <CornerRadius x:Key="WinSU.RadiusXs">8</CornerRadius>
+  <CornerRadius x:Key="WinSU.RadiusSm">12</CornerRadius>
+  <CornerRadius x:Key="WinSU.ButtonRadius">14</CornerRadius>
+  <CornerRadius x:Key="WinSU.RadiusMd">16</CornerRadius>
+  <CornerRadius x:Key="WinSU.CardRadius">24</CornerRadius>
+  <CornerRadius x:Key="WinSU.RadiusXl">32</CornerRadius>
+  <CornerRadius x:Key="WinSU.PanelRadius">40</CornerRadius>
+  <CornerRadius x:Key="WinSU.PillRadius">999</CornerRadius>
+  <!-- Rayons des tuiles (face, équerres) : Controls/TileMetrics.cs (FaceCornerRadius, CursorRadius) -->
+</ResourceDictionary>

@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="using:WinSU.App.Controls"
+             xmlns:vm="using:WinSU.App.ViewModels"
+             xmlns:sh="using:WinSU.App.ViewModels.Shell"
+             xmlns:loc="using:WinSU.App.Localization"
+             x:Class="WinSU.App.Views.Standard.GamesTabView"
+             x:DataType="sh:GamesTabViewModel">
+
+  <!--
+    Onglet « Jeux » du Standard 2.0 (étape 30, maquette Sprite-0002, D-104), sur toute la page : la colonne des consoles au
+    bord droit (puis « Ajouter une console »), la console choisie toujours en bas (Controls/TrackPanel, point fixe) ; à sa
+    gauche, une flèche et la colonne de ses jeux, montrés en direct : le « + » en face d'elle, les jeux au-dessus (le 1er
+    juste au-dessus du « + »). Gauche ou Confirmer sur la console entrent dans ses jeux (le 1er), Droite ou Retour en
+    reviennent. Haut et Bas parcourent chaque colonne.
+  -->
+  <Panel>
+    <!-- Les jeux de la console choisie -->
+    <ListBox x:Name="GamesList" Classes="tiles trackColumn gameColumn"
+             ItemsSource="{Binding ConsoleGames.Items, FallbackValue={x:Null}}" SelectedItem="{Binding ConsoleGames.SelectedItem, FallbackValue={x:Null}}"
+             IsVisible="{Binding ConsoleGames, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:TrackPanel Classes="gameColumn" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="sh:GameTileViewModel">
+          <ctl:GameTile />
+        </DataTemplate>
+        <DataTemplate x:DataType="sh:AddGamesTileViewModel">
+          <ctl:AddTile />
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <!-- Les consoles ajoutées, puis « Ajouter une console » -->
+    <ListBox x:Name="ConsoleList" Classes="tiles trackColumn consoleColumn" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <ctl:TrackPanel Classes="consoleColumn" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.DataTemplates>
+        <DataTemplate x:DataType="vm:ConsoleTileViewModel">
+          <Panel>
+            <ctl:ConsoleTile />
+            <!-- Vers les jeux de la console choisie (la flèche de la maquette) -->
+            <Path Classes="gamesArrow" Data="M 30,0 L 0,35 L 30,70 L 22,35 Z" />
+          </Panel>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:AddConsoleTileViewModel">
+          <ctl:AddTile Size="{x:Static ctl:TileMetrics.ConsoleSize}" />
+        </DataTemplate>
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <!-- « Vos consoles », accroché en haut de la colonne des consoles ; les consoles qui passent dessous sont atténuées,
+         comme sous la barre d'aide (30.10) -->
+    <Border Classes="glass consolesHeader" IsHitTestVisible="False" ctl:Covers.IsCover="True">
+      <TextBlock Text="{loc:Tr win_home_your_consoles}" />
+    </Border>
+  </Panel>
+</UserControl>

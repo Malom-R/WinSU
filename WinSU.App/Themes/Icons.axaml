@@ -1,0 +1,20 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!--
+    Icônes des styles de menu (M15, M16) : glyphes simples dessinés pour WinSU, en traits sur un carré de 24 × 24 (style
+    Path.icon de Themes/Switch.axaml, relief de Themes/WiiU.axaml), pas ceux des consoles ni du site (D-22).
+  -->
+  <StreamGeometry x:Key="WinSU.IconGear">M 19.15,10.08 L 22.09,10.49 L 22.09,13.51 L 19.15,13.92 L 18.41,15.70 L 20.20,18.07 L 18.07,20.20 L 15.70,18.41 L 13.92,19.15 L 13.51,22.09 L 10.49,22.09 L 10.08,19.15 L 8.30,18.41 L 5.93,20.20 L 3.80,18.07 L 5.59,15.70 L 4.85,13.92 L 1.91,13.51 L 1.91,10.49 L 4.85,10.08 L 5.59,8.30 L 3.80,5.93 L 5.93,3.80 L 8.30,5.59 L 10.08,4.85 L 10.49,1.91 L 13.51,1.91 L 13.92,4.85 L 15.70,5.59 L 18.07,3.80 L 20.20,5.93 L 18.41,8.30 Z M 15.2,12 A 3.2,3.2 0 1 1 8.8,12 A 3.2,3.2 0 1 1 15.2,12 Z</StreamGeometry>
+  <StreamGeometry x:Key="WinSU.IconPalette">M 12,3 A 9,9 0 1 0 12,21 C 13.2,21 13.8,20.2 13.8,19.3 C 13.8,18.2 12.9,17.6 12.9,16.6 C 12.9,15.6 13.7,14.8 14.7,14.8 L 16.5,14.8 C 19,14.8 21,12.8 21,10.3 C 21,6.2 17,3 12,3 Z M 7.5,11 L 7.51,11 M 10,7.3 L 10.01,7.3 M 14.5,7.3 L 14.51,7.3 M 17,10.5 L 17.01,10.5</StreamGeometry>
+  <!-- Manette : centrée en hauteur dans la grille (de 6 à 18 environ), comme les autres glyphes -->
+  <StreamGeometry x:Key="WinSU.IconGamepad">M 7,6 L 17,6 C 19.5,6 21,8 21.6,10.5 L 22.5,14.5 C 23,17 21,18.5 19.2,17.2 L 16.5,15 L 7.5,15 L 4.8,17.2 C 3,18.5 1,17 1.5,14.5 L 2.4,10.5 C 3,8 4.5,6 7,6 Z M 7,9 L 7,12 M 5.5,10.5 L 8.5,10.5 M 16,9.5 L 16.01,9.5 M 18,11.5 L 18.01,11.5</StreamGeometry>
+  <StreamGeometry x:Key="WinSU.IconPower">M 12,2.5 L 12,11 M 6.3,5.9 A 8,8 0 1 0 17.7,5.9</StreamGeometry>
+  <StreamGeometry x:Key="WinSU.IconGrid">M 4,4 L 10.5,4 L 10.5,10.5 L 4,10.5 Z M 13.5,4 L 20,4 L 20,10.5 L 13.5,10.5 Z M 4,13.5 L 10.5,13.5 L 10.5,20 L 4,20 Z M 13.5,13.5 L 20,13.5 L 20,20 L 13.5,20 Z</StreamGeometry>
+  <!-- Accueil (M16) : une maison -->
+  <StreamGeometry x:Key="WinSU.IconHome">M 2.5,11.5 L 12,3.5 L 21.5,11.5 M 5.5,9.5 L 5.5,20.5 L 18.5,20.5 L 18.5,9.5 M 10,20.5 L 10,14.5 L 14,14.5 L 14,20.5</StreamGeometry>
+  <!-- Chevrons des flèches de page (M16) -->
+  <StreamGeometry x:Key="WinSU.IconChevronLeft">M 15,5 L 8,12 L 15,19</StreamGeometry>
+  <StreamGeometry x:Key="WinSU.IconChevronRight">M 9,5 L 16,12 L 9,19</StreamGeometry>
+  <!-- Retour (étape 25, jeux d'une console du style Wii U) : flèche vers la gauche qui revient en U -->
+  <StreamGeometry x:Key="WinSU.IconBack">M 8.5,4.5 L 3.5,9.5 L 8.5,14.5 M 3.5,9.5 L 15,9.5 C 18.3,9.5 20.5,11.9 20.5,15 C 20.5,18.1 18.3,20.5 15,20.5 L 10,20.5</StreamGeometry>
+</ResourceDictionary>
