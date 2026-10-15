@@ -1,82 +1,67 @@
 # WinSU
 
-**WinSU** est un lanceur de jeux plein écran pour Windows, pensé pour être utilisé à la manette depuis un canapé : on y range
-ses jeux par console, on les lance d'un appui, et WinSU revient au premier plan quand la partie se termine.
+**WinSU** is a game launcher for Windows, designed to be used with a controller from the couch or on a handheld: organize your games by console and launch them with a single press.
 
-> Projet en développement (version 1.6.0). Inspiré du lanceur Android **iiSU** : WinSU n'en reprend aucun fichier et n'y est
-> pas lié.
+> Project in development (version 1.7.0). Inspired by the Android launcher **iiSU**: WinSU is not affiliated with it.
+> Please support their project — it's amazing.
 
-## Ce qu'on peut faire avec
+## What you can do with it
 
-- **Ranger ses jeux par console** : un catalogue de 25 consoles (Nintendo, Sega, PlayStation, Xbox, et « Windows » pour tout
-  programme) ; seules les consoles ajoutées s'affichent, dans l'ordre choisi.
-- **Ajouter des jeux** : un raccourci par jeu (`.lnk`, `.url` des jeux Steam, `.exe`, `.bat`, `.cmd`), choisis dans la boîte
-  « Ouvrir » de Windows ; les fichiers restent là où ils sont.
-- **Lancer et suivre un jeu** : WinSU suit tout l'arbre de processus du jeu (ou l'état de Steam pour un jeu Steam), compte le
-  temps de jeu, se réduit ou se met en veille derrière le jeu, n'accepte aucune entrée pendant la partie, puis revient au
-  premier plan.
-- **Choisir son interface** : trois styles (Standard, Switch, Wii U), changés à chaud ; thèmes clair, sombre ou du système,
-  et un éditeur pour créer ses propres thèmes ; plusieurs polices ; fond animé.
-- **Habiller ses jeux** : jaquette, bannière et logo choisis sur le disque, ou cherchés sur **SteamGridDB** avec sa propre clé
-  d'API ; sans image, WinSU dessine une tuile aux couleurs de la console.
-- **Jouer à la manette ou au clavier** : manettes reconnues par SDL3 (glyphes Xbox, PlayStation ou Switch), touches
-  reconfigurables, assistant au premier lancement ; la souris marche aussi.
-- **Le reste** : sons d'interface, menu d'alimentation (veille, redémarrer, éteindre, quitter), français et anglais.
+- **Organize your games by console** (this launcher is not an emulation frontend — it does not ship any emulators natively): a catalog of 25 consoles (Nintendo, Sega, PlayStation, Xbox, and "Windows" for any program).
+- **Choose your interface**: three styles (Standard, Switch, Wii U), switched on the fly; light and dark themes with an editor to create your own; several fonts; animated background.
+- **Dress up your games**: box art, banner and logo picked from disk, or fetched from **SteamGridDB** with your own API key.
 
-## Compiler et lancer
+![description](https://github.com/Malom-R/WinSU/blob/main/Template/1.png)
 
-Prérequis : Windows 10 ou 11 et le [SDK .NET 10](https://dotnet.microsoft.com/download).
+![description](https://github.com/Malom-R/WinSU/blob/main/Template/2.png)
+
+![description](https://github.com/Malom-R/WinSU/blob/main/Template/3.png)
+
+## Build and run
+
+Requirements: Windows 10 or 11 and the [.NET 10 SDK](https://dotnet.microsoft.com/download).
 
 ```
 dotnet build WinSU.slnx -c Release
 WinSU.App\bin\Release\net10.0-windows\WinSU.exe
 ```
 
-Les données (réglages, bibliothèque, temps de jeu, images) sont dans `%LOCALAPPDATA%\WinSU`. Autres possibilités :
-`--data-dir <dossier>` pour un autre dossier, ou un fichier `portable.txt` à côté de l'exe pour les garder dans `data\`, à côté
-de lui.
+Data (settings, library, playtime, images) is stored in `%LOCALAPPDATA%\WinSU`. Alternatives: `--data-dir <folder>` for a different folder, or a `portable.txt` file next to the executable to keep everything in `data\` alongside it.
 
-Le code est rangé en trois projets : `WinSU.Core` (modèles et contrats, sans bibliothèque), `WinSU.Infrastructure` (fichiers,
-base SQLite, manette, son, Windows, SteamGridDB) et `WinSU.App` (l'application Avalonia).
+The code is split across three projects: `WinSU.Core` (models and contracts, no dependencies), `WinSU.Infrastructure` (files, SQLite database, controller, audio, Windows, SteamGridDB) and `WinSU.App` (the Avalonia application).
 
-## Sources et crédits
+**English and French supported.**
 
-**Icônes des consoles** : [assets de RetroArch](https://github.com/libretro/retroarch-assets) (libretro), thème « Automatic » de
-[baxysquare](https://github.com/baxysquare/baxy-retroarch-themes) et thème « Monochrome », sous licence
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Détail : `WinSU.App/Assets/Icons/CREDITS.txt`.
+## Sources and credits
 
-**Sons d'interface** : « [Interface Sounds](https://kenney.nl/assets/interface-sounds) » de Kenney, sous licence
-[CC0](https://creativecommons.org/publicdomain/zero/1.0/). Détail : `WinSU.App/Assets/Sounds/CREDITS.txt`.
+**Console icons**: [RetroArch assets](https://github.com/libretro/retroarch-assets) (libretro), "Automatic" theme by [baxysquare](https://github.com/baxysquare/baxy-retroarch-themes) and the "Monochrome" theme, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Details: `WinSU.App/Assets/Icons/CREDITS.txt`.
 
-**Polices**, toutes sous licence [SIL Open Font License 1.1](https://openfontlicense.org) (un `OFL.txt` dans chaque dossier de
-`WinSU.App/Fonts`) :
-- DM Sans (Colophon Foundry), la police par défaut ;
-- Inter (Rasmus Andersson) ;
-- Atkinson Hyperlegible Next (Applied Design Works, Letters from Sweden) ;
-- Lexend (Bonnie Shaver-Troup, Thomas Jockin) ;
-- Exo 2 (Natanael Gama) ;
-- Chakra Petch (Cadson Demak) ;
-- Oxanium (Severin Meyer) ;
-- WinSU Glyphs : glyphes des boutons dessinés pour WinSU, lettres et chiffres de DM Sans.
+**Interface sounds**: "[Interface Sounds](https://kenney.nl/assets/interface-sounds)" by Kenney, licensed under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Details: `WinSU.App/Assets/Sounds/CREDITS.txt`.
 
-**Bibliothèques** :
-- [Avalonia](https://avaloniaui.net) (MIT), avec SkiaSharp (MIT) ;
-- [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) (MIT) ;
-- Microsoft.Extensions.Hosting et Microsoft.Data.Sqlite (MIT), SQLite (domaine public) ;
-- [Serilog](https://serilog.net) (Apache 2.0) ;
-- [NAudio](https://github.com/naudio/NAudio) (MIT) et [NVorbis](https://github.com/NVorbis/NVorbis) (MIT) ;
-- [SDL3](https://www.libsdl.org) (zlib), par [ppy.SDL3-CS](https://github.com/ppy/SDL3-CS) (MIT).
+**Fonts**, all licensed under the [SIL Open Font License 1.1](https://openfontlicense.org) (an `OFL.txt` is included in each folder under `WinSU.App/Fonts`):
+- DM Sans (Colophon Foundry), the default font;
+- Inter (Rasmus Andersson);
+- Atkinson Hyperlegible Next (Applied Design Works, Letters from Sweden);
+- Lexend (Bonnie Shaver-Troup, Thomas Jockin);
+- Exo 2 (Natanael Gama);
+- Chakra Petch (Cadson Demak);
+- Oxanium (Severin Meyer);
+- WinSU Glyphs: button glyphs drawn for WinSU, with letters and digits from DM Sans.
 
-**Images en ligne** : [SteamGridDB](https://www.steamgriddb.com), avec la clé d'API de chaque utilisateur ; les images
-appartiennent à leurs auteurs.
+**Libraries**:
+- [Avalonia](https://avaloniaui.net) (MIT), with SkiaSharp (MIT);
+- [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) (MIT);
+- Microsoft.Extensions.Hosting and Microsoft.Data.Sqlite (MIT), SQLite (public domain);
+- [Serilog](https://serilog.net) (Apache 2.0);
+- [NAudio](https://github.com/naudio/NAudio) (MIT) and [NVorbis](https://github.com/NVorbis/NVorbis) (MIT);
+- [SDL3](https://www.libsdl.org) (zlib), via [ppy.SDL3-CS](https://github.com/ppy/SDL3-CS) (MIT).
 
-**Inspiration** : le lanceur Android iiSU. Le catalogue, les textes, les tuiles, les cadres, la palette, le logo et l'icône de
-WinSU sont dessinés pour WinSU.
+**Online images**: [SteamGridDB](https://www.steamgriddb.com), using each user's own API key; images belong to their respective authors.
 
-Les noms et les formes des consoles sont des marques de leurs fabricants (Nintendo, Sega, Sony, Microsoft), Steam est une
-marque de Valve : WinSU n'est lié à aucun d'eux.
+**Inspiration**: the Android launcher iiSU. WinSU's catalog, texts, tiles, frames, palette, logo and icon were designed for WinSU.
 
-## Licence
+Console names and shapes are trademarks of their respective manufacturers (Nintendo, Sega, Sony, Microsoft); Steam is a trademark of Valve. WinSU is not affiliated with any of them.
 
-Le code de WinSU est distribué sous licence **GNU GPL v3** (voir [LICENSE](LICENSE)). Les icônes, les sons et les polices
-gardent leur propre licence, citée plus haut.
+## License
+
+WinSU's code is distributed under the **GNU GPL v3** license (see [LICENSE](LICENSE)). Icons, sounds and fonts retain their own licenses, cited above.
